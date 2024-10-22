@@ -1,0 +1,25 @@
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.subject>input{
+    width: 100%;
+}
+
+.textbox>textarea{
+    width:100%;
+    display: block;
+    height: 400px;
+}
+
+form{
+    width: 100%;
+}
+
+.field>input{
+    width: 50%;
+}
