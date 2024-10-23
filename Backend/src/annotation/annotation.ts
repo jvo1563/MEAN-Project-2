@@ -16,12 +16,12 @@ export class Annotation {
   @IsNotEmpty()
   id: number;
 
-  @Column()
+  @Column({ type: 'int' })
   @IsNumber()
   @IsNotEmpty()
   report_id: number;
 
-  @Column()
+  @Column({ type: 'int' })
   @IsNumber()
   @IsNotEmpty()
   user_id: number;
