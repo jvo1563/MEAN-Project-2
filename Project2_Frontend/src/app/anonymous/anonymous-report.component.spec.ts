@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnonymousComponent } from './anonymous.component';
+import { AnonymousComponent } from './anonymous-report.component';
 
 describe('AnonymousComponent', () => {
   let component: AnonymousComponent;
