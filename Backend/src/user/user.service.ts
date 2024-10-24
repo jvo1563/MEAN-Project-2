@@ -39,9 +39,12 @@ export class UserService {
         return user;
       })
       .catch((error) => {
-        // If user already exists - shouldn't happen because we delete ID field
+        // If user already exists
         if (error.code == '23505')
-          throw new HttpException('User already exists', HttpStatus.CONFLICT);
+          throw new HttpException(
+            'Username already exists',
+            HttpStatus.CONFLICT,
+          );
         // If request is missing required fields to create
         if (error.code == '23502')
           throw new HttpException(
