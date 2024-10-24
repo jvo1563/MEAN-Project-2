@@ -18,9 +18,9 @@ export class Report {
   @IsNotEmpty()
   id: number;
 
-  // @Column({ type: 'int' })
-  // @IsNumber()
-  // user_id: number;
+  @Column({ type: 'int' })
+  @IsNumber()
+  user_id: number;
 
   @Column({ type: 'varchar', length: 255 })
   @IsString()

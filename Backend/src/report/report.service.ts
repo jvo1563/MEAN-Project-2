@@ -25,8 +25,8 @@ export class ReportService {
         // If given ID param is invalid (not a number)
         if (error.code == '22P02')
           throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
-        // Unexpected Error
-        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        // Throw the 404 again
+        throw error;
       });
   }
 
@@ -74,8 +74,8 @@ export class ReportService {
             'Reportname already exists',
             HttpStatus.CONFLICT,
           );
-        // Unexpected Error
-        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        // Throw 404 again
+        throw error;
       });
   }
 
