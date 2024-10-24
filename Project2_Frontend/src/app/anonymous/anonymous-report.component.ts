@@ -3,13 +3,13 @@ import {FormsModule} from '@angular/forms';
 import { AnonymousReport } from '../models/anonymous-report';
 
 @Component({
-  selector: 'app-anonymous',
+  selector: 'app-anonymous-report',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './anonymous.component.html',
-  styleUrl: './anonymous.component.css'
+  templateUrl: './anonymous-report.component.html',
+  styleUrl: './anonymous-report.component.css'
 })
-export class AnonymousComponent {
+export class AnonymousReportComponent {
   report: AnonymousReport = new AnonymousReport(0,0,'','','','','',new Date());
 
   submitReport(){
