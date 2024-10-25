@@ -5,6 +5,10 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserLandingComponent } from './user-landing/user-landing.component';
 import { UserReportComponent } from './user-report/user-report.component';
 import { ReportTableComponent } from './report-table/report-table.component';
+import { ReportDetailsComponent } from './report-details/report-details.component';
+import { AnnotationTableComponent } from './annotation-table/annotation-table.component';
+import { AnnotationDetailsComponent } from './annotation-details/annotation-details.component';
+import { AnnotationAddComponent } from './annotation-add/annotation-add.component';
 
 export const routes: Routes = [
     {
@@ -30,5 +34,17 @@ export const routes: Routes = [
     {
         path:'userLanding/reportTable',
         component:ReportTableComponent
+    },
+    {
+        path:'userLanding/reportTable/reportDetails',
+        component:ReportDetailsComponent
+    },
+    {
+        path:'userLanding/reportTable/reportDetails/annotationDetails',
+        component:AnnotationDetailsComponent
+    },
+    {
+        path:'userLanding/reportTable/reportDetails/addAnnotation',
+        component:AnnotationAddComponent
     }
 ];

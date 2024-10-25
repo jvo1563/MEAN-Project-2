@@ -16,14 +16,13 @@
             @for(report of reports; track $index){
                 <tr>
                     <td>{{report.id}}</td>
-                    <td>{{report.userId}}</td>
+                    <td>{{report.user_id}}</td>
                     <td>{{report.title}}</td>
                     <td>{{report.location}}</td>
                     <td>{{report.category}}</td>
                     <td>{{report.created_at}}</td>
                     <td>{{report.status}}</td>
                     <button type="button" (click)="reportDetails(report.id)">Report Details</button>
-                    <button type="button" (click)="annotations(report.id)">Annotations</button>
                     @if(user.userRole === 'admin'){
                         <button type="button" (click)="deleteReport(report.id)">Delete</button>
                     }
