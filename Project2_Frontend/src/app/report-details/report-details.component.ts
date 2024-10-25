@@ -25,7 +25,7 @@ export class ReportDetailsComponent {
 
     // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
     if(!this.user.userToken){
-      // this.router.navigate(['login']);
+      this.router.navigate(['login']);
     }
 
     this.reportIdService.reportIdObservable.subscribe(data=>{
