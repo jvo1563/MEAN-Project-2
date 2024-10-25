@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import { AnonymousReport } from '../models/anonymous-report';
+import { Report } from '../models/report';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-anonymous-report',
@@ -10,10 +11,12 @@ import { AnonymousReport } from '../models/anonymous-report';
   styleUrl: './anonymous-report.component.css'
 })
 export class AnonymousReportComponent {
-  report: AnonymousReport = new AnonymousReport(0,0,'','','','','',new Date());
+  constructor(private router:Router){}
+  report: Report = new Report(0,0,'','','','','',new Date());
 
   submitReport(){
     this.report.status = "Preliminary"
     console.log(this.report);
+    this.router.navigate([''])
   }
 }
