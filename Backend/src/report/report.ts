@@ -2,6 +2,7 @@ import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -53,7 +54,11 @@ export class Report {
   @Column({ type: 'timestamp' })
   created_at: Timestamp;
 
-  @ManyToOne(() => User, (user) => user.reports)
+  @ManyToOne(() => User, (user) => user.reports, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @OneToMany(() => Annotation, (annotation) => annotation.report)

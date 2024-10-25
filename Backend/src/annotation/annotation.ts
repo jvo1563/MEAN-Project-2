@@ -2,6 +2,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Timestamp,
@@ -36,10 +37,14 @@ export class Annotation {
   @IsNotEmpty()
   created_at: Timestamp;
 
-  @ManyToOne(() => User, (user) => user.reports)
+  @ManyToOne(() => User, (user) => user.reports, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'report_id' })
   user: User;
 
-  @ManyToOne(() => Report, (report) => report.annotations)
+  @ManyToOne(() => Report, (report) => report.annotations, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
   report: Report;
 
   //   constructor(id: number, annotation: string, created_at: Timestamp) {

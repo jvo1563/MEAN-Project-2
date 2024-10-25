@@ -22,8 +22,8 @@ CREATE TABLE "report" (
 
 CREATE TABLE "annotation" (
   "id" SERIAL PRIMARY KEY,
-  "report_id" INTEGER,
-  "user_id" INTEGER,
+  "report_id" INTEGER NOT NULL,
+  "user_id" INTEGER NOT NULL,
   "annotation" TEXT NOT NULL,
   "created_at" TIMESTAMP NOT NULL DEFAULT (now())
 );
