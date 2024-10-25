@@ -22,11 +22,12 @@ export class UserService {
         return user;
       })
       .catch((error) => {
+        if (error instanceof HttpException) throw error;
         // If given ID param is invalid (not a number)
         if (error.code == '22P02')
           throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
-        // Throw 404 again
-        throw error;
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
 
@@ -41,10 +42,7 @@ export class UserService {
       .catch((error) => {
         // If user already exists
         if (error.code == '23505')
-          throw new HttpException(
-            'Username already exists',
-            HttpStatus.CONFLICT,
-          );
+          throw new HttpException('Email already exists', HttpStatus.CONFLICT);
         // If request is missing required fields to create
         if (error.code == '23502')
           throw new HttpException(
@@ -71,14 +69,12 @@ export class UserService {
         return this.repo.save({ ...user, ...updatedUser });
       })
       .catch((error) => {
+        if (error instanceof HttpException) throw error;
         // If updating to a username that already exists
         if (error.code == '23505')
-          throw new HttpException(
-            'Username already exists',
-            HttpStatus.CONFLICT,
-          );
-        // Throw 404 again
-        throw error;
+          throw new HttpException('Email already exists', HttpStatus.CONFLICT);
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
 

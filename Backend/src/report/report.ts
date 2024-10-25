@@ -10,6 +10,9 @@ import {
 } from 'typeorm';
 import { User } from 'src/user/user';
 import { Annotation } from 'src/annotation/annotation';
+import { BusinessEntity } from 'src/business_entity/business_entity';
+import { ReportCategory } from 'src/report_category/report_category';
+import { ReportStatus } from 'src/report_status/report_status';
 
 @Entity()
 export class Report {
@@ -20,7 +23,11 @@ export class Report {
 
   @Column({ type: 'int' })
   @IsNumber()
-  user_id: number;
+  created_by: number;
+
+  @Column({ type: 'int' })
+  @IsNumber()
+  assigned_to: number;
 
   @Column({ type: 'varchar', length: 255 })
   @IsString()
@@ -39,46 +46,55 @@ export class Report {
   @IsNotEmpty()
   location: string;
 
-  @Column({ type: 'varchar', length: 100 })
-  @IsString()
-  @MaxLength(100)
-  @IsNotEmpty()
-  category: string;
+  @Column({ type: 'int' })
+  @IsNumber()
+  category_id: number;
 
-  @Column({ type: 'varchar', length: 50 })
-  @IsString()
-  @MaxLength(50)
-  @IsNotEmpty()
-  status: string;
+  @Column({ type: 'int' })
+  @IsNumber()
+  status_id: number;
 
   @Column({ type: 'timestamp' })
   created_at: Timestamp;
 
-  @ManyToOne(() => User, (user) => user.reports, {
+  @Column({ type: 'timestamp' })
+  updated_at: Timestamp;
+
+  @ManyToOne(() => User, (user) => user.created_reports, {
     nullable: true,
     onDelete: 'SET NULL',
+    eager: true,
   })
-  @JoinColumn({ name: 'user_id' })
-  user: User;
+  @JoinColumn({ name: 'created_by' })
+  user_created: User;
 
-  @OneToMany(() => Annotation, (annotation) => annotation.report)
+  @ManyToOne(() => User, (user) => user.assigned_reports, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    eager: true,
+  })
+  @JoinColumn({ name: 'assigned_to' })
+  user_assigned: User;
+
+  @OneToMany(() => Annotation, (annotation) => annotation.report, {
+    eager: true,
+  })
   annotations: Annotation[];
 
-  //   constructor(
-  //     id: number,
-  //     title: string,
-  //     description: string,
-  //     location: string,
-  //     category: string,
-  //     status: string,
-  //     created_at: Timestamp,
-  //   ) {
-  //     this.id = id;
-  //     this.title = title;
-  //     this.description = description;
-  //     this.location = location;
-  //     this.category = category;
-  //     this.status = status;
-  //     this.created_at = created_at;
-  //   }
+  @OneToMany(() => BusinessEntity, (businessEntity) => businessEntity.report, {
+    eager: true,
+  })
+  business_entities: BusinessEntity[];
+
+  @ManyToOne(() => ReportCategory, (reportCategory) => reportCategory.reports, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'category_id' })
+  category: ReportCategory;
+
+  @ManyToOne(() => ReportStatus, (reportStatus) => reportStatus.reports, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'status_id' })
+  status: ReportStatus;
 }

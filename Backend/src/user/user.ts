@@ -14,30 +14,32 @@ export class User {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  username: string;
+  email: string;
 
   @Column({ type: 'varchar', length: 255 })
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  password: string;
+  first_name: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 255 })
   @IsString()
-  @MaxLength(50)
+  @IsNotEmpty()
+  @MaxLength(255)
+  last_name: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  @IsString()
+  @MaxLength(255)
   @IsNotEmpty()
   role: string;
 
-  @OneToMany(() => Report, (report) => report.user)
-  reports: Report[];
+  @OneToMany(() => Report, (report) => report.user_created)
+  created_reports: Report[];
+
+  @OneToMany(() => Report, (report) => report.user_assigned)
+  assigned_reports: Report[];
 
   @OneToMany(() => Annotation, (annotation) => annotation.user)
   annotations: Annotation[];
-
-  //   constructor(id: number, username: string, password: string, role: string) {
-  //     this.id = id;
-  //     this.username = username;
-  //     this.password = password;
-  //     this.role = role;
-  //   }
 }
