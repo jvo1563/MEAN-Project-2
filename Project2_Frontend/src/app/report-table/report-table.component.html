@@ -1,0 +1,34 @@
+<main>
+    <table>
+        <thead>
+            <tr>
+                <th>Report</th>
+                <th>Assigned To</th>
+                <th>Title</th>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Created At</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for(report of reports; track $index){
+                <tr>
+                    <td>{{report.id}}</td>
+                    <td>{{report.userId}}</td>
+                    <td>{{report.title}}</td>
+                    <td>{{report.location}}</td>
+                    <td>{{report.category}}</td>
+                    <td>{{report.created_at}}</td>
+                    <td>{{report.status}}</td>
+                    <button type="button" (click)="reportDetails(report.id)">Report Details</button>
+                    <button type="button" (click)="annotations(report.id)">Annotations</button>
+                    @if(user.userRole === 'admin'){
+                        <button type="button" (click)="deleteReport(report.id)">Delete</button>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

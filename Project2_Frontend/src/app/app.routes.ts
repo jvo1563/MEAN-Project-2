@@ -4,6 +4,7 @@ import { AnonymousReportComponent } from './anonymous/anonymous-report.component
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserLandingComponent } from './user-landing/user-landing.component';
 import { UserReportComponent } from './user-report/user-report.component';
+import { ReportTableComponent } from './report-table/report-table.component';
 
 export const routes: Routes = [
     {
@@ -25,5 +26,9 @@ export const routes: Routes = [
     {
         path:'userLanding/userReport',
         component:UserReportComponent
+    },
+    {
+        path:'userLanding/reportTable',
+        component:ReportTableComponent
     }
 ];

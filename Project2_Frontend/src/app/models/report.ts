@@ -1,6 +1,6 @@
-export class AnonymousReport {
+export class Report {
     id: number;
-    user_id: number;
+    userId: number;
     title: string;
     description: string;
     location: string;
@@ -8,9 +8,9 @@ export class AnonymousReport {
     status: string;
     created_at: Date;
 
-    constructor(id:number, user_id:number, title:string, description:string, location:string, category:string, status:string, created_at:Date){
+    constructor(id:number, userId:number, title:string, description:string, location:string, category:string, status:string, created_at:Date){
         this.id = id;
-        this.user_id = user_id;
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.location = location;

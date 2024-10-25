@@ -10,9 +10,9 @@ h1{
 
 a{
     display: flex;
-    background-color:cadetblue;
+    background-color:grey;
     text-decoration: none;
-    color:black;
+    color:rgb(255, 255, 255);
     width: 20%;
     height: 2em;
     font-size: 18px;
