@@ -22,11 +22,12 @@ export class ReportService {
         return report;
       })
       .catch((error) => {
+        if (error instanceof HttpException) throw error;
         // If given ID param is invalid (not a number)
         if (error.code == '22P02')
           throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
-        // Throw the 404 again
-        throw error;
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
 
@@ -48,6 +49,11 @@ export class ReportService {
             'Missing required fields',
             HttpStatus.BAD_REQUEST,
           );
+        if (error.code == '23503')
+          throw new HttpException(
+            'Foreign key constraint failed',
+            HttpStatus.CONFLICT,
+          );
         // Unexpected Error
         throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
       });
@@ -61,21 +67,21 @@ export class ReportService {
 
     // Update report if they exist
     return this.repo
-      .findOne({ where: { id } })
+      .findOne({ where: { id }, loadEagerRelations: false })
       .then((report) => {
         if (!report)
           throw new HttpException('Report not found', HttpStatus.NOT_FOUND);
         return this.repo.save({ ...report, ...updatedReport });
       })
       .catch((error) => {
-        // If updating to a reportname that already exists
-        if (error.code == '23505')
+        if (error instanceof HttpException) throw error;
+        if (error.code == '23503')
           throw new HttpException(
-            'Reportname already exists',
+            'Foreign key constraint failed',
             HttpStatus.CONFLICT,
           );
-        // Throw 404 again
-        throw error;
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
 
