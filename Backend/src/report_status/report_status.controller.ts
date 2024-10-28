@@ -3,38 +3,49 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  HttpCode,
+  Put,
 } from '@nestjs/common';
 import { ReportStatusService } from './report_status.service';
+import { ReportStatus } from './report_status';
+import { DeleteResult } from 'typeorm';
 
 @Controller('report-status')
 export class ReportStatusController {
   constructor(private readonly reportStatusService: ReportStatusService) {}
 
   @Post()
-  create(@Body() createReportStatusDto) {
-    return this.reportStatusService.create(createReportStatusDto);
+  @HttpCode(201)
+  create(@Body() reportStatus: ReportStatus): Promise<ReportStatus> {
+    return this.reportStatusService.create(reportStatus);
   }
 
   @Get()
-  findAll() {
+  @HttpCode(200)
+  findAll(): Promise<ReportStatus[]> {
     return this.reportStatusService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @HttpCode(200)
+  findOne(@Param('id') id: number): Promise<ReportStatus> {
     return this.reportStatusService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReportStatusDto) {
-    return this.reportStatusService.update(+id, updateReportStatusDto);
+  @Put(':id')
+  @HttpCode(200)
+  update(
+    @Param('id') id: number,
+    @Body() updateReportStatus: ReportStatus,
+  ): Promise<ReportStatus> {
+    return this.reportStatusService.update(+id, updateReportStatus);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @HttpCode(204)
+  remove(@Param('id') id: number): Promise<DeleteResult> {
     return this.reportStatusService.remove(+id);
   }
 }

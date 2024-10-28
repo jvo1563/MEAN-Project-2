@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
@@ -19,7 +18,7 @@ export class BusinessEntityController {
 
   @Post()
   @HttpCode(201)
-  create(@Body() businessEntity: BusinessEntity) {
+  create(@Body() businessEntity: BusinessEntity): Promise<BusinessEntity> {
     return this.businessEntityService.create(businessEntity);
   }
 

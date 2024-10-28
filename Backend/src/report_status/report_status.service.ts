@@ -1,23 +1,90 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ReportStatus } from './report_status';
+
 @Injectable()
 export class ReportStatusService {
-  create(createReportStatusDto) {
-    return 'This action adds a new reportStatus';
+  constructor(
+    @InjectRepository(ReportStatus) private repo: Repository<ReportStatus>,
+  ) {}
+
+  async create(reportStatus: ReportStatus): Promise<ReportStatus> {
+    delete reportStatus.id;
+    return this.repo
+      .save(reportStatus)
+      .then((user) => {
+        return user;
+      })
+      .catch((error) => {
+        // If request is missing required fields to create
+        if (error.code == '23502')
+          throw new HttpException(
+            'Missing required fields',
+            HttpStatus.BAD_REQUEST,
+          );
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
   }
 
-  findAll() {
-    return `This action returns all reportStatus`;
+  async findAll(): Promise<ReportStatus[]> {
+    return await this.repo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reportStatus`;
+  async findOne(id: number): Promise<ReportStatus> {
+    return await this.repo
+      .findOne({ where: { id } })
+      .then((reportStatus) => {
+        if (!reportStatus)
+          throw new HttpException(
+            'Report Status not found',
+            HttpStatus.NOT_FOUND,
+          );
+        return reportStatus;
+      })
+      .catch((error) => {
+        if (error instanceof HttpException) throw error;
+        // If given ID param is invalid (not a number)
+        if (error.code == '22P02')
+          throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
   }
 
-  update(id: number, updateReportStatusDto) {
-    return `This action updates a #${id} reportStatus`;
+  async update(
+    id: number,
+    updateReportStatus: ReportStatus,
+  ): Promise<ReportStatus> {
+    // Prevent changing ID
+    if (updateReportStatus.id && updateReportStatus.id != id)
+      throw new HttpException('Cannot change ID', HttpStatus.BAD_REQUEST);
+    // Update user if they exist
+    return this.repo
+      .findOne({ where: { id } })
+      .then((reportStatus) => {
+        if (!reportStatus)
+          throw new HttpException(
+            'Report Status not found',
+            HttpStatus.NOT_FOUND,
+          );
+        return this.repo.save({ ...reportStatus, ...updateReportStatus });
+      })
+      .catch((error) => {
+        if (error instanceof HttpException) throw error;
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reportStatus`;
+  async remove(id: number) {
+    return this.repo.delete(id).catch((error) => {
+      // If given ID param is invalid (not a number)
+      if (error.code == '22P02')
+        throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+      // Unexpected Error
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    });
   }
 }

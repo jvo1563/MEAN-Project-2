@@ -9,7 +9,7 @@ export class BusinessEntityService {
     @InjectRepository(BusinessEntity) private repo: Repository<BusinessEntity>,
   ) {}
 
-  async create(businessEntity: BusinessEntity) {
+  async create(businessEntity: BusinessEntity): Promise<BusinessEntity> {
     delete businessEntity.id;
     return this.repo
       .save(businessEntity)
@@ -68,13 +68,13 @@ export class BusinessEntityService {
     // Update user if they exist
     return this.repo
       .findOne({ where: { id } })
-      .then((user) => {
-        if (!user)
+      .then((businessEntity) => {
+        if (!businessEntity)
           throw new HttpException(
             'Business Entity not found',
             HttpStatus.NOT_FOUND,
           );
-        return this.repo.save({ ...user, ...updateBusinessEntity });
+        return this.repo.save({ ...businessEntity, ...updateBusinessEntity });
       })
       .catch((error) => {
         if (error instanceof HttpException) throw error;
