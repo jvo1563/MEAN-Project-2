@@ -1,0 +1,41 @@
+<main>
+    <section class="report">
+        <form>
+            <div class="subject">
+                <label for="report.title">Subject: </label>
+                <input type="text" id="report.title" name="report.title" [(ngModel)]="report.title">
+            </div>
+
+            <div class="textbox">
+                <label for="report.description">Description: </label>
+                <textarea type="text" id="report.description" name="report.description" [(ngModel)]="report.description"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="report.location">Primary Location of Incident(s): </label>
+                <input type="text" id="report.location" name="report.location" [(ngModel)]="report.location">
+            </div>
+            
+            <div class="category">
+                <label for="report.category">Crime Category: </label>
+                <select id="report.category" name="report.category" [(ngModel)]="report.category">
+                    <option value="">Categories...</option>
+                    <option value="Tax Evasion">Tax Evasion</option>
+                    <option value="Embezzlement">Embezzlement</option>
+                    <option value="Insider Trading">Insider Trading</option>
+                    <option value="Bribery">Bribery</option>
+                    <option value="Money Laundering">Money Laundering</option>
+                    <option value="Terrorist Financing">Terrorist Financing</option>
+                    <option value="Misc">Misc/Unknown</option>
+                </select>
+            </div>
+        </form>
+
+        <button type="button" (click)="updateReport()">Save</button>
+        <button type="button" (click)="resetReport()">Reset</button>
+    </section>
+
+    <section class="annotations">
+        <app-annotation-table></app-annotation-table>
+    </section>
+</main>

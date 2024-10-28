@@ -29,7 +29,7 @@ export class UserReportComponent {
 
   submitReport(){
     this.report.status = "Pending"
-    this.report.userId = this.user.userId;
+    this.report.user_id = this.user.userId;
     console.log(this.report);
     this.router.navigate(['userLanding']);
   }

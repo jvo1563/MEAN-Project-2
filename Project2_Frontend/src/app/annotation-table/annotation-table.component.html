@@ -1,0 +1,36 @@
+<main>
+    <h1>Annotations:</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Annotation ID</th>
+                <th>Report ID</th>
+                <th>User ID</th>
+                <th>Title</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for(annotation of annotations; track $index){
+                <tr>
+                    <td>{{annotation.id}}</td>
+                    <td>{{annotation.report_id}}</td>
+                    <td>{{annotation.user_id}}</td>
+                    <td>{{annotation.title}}</td>
+                    <td>{{annotation.created_at}}</td>
+                    <button (click)="details(annotation.id)">details</button>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="navButtons">
+        <button type="button" (click)="backPage()">&#60;-</button>
+        <button type="button" (click)="forwardPage()">-></button>
+    </div>
+
+    <div class="spacedButton">
+        <button type="button" (click)="addAnnotation()">Add Annotation</button>
+    </div>
+</main>

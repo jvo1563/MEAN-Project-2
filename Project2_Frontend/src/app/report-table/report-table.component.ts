@@ -34,10 +34,7 @@ export class ReportTableComponent {
 
   reportDetails(reportId:number){
     this.reportIdService.setReportId(reportId);
-  }
-
-  annotations(reportId:number){
-    this.reportIdService.setReportId(reportId);
+    this.router.navigate(['userLanding/reportTable/reportDetails']);
   }
 
   deleteReport(reportId:number){
