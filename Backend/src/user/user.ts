@@ -20,7 +20,13 @@ export class User {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  name: string;
+  first_name: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(255)
+  last_name: string;
 
   @Column({ type: 'text' })
   @IsString()
