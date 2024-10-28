@@ -13,8 +13,8 @@ export class BusinessEntityService {
     delete businessEntity.id;
     return this.repo
       .save(businessEntity)
-      .then((user) => {
-        return user;
+      .then((newBusinessEntity) => {
+        return newBusinessEntity;
       })
       .catch((error) => {
         // If request is missing required fields to create

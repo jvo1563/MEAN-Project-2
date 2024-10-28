@@ -36,8 +36,8 @@ export class ReportService {
     delete report.id;
     return this.repo
       .save(report)
-      .then((report) => {
-        return report;
+      .then((newReport) => {
+        return newReport;
       })
       .catch((error) => {
         // If report already exists - shouldn't happen because we delete ID field

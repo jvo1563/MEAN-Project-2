@@ -13,8 +13,8 @@ export class ReportCategoryService {
     delete reportCategory.id;
     return this.repo
       .save(reportCategory)
-      .then((user) => {
-        return user;
+      .then((newReportCategory) => {
+        return newReportCategory;
       })
       .catch((error) => {
         // If request is missing required fields to create

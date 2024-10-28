@@ -13,8 +13,8 @@ export class ReportStatusService {
     delete reportStatus.id;
     return this.repo
       .save(reportStatus)
-      .then((user) => {
-        return user;
+      .then((newReportStatus) => {
+        return newReportStatus;
       })
       .catch((error) => {
         // If request is missing required fields to create

@@ -36,8 +36,8 @@ export class UserService {
     delete user.id;
     return this.repo
       .save(user)
-      .then((user) => {
-        return user;
+      .then((newUser) => {
+        return newUser;
       })
       .catch((error) => {
         // If user already exists
