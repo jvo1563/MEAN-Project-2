@@ -42,3 +42,20 @@ form{
     justify-items: center;
     align-items: center;
 }
+
+.buisness_entity{
+    margin-top: 20px;
+}
+
+.entity_list_element{
+    margin-bottom: 30px;
+}
+
+p{
+    display: inline-block;
+    margin:0px 0px 3px .5em;
+}
+
+span, label{
+    font-weight: bold;
+}
