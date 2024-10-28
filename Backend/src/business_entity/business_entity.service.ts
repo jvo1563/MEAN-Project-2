@@ -1,24 +1,100 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BusinessEntity } from './business_entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BusinessEntityService {
-  create(createBusinessEntityDto) {
-    return 'This action adds a new businessEntity';
+  constructor(
+    @InjectRepository(BusinessEntity) private repo: Repository<BusinessEntity>,
+  ) {}
+
+  async create(businessEntity: BusinessEntity) {
+    delete businessEntity.id;
+    return this.repo
+      .save(businessEntity)
+      .then((user) => {
+        return user;
+      })
+      .catch((error) => {
+        // If request is missing required fields to create
+        if (error.code == '23502')
+          throw new HttpException(
+            'Missing required fields',
+            HttpStatus.BAD_REQUEST,
+          );
+        if (error.code == '23503')
+          throw new HttpException(
+            'Foreign key constraint failed',
+            HttpStatus.CONFLICT,
+          );
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
   }
 
-  findAll() {
-    return `This action returns all businessEntity`;
+  async findAll(): Promise<BusinessEntity[]> {
+    return await this.repo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} businessEntity`;
+  async findOne(id: number): Promise<BusinessEntity> {
+    return await this.repo
+      .findOne({ where: { id } })
+      .then((businessEntity) => {
+        if (!businessEntity)
+          throw new HttpException(
+            'Business Entity not found',
+            HttpStatus.NOT_FOUND,
+          );
+        return businessEntity;
+      })
+      .catch((error) => {
+        if (error instanceof HttpException) throw error;
+        // If given ID param is invalid (not a number)
+        if (error.code == '22P02')
+          throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
   }
 
-  update(id: number, updateBusinessEntityDto) {
-    return `This action updates a #${id} businessEntity`;
+  async update(
+    id: number,
+    updateBusinessEntity: BusinessEntity,
+  ): Promise<BusinessEntity> {
+    // Prevent changing ID
+    if (updateBusinessEntity.id && updateBusinessEntity.id != id)
+      throw new HttpException('Cannot change ID', HttpStatus.BAD_REQUEST);
+    // Update user if they exist
+    return this.repo
+      .findOne({ where: { id } })
+      .then((user) => {
+        if (!user)
+          throw new HttpException(
+            'Business Entity not found',
+            HttpStatus.NOT_FOUND,
+          );
+        return this.repo.save({ ...user, ...updateBusinessEntity });
+      })
+      .catch((error) => {
+        if (error instanceof HttpException) throw error;
+        if (error.code == '23503')
+          throw new HttpException(
+            'Foreign key constraint failed',
+            HttpStatus.CONFLICT,
+          );
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} businessEntity`;
+  async remove(id: number) {
+    return this.repo.delete(id).catch((error) => {
+      // If given ID param is invalid (not a number)
+      if (error.code == '22P02')
+        throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+      // Unexpected Error
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    });
   }
 }
