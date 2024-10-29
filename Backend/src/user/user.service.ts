@@ -9,13 +9,19 @@ export class UserService {
 
   // Get all users
   async getAllUsers(): Promise<User[]> {
-    return await this.repo.find();
+    return await this.repo.find({
+      relations: ['created_reports', 'assigned_reports'],
+    });
   }
 
   // Get user by ID
   async getUserById(id: number): Promise<User> {
     return this.repo
-      .findOne({ where: { id } })
+      .findOne({
+        where: { id },
+        relations: ['created_reports', 'assigned_reports'],
+        // loadEagerRelations: false,
+      })
       .then((user) => {
         if (!user)
           throw new HttpException('User not found', HttpStatus.NOT_FOUND);

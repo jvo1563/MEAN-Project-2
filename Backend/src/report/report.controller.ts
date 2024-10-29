@@ -7,10 +7,14 @@ import {
   Param,
   Post,
   Put,
+  SetMetadata,
+  UseGuards,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { Report } from './report';
 import { DeleteResult } from 'typeorm';
+import { Roles } from 'src/roles/roles.decorator';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 @Controller('report')
 export class ReportController {
@@ -28,6 +32,7 @@ export class ReportController {
     return this.service.getReportById(id);
   }
 
+  @SetMetadata('isPublic', true)
   @Post()
   @HttpCode(201)
   createReport(@Body() report: Report): Promise<Report> {
@@ -43,6 +48,8 @@ export class ReportController {
     return this.service.updateReport(id, report);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Delete(':id')
   @HttpCode(204)
   deleteReport(@Param('id') id: number): Promise<DeleteResult> {

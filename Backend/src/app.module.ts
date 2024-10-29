@@ -14,6 +14,8 @@ import { ReportStatusModule } from './report_status/report_status.module';
 import { BusinessEntity } from './business_entity/business_entity';
 import { ReportCategory } from './report_category/report_category';
 import { ReportStatus } from './report_status/report_status';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 require('dotenv').config();
 
 @Module({
@@ -43,6 +45,8 @@ require('dotenv').config();
     BusinessEntityModule,
     ReportCategoryModule,
     ReportStatusModule,
+    AuthModule,
+    JwtModule,
   ],
   controllers: [AppController],
   providers: [AppService],
