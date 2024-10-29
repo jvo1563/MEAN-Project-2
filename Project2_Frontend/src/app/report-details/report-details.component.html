@@ -29,6 +29,89 @@
                     <option value="Misc">Misc/Unknown</option>
                 </select>
             </div>
+
+            <div class="category">
+                <label for="report.status">Status: </label>
+                <select id="report.status" name="report.status" [(ngModel)]="report.status">
+                    <option value="">Status...</option>
+                    <option value="Preliminary">Preliminary</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Complete">Complete</option>
+                </select>
+            </div>
+        </form>
+
+        <form class="buisness_entity">
+            @for(entity of buis_entities; track $index){
+                @if(entity.report_id !== 0){
+                    <div class="entity_list_element">
+                        <div class="field">
+                            <label for="buis_entities.name">Business Name: </label>
+                            <input type="text" id="buis_entities.name" name="buis_entities.name">
+                        </div>
+                        
+                        <div class="field">
+                            <label for="entity.industry">Industry: </label>
+                            <input type="text" id="entity.industry" name="entity.industry">
+                        </div>
+                
+                        <div class="field">
+                            <label for="entity.address">Buisness Address: </label>
+                            <input type="text" id="entity.address" name="entity.address">
+                        </div>
+                
+                        <div class="field">
+                            <label for="entity.email">Buisness Email: </label>
+                            <input type="text" id="entity.email" name="entity.email">
+                        </div>
+        
+                        <div class="field">
+                            <label for="entity.phone">Buisness Phone Number: </label>
+                            <input type="text" id="entity.phone" name="entity.phone">
+                        </div>
+                
+                        <div class="field">
+                            <label for="entity.relation">Relation to Crime: </label>
+                            <input type="text" id="entity.relation" name="entity.relation">
+                        </div>
+                    </div>
+                }
+            }
+        </form>
+            
+        <form class="buis_entity_to_add">
+            <div class="field">
+                <label for="buis_entity.name">Business Name: </label>
+                <input type="text" id="buis_entity.name" name="buis_entity.name" [(ngModel)]="buis_entity.name">
+            </div>
+                
+            <div class="field">
+                <label for="buis_entity.industry">Industry: </label>
+                <input type="text" id="buis_entity.industry" name="buis_entity.industry" [(ngModel)]="buis_entity.industry">
+            </div>
+        
+            <div class="field">
+                <label for="buis_entity.address">Buisness Address: </label>
+                <input type="text" id="buis_entity.address" name="buis_entity.address" [(ngModel)]="buis_entity.address">
+            </div>
+        
+            <div class="field">
+                <label for="buis_entity.email">Buisness Email: </label>
+                <input type="text" id="buis_entity.email" name="buis_entity.email" [(ngModel)]="buis_entity.email">
+            </div>
+
+            <div class="field">
+                <label for="buis_entity.phone">Buisness Phone Number: </label>
+                <input type="text" id="buis_entity.phone" name="buis_entity.phone" [(ngModel)]="buis_entity.phone">
+            </div>
+        
+            <div class="field">
+                <label for="buis_entity.relation">Relation to Crime: </label>
+                <input type="text" id="buis_entity.relation" name="buis_entity.relation" [(ngModel)]="buis_entity.relation">
+            </div>
+
+            <button type="button" (click)="addBuisnessEntity()">Add Buisness</button>
+            <button type="button" (click)="removeBuisnessEntity()">Remove Buisness</button>
         </form>
 
         <button type="button" (click)="updateReport()">Save</button>

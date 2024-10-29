@@ -16,9 +16,9 @@ export class ReportTableComponent {
   user: UserInfo = new UserInfo(0,'', '', '');
 
   reports: Report[] =[
-    new Report(1,0,'Title1','This is what happened here in this case....','Washington DC','Misc','Preliminary',new Date()),
-    new Report(2,1,'Title2','This is what happened here in this case....','New York City','Tax Evasion','Pending',new Date()),
-    new Report(3,2,'Title3','This is what happened here in this case....','Chicago','Bribery','Complete',new Date())
+    new Report(1,0,'Title1','This is what happened here in this case....','Washington DC','Misc','Preliminary',new Date(),new Date()),
+    new Report(2,1,'Title2','This is what happened here in this case....','New York City','Tax Evasion','Pending',new Date(),new Date()),
+    new Report(3,2,'Title3','This is what happened here in this case....','Chicago','Bribery','Complete',new Date(),new Date())
   ]
 
   constructor(private userAuthService: UserAuthService, private router: Router, private reportIdService: ReportIdService){

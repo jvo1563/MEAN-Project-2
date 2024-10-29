@@ -23,3 +23,20 @@ form{
 .field>input{
     width: 50%;
 }
+
+.report{
+    margin-bottom: 20px;
+}
+
+.entity_list_element{
+    margin-bottom: 30px;
+}
+
+p{
+    display: inline-block;
+    margin:0px 0px 3px .5em;
+}
+
+span, label{
+    font-weight: bold;
+}

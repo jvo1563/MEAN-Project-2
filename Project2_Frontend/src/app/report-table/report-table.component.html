@@ -16,7 +16,12 @@
             @for(report of reports; track $index){
                 <tr>
                     <td>{{report.id}}</td>
-                    <td>{{report.user_id}}</td>
+                    @if(report.user_id !== 0){
+                        <td>{{report.user_id}}</td>
+                    }
+                    @else{
+                        <td>NA</td>
+                    }
                     <td>{{report.title}}</td>
                     <td>{{report.location}}</td>
                     <td>{{report.category}}</td>
