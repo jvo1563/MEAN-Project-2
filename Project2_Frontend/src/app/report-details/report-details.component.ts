@@ -7,11 +7,12 @@ import { Report } from '../models/report';
 import { FormsModule } from '@angular/forms';
 import { AnnotationTableComponent } from '../annotation-table/annotation-table.component';
 import { BuisnessEntity } from '../models/buisness-entity';
+import { BuisnessCardComponent } from '../buisness-card/buisness-card.component';
 
 @Component({
   selector: 'app-report-details',
   standalone: true,
-  imports: [FormsModule, AnnotationTableComponent],
+  imports: [FormsModule, AnnotationTableComponent, BuisnessCardComponent],
   templateUrl: './report-details.component.html',
   styleUrl: './report-details.component.css'
 })
@@ -28,7 +29,7 @@ export class ReportDetailsComponent {
 
     // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
     if(!this.user.userToken){
-      // this.router.navigate(['login']);
+      this.router.navigate(['login']);
     }
 
     this.reportIdService.reportIdObservable.subscribe(data=>{
@@ -54,18 +55,13 @@ export class ReportDetailsComponent {
 
   resetReport(){
     //redo the get request from constructor
-    //so will also want to comment this out
+    //so will also want to comment this out once can do Get to BE
     this.report.category = "Bribery";
     this.report.description = "So the trading company I was working with owns a building on the corner of 4th and 3rd..."
     this.report.location = "Chicago, IL";
     this.report.status = "Pending";
     this.report.title = "Trading Company Bribes City Planning Board";
     this.report.user_id = 1;
-    this.buis_entities = [
-      new BuisnessEntity(1,this.report.id,'MBC','Banking','1223 North St Suit 22, Jet OH, 12344','mbc@gmail.com','123334552','Perpetrator'),
-      new BuisnessEntity(2,this.report.id,'Merril Co.','Consumer Appliances','454 Main St N, West IL, 67922','merril@outlook.com','2313215553','Co-perpatrator'),
-      new BuisnessEntity(3,this.report.id,'Clasps & Co.','Industrial Equipment','122 Smith Ave, Sunny CA, 10982','claspsco@outlook.com','1235565789','Accessory')
-    ];
   }
 
   updateReport(){
@@ -73,38 +69,40 @@ export class ReportDetailsComponent {
     //don't have BE here to this will have to do for now
     this.report.updated_at = new Date();
     console.log("Report Updated!")
-    this.router.navigate(['userLanding/reportTable']);
   }
   
 
 
-  //probs need to move some of this to update report...?
-  submitReport(){
-    this.report.status = "Pending"
-    this.report.user_id = this.user.userId;
-    if(this.buis_entities.length){
-      this.buis_entities[this.buis_entities.length - 1] = this.buis_entity;
+  updateBuisnessEntity(index: number, entity: BuisnessEntity){
+    //gonna want to call BE update here
+    this.buis_entities[index] = entity;
+    console.log(this.buis_entities);
+  }
+
+  deleteBuisnessEntity(index:number){
+    //gonna want to call BE delete here
+    let temp_entities: BuisnessEntity[]=[];
+    for(let i=0; i < this.buis_entities.length; i++){
+      if(i !== index){ 
+        temp_entities.push(this.buis_entities[i]);
+      }
     }
-    console.log(this.report);
-    this.router.navigate(['userLanding']);
+
+    this.buis_entities = temp_entities;
+    console.log(this.buis_entities);
   }
 
   addBuisnessEntity(){
-    if(this.buis_entities.length){
-      this.buis_entities[this.buis_entities.length] = this.buis_entity;
-    }
-    this.buis_entities.push(new BuisnessEntity(0,0,'','','','','',''));
+    //call BE create buisness entity here, also will want to return id for this new buisness entity so that we can set that in the current entity before adding to array
+    this.buis_entity.report_id = this.report.id;
+    this.buis_entities.push(this.buis_entity);
     this.buis_entity = new BuisnessEntity(0,0,'','','','','','');
+    console.log(this.buis_entities);
   }
-  
-  //for now can only remove last buis_enitity added, but could implement soln to allow any of the added buisness entities to be removed
-  removeBuisnessEntity(){
-    if(this.buis_entities.length>0){
-      this.buis_entity = this.buis_entities[this.buis_entities.length - 1];
-      this.buis_entities.pop();
-    }
-    else{
-      this.buis_entity = new BuisnessEntity(0,0,'','','','','','');
-    }
+
+
+
+  returnToTable(){
+    this.router.navigate(['userLanding/reportTable']);
   }
 }

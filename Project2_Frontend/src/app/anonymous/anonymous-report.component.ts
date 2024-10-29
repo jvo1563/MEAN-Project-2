@@ -4,6 +4,8 @@ import { Report } from '../models/report';
 import { Router } from '@angular/router';
 import { BuisnessEntity } from '../models/buisness-entity';
 
+//want to rework this and the user-report page when I get the time, make it more similar to how it works in report detailed view page
+
 @Component({
   selector: 'app-anonymous-report',
   standalone: true,
