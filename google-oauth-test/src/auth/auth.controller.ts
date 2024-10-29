@@ -15,19 +15,19 @@ require('dotenv').config();
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Get('google')
+  @Get('')
   @UseGuards(GoogleOauthGuard)
   async auth() {}
 
-  @Get('google/callback')
+  @Get('google-redirect')
   @UseGuards(GoogleOauthGuard)
   async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
+
     console.log(
       `From callback controller req.user: ${JSON.stringify(req.user)}`,
     );
     const token = await this.authService.signIn(req.user);
     console.log(`Token from callback: ${token}`);
-
     // res.cookie('token', token, {
     //   maxAge: 600000, // 10 minutes
     //   sameSite: true,
@@ -36,7 +36,9 @@ export class AuthController {
 
     // return res.status(HttpStatus.OK).send();
     // Option 1: Redirect with token as query parameter
-    return res.redirect(`http://localhost:4200/auth-callback?token=${token}`);
+
+    const userName = req.user['email'];
+    return res.redirect(`http://localhost:4200/auth-callback?userName=${userName}&?token=${token}`);
 
     // Option 2: Redirect with token as URL fragment (more secure)
     // return res.redirect(`http://localhost:4200/auth-callback#token=${token}`);

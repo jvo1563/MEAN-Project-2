@@ -9,5 +9,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
+  
+  googleLogin(){
+    window.location.href = 'http://localhost:3000/auth';
+  }
 }

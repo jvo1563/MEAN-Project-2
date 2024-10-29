@@ -9,6 +9,7 @@ import { ReportDetailsComponent } from './report-details/report-details.componen
 import { AnnotationTableComponent } from './annotation-table/annotation-table.component';
 import { AnnotationDetailsComponent } from './annotation-details/annotation-details.component';
 import { AnnotationAddComponent } from './annotation-add/annotation-add.component';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 
 export const routes: Routes = [
     {
@@ -22,6 +23,10 @@ export const routes: Routes = [
     {
         path:'login',
         component:UserLoginComponent
+    },
+    {
+        path:'auth-callback',
+        component: AuthCallbackComponent
     },
     {
         path:'userLanding',
