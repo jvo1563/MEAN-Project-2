@@ -1,4 +1,5 @@
 <main>
+    <h1>Report Details:</h1>
     <section class="report">
         <form>
             <div class="subject">
@@ -39,46 +40,27 @@
                     <option value="Complete">Complete</option>
                 </select>
             </div>
+
+            <div class="buttonBlock">
+                <button type="button" (click)="updateReport()">Save</button>
+                <button type="button" (click)="resetReport()">Reset</button>
+            </div>
         </form>
 
-        <form class="buisness_entity">
-            @for(entity of buis_entities; track $index){
-                @if(entity.report_id !== 0){
-                    <div class="entity_list_element">
-                        <div class="field">
-                            <label for="buis_entities.name">Business Name: </label>
-                            <input type="text" id="buis_entities.name" name="buis_entities.name">
-                        </div>
-                        
-                        <div class="field">
-                            <label for="entity.industry">Industry: </label>
-                            <input type="text" id="entity.industry" name="entity.industry">
-                        </div>
-                
-                        <div class="field">
-                            <label for="entity.address">Buisness Address: </label>
-                            <input type="text" id="entity.address" name="entity.address">
-                        </div>
-                
-                        <div class="field">
-                            <label for="entity.email">Buisness Email: </label>
-                            <input type="text" id="entity.email" name="entity.email">
-                        </div>
-        
-                        <div class="field">
-                            <label for="entity.phone">Buisness Phone Number: </label>
-                            <input type="text" id="entity.phone" name="entity.phone">
-                        </div>
-                
-                        <div class="field">
-                            <label for="entity.relation">Relation to Crime: </label>
-                            <input type="text" id="entity.relation" name="entity.relation">
-                        </div>
-                    </div>
+        @if(buis_entities.length > 0){
+            <h1>Buisnesses Associated With Crime:</h1>
+            <form class="buisness_entity">
+                @for(entity of buis_entities; track $index){
+                    @if(entity.report_id !== 0){
+                        <app-buisness-card [buis_entity]="entity"
+                                        (updateEvent)="updateBuisnessEntity($index, $event)"
+                                        (deleteEvent)="deleteBuisnessEntity($index)"></app-buisness-card>
+                    }
                 }
-            }
-        </form>
+            </form>
+        }
             
+        <h1>New Buisness Association:</h1>
         <form class="buis_entity_to_add">
             <div class="field">
                 <label for="buis_entity.name">Business Name: </label>
@@ -111,14 +93,12 @@
             </div>
 
             <button type="button" (click)="addBuisnessEntity()">Add Buisness</button>
-            <button type="button" (click)="removeBuisnessEntity()">Remove Buisness</button>
         </form>
-
-        <button type="button" (click)="updateReport()">Save</button>
-        <button type="button" (click)="resetReport()">Reset</button>
     </section>
 
     <section class="annotations">
         <app-annotation-table></app-annotation-table>
     </section>
+    
+    <button type="button" (click)="returnToTable()">Exit Report Details</button>
 </main>
