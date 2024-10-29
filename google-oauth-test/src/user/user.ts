@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
 
 @Entity()
 export class User {
@@ -36,4 +36,7 @@ export class User {
   @MaxLength(255)
   @IsNotEmpty()
   role: string;
+
+  @Column({ type: 'timestamp' })
+  created_at: Timestamp;
 }
