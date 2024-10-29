@@ -16,6 +16,8 @@ import { ReportCategory } from './report_category/report_category';
 import { ReportStatus } from './report_status/report_status';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 require('dotenv').config();
 
 @Module({
@@ -49,6 +51,6 @@ require('dotenv').config();
     JwtModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule {}
