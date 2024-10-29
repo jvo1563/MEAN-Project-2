@@ -1,5 +1,11 @@
 import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Timestamp,
+} from 'typeorm';
 import { Report } from 'src/report/report';
 import { Annotation } from 'src/annotation/annotation';
 
@@ -38,6 +44,9 @@ export class User {
   @MaxLength(255)
   @IsNotEmpty()
   role: string;
+
+  @Column({ type: 'timestamp' })
+  created_at: Timestamp;
 
   @OneToMany(() => Report, (report) => report.user_created)
   created_reports: Report[];
