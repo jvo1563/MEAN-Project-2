@@ -7,7 +7,6 @@ import {
   Param,
   Post,
   Put,
-  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { ReportService } from './report.service';

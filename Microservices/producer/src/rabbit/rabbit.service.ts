@@ -36,6 +36,7 @@ export class RabbitService {
   }
 
   async sendToUserConsumer(pattern: any, data: any) {
+    // console.log(`Sending to User Consumer: Pattern: ${pattern} Data: ${data}`);
     return await firstValueFrom(
       this.userConsumer.send(pattern, data).pipe(
         catchError((err) => {
@@ -48,12 +49,13 @@ export class RabbitService {
   }
 
   async sendToReportConsumer(pattern: any, data: any) {
+    // console.log(`Sending to Report Consumer: Pattern: ${pattern} Data: ${data}`);
     return await firstValueFrom(
       this.reportConsumer.send(pattern, data).pipe(
         catchError((err) => {
           // console.log(`Error from Report Consumer: ${err}`);
           // console.log(err);
-          throw new HttpException(err.response.message, err.response.status);
+          throw new HttpException(err.message, err.status);
         }),
       ),
     );
