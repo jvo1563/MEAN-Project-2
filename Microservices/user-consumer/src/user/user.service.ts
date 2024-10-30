@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../models/user';
 import { Repository } from 'typeorm';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class UserService {
@@ -24,16 +25,25 @@ export class UserService {
       })
       .then((user) => {
         if (!user)
-          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+          throw new RpcException({
+            status: HttpStatus.NOT_FOUND,
+            message: 'User not found',
+          });
         return user;
       })
       .catch((error) => {
-        if (error instanceof HttpException) throw error;
+        if (error instanceof RpcException) throw error;
         // If given ID param is invalid (not a number)
         if (error.code == '22P02')
-          throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+          throw new RpcException({
+            status: HttpStatus.BAD_REQUEST,
+            message: 'Invalid ID',
+          });
         // Unexpected Error
-        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new RpcException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error,
+        });
       });
   }
 
@@ -48,15 +58,21 @@ export class UserService {
       .catch((error) => {
         // If user already exists
         if (error.code == '23505')
-          throw new HttpException('Email already exists', HttpStatus.CONFLICT);
+          throw new RpcException({
+            status: HttpStatus.CONFLICT,
+            message: 'Email already exists',
+          });
         // If request is missing required fields to create
         if (error.code == '23502')
-          throw new HttpException(
-            'Missing required fields',
-            HttpStatus.BAD_REQUEST,
-          );
+          throw new RpcException({
+            status: HttpStatus.BAD_REQUEST,
+            message: 'Missing required fields',
+          });
         // Unexpected Error
-        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new RpcException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error,
+        });
       });
   }
 
@@ -64,23 +80,40 @@ export class UserService {
   async updateUser(id: number, updatedUser: User): Promise<User> {
     // Prevent changing ID
     if (updatedUser.id && updatedUser.id != id)
-      throw new HttpException('Cannot change ID', HttpStatus.BAD_REQUEST);
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Cannot change ID',
+      });
 
     // Update user if they exist
     return this.repo
       .findOne({ where: { id } })
       .then((user) => {
         if (!user)
-          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+          throw new RpcException({
+            status: HttpStatus.NOT_FOUND,
+            message: 'User not found',
+          });
         return this.repo.save({ ...user, ...updatedUser });
       })
       .catch((error) => {
-        if (error instanceof HttpException) throw error;
+        if (error instanceof RpcException) throw error;
+        if (error.code == '22P02')
+          throw new RpcException({
+            status: HttpStatus.BAD_REQUEST,
+            message: 'Invalid ID',
+          });
         // If updating to a username that already exists
         if (error.code == '23505')
-          throw new HttpException('Email already exists', HttpStatus.CONFLICT);
+          throw new RpcException({
+            status: HttpStatus.CONFLICT,
+            message: 'Email already exists',
+          });
         // Unexpected Error
-        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new RpcException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error,
+        });
       });
   }
 
@@ -89,9 +122,15 @@ export class UserService {
     return this.repo.delete(id).catch((error) => {
       // If given ID param is invalid (not a number)
       if (error.code == '22P02')
-        throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+        throw new RpcException({
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Invalid ID',
+        });
       // Unexpected Error
-      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new RpcException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error,
+      });
     });
   }
 }

@@ -39,8 +39,9 @@ export class RabbitService {
     return await firstValueFrom(
       this.userConsumer.send(pattern, data).pipe(
         catchError((err) => {
-          console.log(`Error from User Consumer: ${err}`);
-          throw new HttpException(err, 500);
+          // console.log(`Error from User Consumer: ${err}`);
+          // console.log(err);
+          throw new HttpException(err.message, err.status);
         }),
       ),
     );
@@ -50,8 +51,9 @@ export class RabbitService {
     return await firstValueFrom(
       this.reportConsumer.send(pattern, data).pipe(
         catchError((err) => {
-          console.log(`Error from Report Consumer: ${err}`);
-          throw new HttpException(err, 500);
+          // console.log(`Error from Report Consumer: ${err}`);
+          // console.log(err);
+          throw new HttpException(err.response.message, err.response.status);
         }),
       ),
     );

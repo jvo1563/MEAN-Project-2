@@ -31,6 +31,6 @@ export class UserService {
 
   // Deleting a user
   async deleteUser(id: number) {
-    return await this.rabbitService.sendToUserConsumer('createUser', id);
+    return await this.rabbitService.sendToUserConsumer('deleteUser', id);
   }
 }

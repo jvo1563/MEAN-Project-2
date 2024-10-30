@@ -11,7 +11,7 @@ import {
 import { UserService } from './user.service';
 import { User } from '../models/user';
 import { DeleteResult } from 'typeorm';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('user')
 export class UserController {
@@ -19,10 +19,36 @@ export class UserController {
 
   @MessagePattern('getAllUsers')
   getAllUsers(): Promise<User[]> {
-    console.log('getAllUsers Consumer');
     return this.service.getAllUsers();
   }
 
+  @MessagePattern('getUserById')
+  @HttpCode(200)
+  getUserById(@Payload() id: number): Promise<User> {
+    return this.service.getUserById(id);
+  }
+
+  @MessagePattern('createUser')
+  @HttpCode(201)
+  createUser(@Payload() user: User): Promise<User> {
+    return this.service.createUser(user);
+  }
+
+  @MessagePattern('updateUser')
+  @HttpCode(200)
+  updateUser(@Payload() payload: Object): Promise<User> {
+    const id: number = payload['id'];
+    const updatedUser: User = payload['updatedUser'];
+    return this.service.updateUser(id, updatedUser);
+  }
+
+  @MessagePattern('deleteUser')
+  @HttpCode(204)
+  deleteUser(@Payload() id: number): Promise<DeleteResult> {
+    return this.service.deleteUser(id);
+  }
+
+  // @Get()
   // @HttpCode(200)
   // getAllUsers(): Promise<User[]> {
   //   return this.service.getAllUsers();
