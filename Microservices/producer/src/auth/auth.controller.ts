@@ -16,16 +16,15 @@ require('dotenv').config();
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // Used to redirect user to Google OAuth
   @Get('google')
   @UseGuards(GoogleOauthGuard)
   async auth() {}
 
+  // Gets information from Google OAuth and logs user in
   @Get('google/callback')
   @UseGuards(GoogleOauthGuard)
   async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
-    // console.log(
-    //   `From callback controller req.user: ${JSON.stringify(req.user)}`,
-    // );
     const token = await this.authService.signIn(req.user);
     console.log(`Token created: ${token}`);
 
