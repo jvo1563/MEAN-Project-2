@@ -9,7 +9,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-// import { User } from './user';
 
 @Controller('user')
 export class UserController {
