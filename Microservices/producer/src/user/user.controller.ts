@@ -16,8 +16,8 @@ export class UserController {
 
   @Get()
   @HttpCode(200)
-  getAllUsers(): Promise<any[]> {
-    return this.service.getAllUsers();
+  getAllUser(): Promise<any[]> {
+    return this.service.getAllUser();
   }
 
   @Get(':id')
@@ -40,7 +40,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  deleteUser(@Param('id') id: number) {
+  deleteUser(@Param('id') id: number): Promise<void> {
     return this.service.deleteUser(id);
   }
 }

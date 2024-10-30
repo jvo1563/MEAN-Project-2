@@ -7,8 +7,8 @@ export class UserService {
   constructor(private rabbitService: RabbitService) {}
 
   // Get all users
-  async getAllUsers(): Promise<any[]> {
-    return await this.rabbitService.sendToUserConsumer('getAllUsers', {});
+  async getAllUser(): Promise<any[]> {
+    return await this.rabbitService.sendToUserConsumer('getAllUser', {});
   }
 
   // Get user by ID
@@ -29,8 +29,8 @@ export class UserService {
     });
   }
 
-  // Deleting a user
-  async deleteUser(id: number) {
+  // Delete a user
+  async deleteUser(id: number): Promise<void> {
     return await this.rabbitService.sendToUserConsumer('deleteUser', id);
   }
 }

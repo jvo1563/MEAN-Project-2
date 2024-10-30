@@ -17,7 +17,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 export class UserController {
   constructor(private service: UserService) {}
 
-  @MessagePattern('getAllUsers')
+  @MessagePattern('getAllUser')
   getAllUsers(): Promise<User[]> {
     return this.service.getAllUsers();
   }

@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   async findUserByEmail(email: string) {
-    const users = await this.userService.getAllUsers();
+    const users = await this.userService.getAllUser();
     const user = users.find((user) => user.email === email);
     if (!user) return null;
     return user;
