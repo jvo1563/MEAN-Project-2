@@ -1,18 +1,37 @@
-INSERT INTO "user" (username, password, role)
-VALUES 
-('admin_user', 'password123', 'admin'),
-('investigator_1', 'securepass', 'investigator'),
-('investigator_2', 'securepass2', 'investigator');
+-- Insert sample data into "user" table
+INSERT INTO "user" (email, first_name, last_name, picture, role) VALUES
+('john.doe@example.com', 'John', 'Doe', 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg', 'Handler'),
+('jane.smith@example.com', 'Jane', 'Smith', 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg', 'Handler'),
+('alice.jones@example.com', 'Alice', 'Jones', 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg', 'Admin');
 
-INSERT INTO "report" (user_id, title, description, location, category)
-VALUES
-(2, 'Suspicious Transactions at Local Bank', 'Large sums of money deposited frequently at odd hours.', 'New York, NY', 'money laundering'),
-(3, 'Shady Offshore Accounts', 'Accounts being opened under fake names, likely for illicit funding.', 'Los Angeles, CA', 'bad actor financing'),
-(NULL, 'Anonymous Report of Fraud', 'Possible fraudulent wire transfers from anonymous sources.', 'Miami, FL', 'fraud');
+-- Insert sample data into "report_category" table
+INSERT INTO "report_category" (category_name, description) VALUES
+('Fraud', 'Cases involving fraudulent activities'),
+('Tax Evasion', 'Reports related to evasion of taxes'),
+('Embezzlement', 'Cases of embezzlement and financial misconduct'),
+('Money Laundering', 'Cases involving the illegal transfer of money through businesses'),
+('Terror Financing', 'Reports related to financing terrorist activities');
 
+-- Insert sample data into "report_status" table
+INSERT INTO "report_status" (status_name) VALUES
+('Pending'),
+('Investigating'),
+('Closed');
 
-INSERT INTO "annotation" (report_id, user_id, annotation)
-VALUES
-(1, 2, 'Investigating the bank transaction history for patterns.'),
-(2, 3, 'Reached out to relevant financial institutions for account verification.'),
-(3, 3, 'Received this report anonymously. Will verify the transaction details.');
+-- Insert sample data into "report" table
+INSERT INTO "report" (created_by, assigned_to, title, description, location, category_id, status_id) VALUES
+(1, 2, 'Suspected Fraud in E-commerce', 'Report of suspected fraudulent transactions.', 'New York', 1, 1),
+(2, NULL, 'Unreported Tax Revenues', 'Suspicious activity in local tax reporting.', 'Los Angeles', 2, 2),
+(NULL, 1, 'Alleged Embezzlement', 'Employee accused of embezzling company funds.', 'Chicago', 3, 3);
+
+-- Insert sample data into "business_entity" table
+INSERT INTO "business_entity" (report_id, name, industry, address, email, phone, relation) VALUES
+(1, 'E-Shop Inc.', 'E-commerce', '123 Main St, New York, NY', 'contact@eshop.com', '555-1234', 'suspect'),
+(2, 'Local Tax Agency', 'Government', '456 Market St, Los Angeles, CA', 'info@localtax.gov', '555-5678', 'reporting agency'),
+(3, 'ABC Corp', 'Finance', '789 Wall St, Chicago, IL', 'info@abccorp.com', '555-8765', 'victim');
+
+-- Insert sample data into "annotation" table
+INSERT INTO "annotation" (report_id, created_by, title, annotation) VALUES
+(1, 2, 'Inital Review','Initial review indicates potential fraudulent activities.'),
+(2, 2, 'Waiting','Awaiting further information from tax authorities.'),
+(3, 1, 'Case Closed','Case is now closed after funds were recovered.');
