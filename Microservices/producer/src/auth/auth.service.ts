@@ -38,7 +38,8 @@ export class AuthService {
   async registerUser(user) {
     try {
       console.log('Creating new User: ', user);
-      const newUser = await this.userService.createUser(user);
+      const createdUser = await this.userService.createUser(user);
+      const newUser = await this.findUserById(createdUser.id);
 
       return this.generateJwt({
         sub: newUser.id,
@@ -56,6 +57,12 @@ export class AuthService {
   async findUserByEmail(email: string) {
     const users = await this.userService.getAllUser();
     const user = users.find((user) => user.email === email);
+    if (!user) return null;
+    return user;
+  }
+
+  async findUserById(id: number) {
+    const user = await this.userService.getUserById(id);
     if (!user) return null;
     return user;
   }
