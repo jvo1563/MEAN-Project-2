@@ -18,28 +18,36 @@
             </div>
             
             <div class="category">
-                <label for="report.category">Crime Category: </label>
-                <select id="report.category" name="report.category" [(ngModel)]="report.category">
+                <label for="report.category_id">Crime Category: </label>
+                <select id="report.category_id" name="report.category_id" [(ngModel)]="report.category_id">
                     <option value="">Categories...</option>
-                    <option value="Tax Evasion">Tax Evasion</option>
-                    <option value="Embezzlement">Embezzlement</option>
-                    <option value="Insider Trading">Insider Trading</option>
-                    <option value="Bribery">Bribery</option>
-                    <option value="Money Laundering">Money Laundering</option>
-                    <option value="Terrorist Financing">Terrorist Financing</option>
-                    <option value="Misc">Misc/Unknown</option>
+                    @for(category of categories; track $index){
+                        <option value="{{category.id}}">{{category.category_name}}</option>
+                    }
                 </select>
             </div>
 
             <div class="category">
-                <label for="report.status">Status: </label>
-                <select id="report.status" name="report.status" [(ngModel)]="report.status">
+                <label for="report.status_id">Status: </label>
+                <select id="report.status_id" name="report.status_id" [(ngModel)]="report.status_id">
                     <option value="">Status...</option>
-                    <option value="Preliminary">Preliminary</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Complete">Complete</option>
+                    @for(status of statuses; track $index){
+                        <option value="status.id">{{status.status_name}}</option>
+                    }
                 </select>
             </div>
+
+            @if(user.userRole === 'admin'){
+                <div category="category">
+                    <label for="report.assigned_to">Assigned To: </label>
+                    <select id="report.assigned_to" name="report.assigned_to" [(ngModel)]="report.assigned_to">
+                        <option value="">Assign To...</option>
+                        @for(handler of handlers; track $index){
+                            <option value="{{handler.id}}">{{handler.first_name}} {{handler.last_name}}</option>
+                        }
+                    </select>
+                </div>
+            }
 
             <div class="buttonBlock">
                 <button type="button" (click)="updateReport()">Save</button>
@@ -97,7 +105,7 @@
     </section>
 
     <section class="annotations">
-        <app-annotation-table></app-annotation-table>
+        <app-annotation-table [annotationInfo]="annotationInfo"></app-annotation-table>
     </section>
     
     <button type="button" (click)="returnToTable()">Exit Report Details</button>

@@ -24,7 +24,7 @@ export class AnnotationDetailsComponent {
 
     // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
     if(!this.user.userToken){
-      this.router.navigate(['login']);
+      this.router.navigate(['']);
     }
 
     this.annotationIdService.annotationIdObservable.subscribe(data=>{
@@ -33,7 +33,7 @@ export class AnnotationDetailsComponent {
       //this is a mock up of what the returned data might look like
       this.annotation.created_at = new Date();
       this.annotation.report_id = 2;
-      this.annotation.user_id = 1;
+      this.annotation.created_by = 1;
       this.annotation.title = 'A mock annotation';
       this.annotation.annotation = "This is a mock entry for the annotation field of the annotation object";
     })

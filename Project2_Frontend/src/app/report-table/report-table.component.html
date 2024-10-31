@@ -3,6 +3,7 @@
         <thead>
             <tr>
                 <th>Report</th>
+                <th>Created By</th>
                 <th>Assigned To</th>
                 <th>Title</th>
                 <th>Location</th>
@@ -17,18 +18,24 @@
             @for(report of reports; track $index){
                 <tr>
                     <td>{{report.id}}</td>
-                    @if(report.user_id !== 0){
-                        <td>{{report.user_id}}</td>
+                    @if(report.created_by !== 0){
+                        <td>{{report.created_by}}</td>
+                    }
+                    @else{
+                        <td>NA</td>
+                    }
+                    @if(report.assigned_to !== 0){
+                        <td>{{report.assigned_to}}</td>
                     }
                     @else{
                         <td>NA</td>
                     }
                     <td>{{report.title}}</td>
                     <td>{{report.location}}</td>
-                    <td>{{report.category}}</td>
+                    <td>{{findCategory(report.category_id)}}</td>
                     <td>{{report.created_at}}</td>
                     <td>{{report.updated_at}}</td>
-                    <td>{{report.status}}</td>
+                    <td>{{findStatus(report.status_id)}}</td>
                     <button type="button" (click)="reportDetails(report.id)">Report Details</button>
                     @if(user.userRole === 'admin'){
                         <button type="button" (click)="deleteReport(report.id)">Delete</button>

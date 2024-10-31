@@ -11,6 +11,6 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent {
   
   googleLogin(){
-    window.location.href = 'http://localhost:3000/auth';
+    window.location.href = 'http://localhost:3000/auth/google';
   }
 }

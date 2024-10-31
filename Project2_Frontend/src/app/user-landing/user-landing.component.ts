@@ -19,8 +19,8 @@ export class UserLandingComponent {
     });
 
     //check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
-    // if(!this.user.userToken){
-    //   this.router.navigate(['login']);
-    // }
+    if(!this.user.userToken){
+      this.router.navigate(['']);
+    }
   }
 }

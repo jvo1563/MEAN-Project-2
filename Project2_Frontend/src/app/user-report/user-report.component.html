@@ -16,17 +16,13 @@
         </div>
         
         <div class="category">
-            <label for="report.category">Crime Category: </label>
-            <select id="report.category" name="report.category" [(ngModel)]="report.category">
+            <label for="report.category_id">Crime Category: </label>
+            <select id="report.category_id" name="report.category_id" [(ngModel)]="report.category_id">
                 <option value="">Categories...</option>
-                <option value="Tax Evasion">Tax Evasion</option>
-                <option value="Embezzlement">Embezzlement</option>
-                <option value="Insider Trading">Insider Trading</option>
-                <option value="Bribery">Bribery</option>
-                <option value="Money Laundering">Money Laundering</option>
-                <option value="Terrorist Financing">Terrorist Financing</option>
-                <option value="Misc">Misc/Unknown</option>
-            </select>
+                @for(category of categories; track $index){
+                    <option [value]="category.id">{{category.category_name}}</option>
+                }
+            </select> 
         </div>
     </form>
 

@@ -20,12 +20,12 @@ export class AnnotationAddComponent {
   constructor(private reportIdService: ReportIdService, private userAuthService: UserAuthService, private router: Router){
     this.userAuthService.userAuthObservable.subscribe(data=>{
       this.user = data;
-      this.annotation.user_id = data.userId;
+      this.annotation.created_by = data.userId;
     });
 
     // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
     if(!this.user.userToken){
-      this.router.navigate(['login']);
+      this.router.navigate(['']);
     }
 
     this.reportIdService.reportIdObservable.subscribe(data=>{
