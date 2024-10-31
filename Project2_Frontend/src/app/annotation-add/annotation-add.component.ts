@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Annotation } from '../models/annotation';
 import { UserInfo } from '../models/user-info';
-import { ReportIdService } from '../services/report-id.service';
 import { UserAuthService } from '../services/user-auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpService } from '../services/http.service';
 
 @Component({
   selector: 'app-annotation-add',
@@ -17,7 +17,7 @@ export class AnnotationAddComponent {
   annotation: Annotation = new Annotation(0,0,0,'','',new Date());
   user: UserInfo = new UserInfo(0,'','','');
 
-  constructor(private reportIdService: ReportIdService, private userAuthService: UserAuthService, private router: Router){
+  constructor(private route:ActivatedRoute,private userAuthService: UserAuthService, private router: Router, private httpService:HttpService){
     this.userAuthService.userAuthObservable.subscribe(data=>{
       this.user = data;
       this.annotation.created_by = data.userId;
@@ -28,18 +28,26 @@ export class AnnotationAddComponent {
       this.router.navigate(['']);
     }
 
-    this.reportIdService.reportIdObservable.subscribe(data=>{
-      this.annotation.report_id = data;
+    this.route.params.subscribe(data=>{
+      this.annotation.report_id = Number(data["report_id"]);
     })
   }
 
   createAnnotation(){
     //should reach out to BE here and create the new annotation
-    console.log('Annotation Created!');
-    this.router.navigate(['userLanding/reportTable/reportDetails']);
+    console.log(this.annotation);
+    this.httpService.createAnnotation(this.annotation).subscribe(data=>{
+      if(data.body){
+        console.log("Annotation Create Success!");
+      }
+      else{
+        console.log("!!! Annotation Create Error !!!");
+      }
+    });
+    this.router.navigate([`userLanding/reportTable/reportDetails/${this.annotation.report_id}`]);
   }
 
   cancel(){
-    this.router.navigate(['userLanding/reportTable/reportDetails'])
+    this.router.navigate([`userLanding/reportTable/reportDetails/${this.annotation.report_id}`])
   }
 }

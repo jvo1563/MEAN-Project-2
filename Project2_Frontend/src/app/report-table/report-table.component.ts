@@ -3,11 +3,9 @@ import { UserInfo } from '../models/user-info';
 import { UserAuthService } from '../services/user-auth.service';
 import { Router } from '@angular/router';
 import { Report } from '../models/report';
-import { ReportIdService } from '../services/report-id.service';
 import { StatusEntity } from '../models/status-entity';
 import { CategoryEntity } from '../models/category-entity';
 import { HttpService } from '../services/http.service';
-import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-report-table',
@@ -24,7 +22,7 @@ export class ReportTableComponent {
 
   reports: Report[] =[]
 
-  constructor(private userAuthService: UserAuthService, private router: Router, private reportIdService: ReportIdService, private httpService: HttpService){
+  constructor(private userAuthService: UserAuthService, private router: Router, private httpService: HttpService){
     this.userAuthService.userAuthObservable.subscribe(data=>{
       this.user = data;
     });
@@ -80,11 +78,26 @@ export class ReportTableComponent {
   }
 
   reportDetails(reportId:number){
-    this.reportIdService.setReportId(reportId);
-    this.router.navigate(['userLanding/reportTable/reportDetails']);
+    this.router.navigate([`userLanding/reportTable/reportDetails/${reportId}`]);
   }
 
   deleteReport(reportId:number){
-    this.reportIdService.setReportId(reportId);
+    if(this.user.userRole === 'Admin'){
+      this.httpService.deleteReport(reportId).subscribe(data=>{
+        console.log("Report Delete Success!");
+        let tempReports:Report[] = [];
+        for(let report of this.reports){
+          if(report.id !== reportId){
+            tempReports.push(report);
+          }
+        }
+        this.reports=tempReports;
+      });
+    }
+  }
+
+
+  returnToLanding(){
+    this.router.navigate([`userLanding`]);
   }
 }

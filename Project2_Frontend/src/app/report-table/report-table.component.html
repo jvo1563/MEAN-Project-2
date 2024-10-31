@@ -37,11 +37,14 @@
                     <td>{{report.updated_at}}</td>
                     <td>{{findStatus(report.status_id)}}</td>
                     <button type="button" (click)="reportDetails(report.id)">Report Details</button>
-                    @if(user.userRole === 'admin'){
+                    @if(user.userRole === 'Admin'){
                         <button type="button" (click)="deleteReport(report.id)">Delete</button>
                     }
                 </tr>
             }
         </tbody>
     </table>
+    <div class="returnButton">
+        <button type="button" (click)="returnToLanding()">Return to User Home</button>
+    </div>
 </main>

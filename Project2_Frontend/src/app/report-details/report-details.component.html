@@ -37,7 +37,7 @@
                 </select>
             </div>
 
-            @if(user.userRole === 'admin'){
+            @if(user.userRole === 'Admin'){
                 <div category="category">
                     <label for="report.assigned_to">Assigned To: </label>
                     <select id="report.assigned_to" name="report.assigned_to" [(ngModel)]="report.assigned_to">

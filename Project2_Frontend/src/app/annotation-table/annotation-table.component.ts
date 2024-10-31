@@ -1,13 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { UserInfo } from '../models/user-info';
 import { Annotation } from '../models/annotation';
-import { ReportIdService } from '../services/report-id.service';
-import { UserAuthService } from '../services/user-auth.service';
-import { Router } from '@angular/router';
-import { AnnotationIdService } from '../services/annotation-id.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from '../services/http.service';
 import { AnnotationInfo } from '../models/annotation-info';
-import { AnnotationInfoService } from '../services/annotation-info.service';
+import { UserAuthService } from '../services/user-auth.service';
 
 @Component({
   selector: 'app-annotation-table',
@@ -17,61 +14,39 @@ import { AnnotationInfoService } from '../services/annotation-info.service';
   styleUrl: './annotation-table.component.css'
 })
 export class AnnotationTableComponent {
+  user: UserInfo = new UserInfo(0,'','','','','','');
   annotationInfo: AnnotationInfo = new AnnotationInfo(0, []);
-  annotations: Annotation[] = [];
   annotationsToDisplay: Annotation[] = [];
-  reportId: number = 0;
   currentPage: number = 0;
   annotationCount:number = 0;
 
   //note we are embedding this in the report details page and don't need to check auth, since parent will do that
-  constructor(private annotationIdService: AnnotationIdService, private router: Router, private httpService:HttpService, private annotationService:AnnotationInfoService){
-    this.annotationService.annotationInfoObservable.subscribe(data=>{
-      this.annotationInfo = data;
-      this.reportId = this.annotationInfo.report_id;
-      this.annotations = this.annotationInfo.annotations;
-      this.annotationCount = this.annotationInfo.annotations.length;
-      this.getPageOfAnnotations();
+  constructor(private route: ActivatedRoute, private router: Router, private httpService:HttpService, private userAuthService: UserAuthService){
+    this.route.params.subscribe(data=>{
+      this.annotationInfo.report_id = data['report_id'];
+      this.httpService.getReportById(this.annotationInfo.report_id).subscribe(data=>{
+        if(data.body){
+          this.annotationInfo.annotations = data.body.annotations;
+          this.annotationCount = this.annotationInfo.annotations.length;
+          this.getPageOfAnnotations();
+        }
+      })
+    });
+
+    this.userAuthService.userAuthObservable.subscribe(data=>{
+      this.user = data;
+      console.log(this.user);
     })
   }
 
-  // getAnnotationCount(){
-  //   this.annotationCount = 22;
-  // }
-
   getPageOfAnnotations(){
-    // let mockDB: Annotation[] = [
-    //   new Annotation(1, this.reportId, 1, "Title 1", "Annotation 1", new Date()),
-    //   new Annotation(2, this.reportId, 2, "Title 2", "Annotation 2", new Date()),
-    //   new Annotation(3, this.reportId, 1, "Title 3", "Annotation 3", new Date()),
-    //   new Annotation(4, this.reportId, 1, "Title 4", "Annotation 4", new Date()),
-    //   new Annotation(5, this.reportId, 1, "Title 5", "Annotation 5", new Date()),
-    //   new Annotation(6, this.reportId, 2, "Title 6", "Annotation 6", new Date()),
-    //   new Annotation(7, this.reportId, 2, "Title 7", "Annotation 7", new Date()),
-    //   new Annotation(8, this.reportId, 2, "Title 8", "Annotation 8", new Date()),
-    //   new Annotation(9, this.reportId, 1, "Title 9", "Annotation 9", new Date()),
-    //   new Annotation(10, this.reportId, 1, "Title 10", "Annotation 10", new Date()),
-    //   new Annotation(11, this.reportId, 1, "Title 11", "Annotation 11", new Date()),
-    //   new Annotation(12, this.reportId, 1, "Title 12", "Annotation 12", new Date()),
-    //   new Annotation(13, this.reportId, 1, "Title 13", "Annotation 13", new Date()),
-    //   new Annotation(14, this.reportId, 1, "Title 14", "Annotation 14", new Date()),
-    //   new Annotation(15, this.reportId, 2, "Title 15", "Annotation 15", new Date()),
-    //   new Annotation(16, this.reportId, 2, "Title 16", "Annotation 16", new Date()),
-    //   new Annotation(17, this.reportId, 1, "Title 17", "Annotation 17", new Date()),
-    //   new Annotation(18, this.reportId, 1, "Title 18", "Annotation 18", new Date()),
-    //   new Annotation(19, this.reportId, 1, "Title 19", "Annotation 19", new Date()),
-    //   new Annotation(20, this.reportId, 1, "Title 20", "Annotation 20", new Date()),
-    //   new Annotation(21, this.reportId, 1, "Title 21", "Annotation 21", new Date()),
-    //   new Annotation(22, this.reportId, 3, "Title 22", "Annotation 22", new Date())
-    // ];
-
     //here we would use currentPage and report id to get the corrent range of annotations(5 per page)
     //but for now since no BE yet we'll use the above as our mock db, comment above and below out when BE
     //active
     let result: Annotation[] = [];
-    for(let i=0; i < this.annotations.length; i++){
+    for(let i=0; i < this.annotationInfo.annotations.length; i++){
       if((i >= this.currentPage*5) && (i < (this.currentPage+1)*5)){
-        result.push(this.annotations[i]);
+        result.push(this.annotationInfo.annotations[i]);
       }
     }
     this.annotationsToDisplay = result;
@@ -93,11 +68,27 @@ export class AnnotationTableComponent {
   }
 
   addAnnotation(){
-    this.router.navigate(['userLanding/reportTable/reportDetails/addAnnotation']);
+    this.router.navigate([`userLanding/reportTable/reportDetails/addAnnotation/${this.annotationInfo.report_id}`]);
+  }
+
+  deleteAnnotation(annotation_id:number){
+    if(this.user.userRole === 'Admin'){
+      this.httpService.deleteAnnotation(annotation_id).subscribe(data=>{
+        console.log("Annotation Delete Success!");
+        let tempAnnotations: Annotation[] = [];
+        for(let annotation of this.annotationInfo.annotations){
+          if(annotation.id !== annotation_id){
+            tempAnnotations.push(annotation);
+          }
+        }
+        this.annotationInfo.annotations = tempAnnotations;
+        this.currentPage = 0;
+        this.getPageOfAnnotations();
+      });
+    }
   }
 
   details(annotationId: number){
-    this.annotationIdService.setAnnotationId(annotationId);
-    this.router.navigate(['userLanding/reportTable/reportDetails/annotationDetails']);
+    this.router.navigate([`userLanding/reportTable/reportDetails/annotationDetails/${annotationId}`]);
   }
 }

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { UserAuthService } from '../services/user-auth.service';
 import { UserInfo } from '../models/user-info';
-import { Router } from '@angular/router';
-import { ReportIdService } from '../services/report-id.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Report } from '../models/report';
 import { FormsModule } from '@angular/forms';
 import { AnnotationTableComponent } from '../annotation-table/annotation-table.component';
@@ -32,7 +31,7 @@ export class ReportDetailsComponent {
   statuses: StatusEntity[] = [];
   categories: CategoryEntity[] = [];
 
-  constructor(private userAuthService: UserAuthService, private router: Router, private reportIdService: ReportIdService, private httpService:HttpService, private annotationService: AnnotationInfoService){
+  constructor(private userAuthService: UserAuthService, private router: Router, private route: ActivatedRoute, private httpService:HttpService, private annotationService: AnnotationInfoService){
     this.userAuthService.userAuthObservable.subscribe(data=>{
       this.user = data;
     });
@@ -50,9 +49,9 @@ export class ReportDetailsComponent {
       this.categories = (data.body)?data.body:[];
     })
 
-    this.reportIdService.reportIdObservable.subscribe(data=>{
-      console.log(this.buis_entities);
-      this.report.id = data;
+    this.route.params.subscribe(data=>{
+      this.report.id = data['report_id'];
+      console.log("report id is: "+this.report.id);
       this.httpService.getReportById(this.report.id).subscribe(data=>{
         if(data.body){
           this.report = new Report(
@@ -69,20 +68,23 @@ export class ReportDetailsComponent {
           );
           this.buis_entities = data.body.business_entities;
           annotationService.setAnnotation(new AnnotationInfo(data.body.id, data.body.annotations));
-          console.log("data recieved: ",this.buis_entities);
         }
       })
     });
 
     //This still needs to be done!!!
-    if(this.user.userRole === 'admin'){
-      //only need get all handlers from BE if this user is admin, otherwise doesn't particularly matter
-      //we'll mock it out for now
-      this.handlers = [
-        new UserEntity(1, 'something@gmail.com', 'Jerry', 'Lewis', 'def.a_picture.jpg', 'Handler', new Date()),
-        new UserEntity(3, 'somethingElse@gmail.com', 'Mary', 'Stan', 'def.b_picture.jpg', 'Handler', new Date()),
-        new UserEntity(4, 'somethingOther@gmail.com', 'Lizzy', 'McLizzer', 'def.c_picture.jpg', 'Handler', new Date())
-      ]
+    if(this.user.userRole === 'Admin'){
+      this.httpService.getAllUsers().subscribe(data=>{
+        if(data.body){
+          console.log(data.body)
+          this.handlers = [];
+          for(let user of data.body){
+            if(user.role === "Handler"){
+              this.handlers.push(user);
+            }
+          }
+        }
+      })
     }
   }
 
@@ -104,9 +106,11 @@ export class ReportDetailsComponent {
 
   updateReport(){
     this.report.updated_at = new Date();
+    this.report.status_id = Number(this.report.status_id);
+    console.log(this.report)
     this.httpService.updateReport(this.report.id, this.report).subscribe(data=>{
       if(data.body){
-        console.log("Report Successnful Update");
+        console.log("Report Successful Update", data.body);
       }
       else{
         console.log("!!! Report Update Error !!!");
@@ -126,7 +130,6 @@ export class ReportDetailsComponent {
         console.log("!!! Business Update Error !!!");
       }
     })
-    console.log(this.buis_entities);
   }
 
   deleteBuisnessEntity(index:number){

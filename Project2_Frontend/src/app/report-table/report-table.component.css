@@ -6,3 +6,22 @@ th, td{
 tr{
     margin-bottom: 10px;
 }
+
+.returnButton{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.returnButton>button{
+    margin-top: 20px;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: lightgray;
+    width: 15%
+}
+
+.returnButton>button:hover{
+    background-color: rgb(199, 199, 199);
+}
