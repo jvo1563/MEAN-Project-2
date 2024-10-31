@@ -44,12 +44,12 @@ export class Annotation {
   created_at: Timestamp;
 
   @ManyToOne(() => User, (user) => user.annotations, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'report_id' })
+  @JoinColumn({ name: 'created_by' })
   user: User;
 
   @ManyToOne(() => Report, (report) => report.annotations, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'created_by' })
+  @JoinColumn({ name: 'report_id' })
   report: Report;
 }
