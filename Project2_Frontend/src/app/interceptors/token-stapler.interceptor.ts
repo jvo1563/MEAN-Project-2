@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserAuthService } from '../services/user-auth.service';
@@ -13,16 +13,19 @@ export class TokenStaplerInterceptor implements HttpInterceptor {
   userToken: string = '';
 
   constructor(private userAuthService: UserAuthService) {
-    this.userAuthService.userAuthObservable.subscribe(data=>{
+    this.userAuthService.userAuthObservable.subscribe((data) => {
       this.userToken = data.userToken;
-    })
+    });
   }
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    // const userToken = localStorage.getItem('auth_token');
     let newReq = request.clone({
-      headers: request.headers.set('Authorization', `Bearer ${this.userToken}`)
+      headers: request.headers.set('Authorization', `Bearer ${this.userToken}`),
     });
-
     return next.handle(newReq);
   }
 }
