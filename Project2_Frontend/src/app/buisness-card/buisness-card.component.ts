@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { BuisnessEntity } from '../models/buisness-entity';
 import { FormsModule } from '@angular/forms';
 
@@ -14,6 +14,10 @@ export class BuisnessCardComponent {
 
   @Output() updateEvent = new EventEmitter<BuisnessEntity>();
   @Output() deleteEvent = new EventEmitter<void>();
+
+  ngOnChanges(changes:SimpleChanges){
+    this.buis_entity = changes["buis_entity"].currentValue;
+  }
 
   updateEntity(){
     this.updateEvent.emit(this.buis_entity);

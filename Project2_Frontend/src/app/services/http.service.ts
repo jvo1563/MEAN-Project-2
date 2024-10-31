@@ -76,9 +76,9 @@ export class HttpService {
     return this.httpClient.get<any>(this.aws_gw_url+this.private_report_endpoint+`/${report_id}`, {observe: 'response'});
   }
 
-  updateReport(report_id:number,diff_report:Report): Observable<HttpResponse<Report>>{
+  updateReport(report_id:number,diff_report:Report): Observable<HttpResponse<any>>{
     
-    return this.httpClient.put<Report>(this.aws_gw_url + this.private_report_endpoint + `/${report_id}`, 
+    return this.httpClient.put<any>(this.aws_gw_url + this.private_report_endpoint + `/${report_id}`, 
       {
         title: diff_report.title,
         description: diff_report.description,
@@ -238,7 +238,7 @@ export class HttpService {
 
   createAnonymousBuisness(new_buisness: BuisnessEntity): Observable<HttpResponse<BuisnessEntity>>{
     
-    return this.httpClient.post<BuisnessEntity>(this.aws_gw_url+this.private_buisness_endpoint+this.anonymous_post_buis_endpoint, 
+    return this.httpClient.post<BuisnessEntity>(this.aws_gw_url+this.anonymous_post_buis_endpoint+this.anonymous_post_buis_endpoint, 
       {
         report_id:new_buisness.report_id,
         name:new_buisness.name,
@@ -282,9 +282,9 @@ export class HttpService {
     );
   }
 
-  updateBuisness(buisness_id:number, diff_buisness: BuisnessEntity): Observable<HttpResponse<BuisnessEntity>>{
+  updateBuisness(buisness_id:number, diff_buisness: BuisnessEntity): Observable<HttpResponse<any>>{
     
-    return this.httpClient.put<BuisnessEntity>(this.aws_gw_url+this.private_buisness_endpoint + `/${buisness_id}`,
+    return this.httpClient.put<any>(this.aws_gw_url+this.private_buisness_endpoint + `/${buisness_id}`,
       {
         id: diff_buisness.id,
         report_id:diff_buisness.report_id,

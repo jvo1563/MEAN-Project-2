@@ -5,6 +5,7 @@ import { UserAuthService } from '../services/user-auth.service';
 import { Router } from '@angular/router';
 import { UserInfo } from '../models/user-info';
 import { FormsModule } from '@angular/forms';
+import { HttpService } from '../services/http.service';
 
 @Component({
   selector: 'app-annotation-details',
@@ -17,7 +18,7 @@ export class AnnotationDetailsComponent {
   user: UserInfo = new UserInfo(0,'','','')
   annotation: Annotation = new Annotation(0,0,0,'','',new Date());
 
-  constructor(private annotationIdService: AnnotationIdService, private userAuthService: UserAuthService, private router: Router){
+  constructor(private annotationIdService: AnnotationIdService, private userAuthService: UserAuthService, private router: Router, private httpService: HttpService){
     this.userAuthService.userAuthObservable.subscribe(data=>{
       this.user = data;
     });
@@ -31,11 +32,15 @@ export class AnnotationDetailsComponent {
       this.annotation.id = data;
       //here we get this specic annotation from backend
       //this is a mock up of what the returned data might look like
-      this.annotation.created_at = new Date();
-      this.annotation.report_id = 2;
-      this.annotation.created_by = 1;
-      this.annotation.title = 'A mock annotation';
-      this.annotation.annotation = "This is a mock entry for the annotation field of the annotation object";
+      this.httpService.getAnnotationById(this.annotation.id).subscribe(data=>{
+        if(data.body){
+          this.annotation.annotation = data.body.annotation;
+          this.annotation.created_at = data.body.created_at;
+          this.annotation.created_by = data.body.created_by;
+          this.annotation.report_id = data.body.report_id;
+          this.annotation.title = data.body.title;
+        }
+      })
     })
   }
 

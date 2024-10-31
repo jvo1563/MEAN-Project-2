@@ -32,7 +32,7 @@
                 <select id="report.status_id" name="report.status_id" [(ngModel)]="report.status_id">
                     <option value="">Status...</option>
                     @for(status of statuses; track $index){
-                        <option value="status.id">{{status.status_name}}</option>
+                        <option value="{{status.id}}">{{status.status_name}}</option>
                     }
                 </select>
             </div>
@@ -105,7 +105,7 @@
     </section>
 
     <section class="annotations">
-        <app-annotation-table [annotationInfo]="annotationInfo"></app-annotation-table>
+            <app-annotation-table></app-annotation-table>
     </section>
     
     <button type="button" (click)="returnToTable()">Exit Report Details</button>

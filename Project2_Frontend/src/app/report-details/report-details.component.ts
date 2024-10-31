@@ -13,6 +13,8 @@ import { HttpService } from '../services/http.service';
 import { StatusEntity } from '../models/status-entity';
 import { CategoryEntity } from '../models/category-entity';
 import { Annotation } from '../models/annotation';
+import { AnnotationInfoService } from '../services/annotation-info.service';
+import { AnnotationInfo } from '../models/annotation-info';
 
 @Component({
   selector: 'app-report-details',
@@ -29,14 +31,13 @@ export class ReportDetailsComponent {
   handlers: UserEntity[] = [];
   statuses: StatusEntity[] = [];
   categories: CategoryEntity[] = [];
-  annotationInfo: {report_id: number, annotations:Annotation[]} = {report_id:0, annotations:[]};
 
-  constructor(private userAuthService: UserAuthService, private router: Router, private reportIdService: ReportIdService, private httpService:HttpService){
+  constructor(private userAuthService: UserAuthService, private router: Router, private reportIdService: ReportIdService, private httpService:HttpService, private annotationService: AnnotationInfoService){
     this.userAuthService.userAuthObservable.subscribe(data=>{
       this.user = data;
     });
 
-    // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
+    // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?!!!
     if(!this.user.userToken){
       this.router.navigate(['']);
     }
@@ -50,26 +51,9 @@ export class ReportDetailsComponent {
     })
 
     this.reportIdService.reportIdObservable.subscribe(data=>{
-      // this.report.id = 1;
-      // //comment this out after we are able to send request to BE for report details,
-      // //in that case we search by id and fill below with the data we get back
-      // //NOTE: that for list of buisnesses associated with the report we will do something like: this.buis_entites = data.buisnesses;
-      // this.report.category_id = 2;
-      // this.report.created_at = new Date();
-      // this.report.updated_at = new Date();
-      // this.report.description = "So the trading company I was working with owns a building on the corner of 4th and 3rd..."
-      // this.report.location = "Chicago, IL";
-      // this.report.status_id = 1;
-      // this.report.title = "Trading Company Bribes City Planning Board";
-      // this.report.assigned_to = 1;
-      // this.report.created_by = 0;
-      this.buis_entities = [
-        new BuisnessEntity(1,1,'MBC','Banking','1223 North St Suit 22, Jet OH, 12344','mbc@gmail.com','123334552','Perpetrator'),
-        new BuisnessEntity(2,1,'Merril Co.','Consumer Appliances','454 Main St N, West IL, 67922','merril@outlook.com','2313215553','Co-perpatrator'),
-        new BuisnessEntity(3,1,'Clasps & Co.','Industrial Equipment','122 Smith Ave, Sunny CA, 10982','claspsco@outlook.com','1235565789','Accessory')
-      ];
+      console.log(this.buis_entities);
       this.report.id = data;
-      this.httpService.getReportById(this.report.id).subscribe(data=>{//need to figure out how to get business entities
+      this.httpService.getReportById(this.report.id).subscribe(data=>{
         if(data.body){
           this.report = new Report(
             data.body.id, 
@@ -83,13 +67,14 @@ export class ReportDetailsComponent {
             data.body.created_at, 
             data.body.updated_at
           );
-
-          this.annotationInfo = {report_id:data.body.id, annotations:data.body.annotations};//!!! not working????? ugh
-          console.log(data.body);
+          this.buis_entities = data.body.business_entities;
+          annotationService.setAnnotation(new AnnotationInfo(data.body.id, data.body.annotations));
+          console.log("data recieved: ",this.buis_entities);
         }
       })
     });
 
+    //This still needs to be done!!!
     if(this.user.userRole === 'admin'){
       //only need get all handlers from BE if this user is admin, otherwise doesn't particularly matter
       //we'll mock it out for now
@@ -102,8 +87,6 @@ export class ReportDetailsComponent {
   }
 
   resetReport(){
-    //redo the get request from constructor
-    //so will also want to comment this out once can do Get to BE
     this.httpService.getReportById(this.report.id).subscribe(data=>{
       this.report = (data.body)?new Report(
         data.body.id, 
@@ -117,43 +100,60 @@ export class ReportDetailsComponent {
         data.body.created_at, 
         data.body.updated_at):new Report(0,0,0,'','','',0,0,new Date(),new Date());
     });
-
   }
 
   updateReport(){
-    //report local copy should already be ready to send off to BE
-    //don't have BE here to this will have to do for now
     this.report.updated_at = new Date();
-    console.log("Report Updated!")
+    this.httpService.updateReport(this.report.id, this.report).subscribe(data=>{
+      if(data.body){
+        console.log("Report Successnful Update");
+      }
+      else{
+        console.log("!!! Report Update Error !!!");
+      }
+    })
   }
   
-
-
+  //Should we call update report here? Want to update the last updated at time stamp....!!!
+  //enable editing, adding, or removing businesses associated with this report
   updateBuisnessEntity(index: number, entity: BuisnessEntity){
-    //gonna want to call BE update here
     this.buis_entities[index] = entity;
+    this.httpService.updateBuisness(entity.id, entity).subscribe(data=>{
+      if(data.body){
+        console.log("Business Successful Update");
+      }
+      else{
+        console.log("!!! Business Update Error !!!");
+      }
+    })
     console.log(this.buis_entities);
   }
 
   deleteBuisnessEntity(index:number){
-    //gonna want to call BE delete here
     let temp_entities: BuisnessEntity[]=[];
     for(let i=0; i < this.buis_entities.length; i++){
       if(i !== index){ 
         temp_entities.push(this.buis_entities[i]);
       }
     }
-
-    this.buis_entities = temp_entities;
-    console.log(this.buis_entities);
+    this.httpService.deleteBuisness(this.buis_entities[index].id).subscribe(data=>{
+      this.buis_entities = temp_entities;
+      console.log("Business Successful Delete")
+    })
   }
 
   addBuisnessEntity(){
-    //call BE create buisness entity here, also will want to return id for this new buisness entity so that we can set that in the current entity before adding to array
     this.buis_entity.report_id = this.report.id;
-    this.buis_entities.push(this.buis_entity);
+    this.httpService.createBuisness(this.buis_entity).subscribe(data=>{
+      if(data.body){
+        this.buis_entities.push(data.body);
+        console.log("Business Successful Create");
+      }
+      else{
+        console.log("!!! Business Create Error !!!");
+      }
+    });
     this.buis_entity = new BuisnessEntity(0,0,'','','','','','');
-    console.log(this.buis_entities);
   }
 
 

@@ -6,6 +6,8 @@ import { UserAuthService } from '../services/user-auth.service';
 import { Router } from '@angular/router';
 import { AnnotationIdService } from '../services/annotation-id.service';
 import { HttpService } from '../services/http.service';
+import { AnnotationInfo } from '../models/annotation-info';
+import { AnnotationInfoService } from '../services/annotation-info.service';
 
 @Component({
   selector: 'app-annotation-table',
@@ -15,7 +17,7 @@ import { HttpService } from '../services/http.service';
   styleUrl: './annotation-table.component.css'
 })
 export class AnnotationTableComponent {
-  @Input() annotationInfo: {report_id:number, annotations:Annotation[]} = {report_id:0, annotations:[]};
+  annotationInfo: AnnotationInfo = new AnnotationInfo(0, []);
   annotations: Annotation[] = [];
   annotationsToDisplay: Annotation[] = [];
   reportId: number = 0;
@@ -23,12 +25,14 @@ export class AnnotationTableComponent {
   annotationCount:number = 0;
 
   //note we are embedding this in the report details page and don't need to check auth, since parent will do that
-  constructor(private annotationIdService: AnnotationIdService, private router: Router, private httpService:HttpService){
-    this.reportId = this.annotationInfo.report_id;
-    this.annotations = this.annotationInfo.annotations;
-    this.annotationCount = this.annotationInfo.annotations.length;
-    this.getPageOfAnnotations();
-    console.log(this.annotationInfo);
+  constructor(private annotationIdService: AnnotationIdService, private router: Router, private httpService:HttpService, private annotationService:AnnotationInfoService){
+    this.annotationService.annotationInfoObservable.subscribe(data=>{
+      this.annotationInfo = data;
+      this.reportId = this.annotationInfo.report_id;
+      this.annotations = this.annotationInfo.annotations;
+      this.annotationCount = this.annotationInfo.annotations.length;
+      this.getPageOfAnnotations();
+    })
   }
 
   // getAnnotationCount(){
