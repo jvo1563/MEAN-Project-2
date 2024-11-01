@@ -29,6 +29,8 @@ export class AuthController {
     console.log(`Token created: ${token}`);
 
     // Redirect with token as query parameter
-    return res.redirect(`http://localhost:4200/auth-callback?token=${token}`);
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/auth-callback?token=${token}`,
+    );
   }
 }
