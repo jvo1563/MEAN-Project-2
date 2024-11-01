@@ -16,26 +16,23 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './buisness-card.component.css',
 })
 export class BuisnessCardComponent {
-  @Input() buis_entity: BuisnessEntity = new BuisnessEntity(
-    0,
-    0,
-    '',
-    '',
-    '',
-    '',
-    '',
-    ''
-  );
+  @Input() buis_entity: BuisnessEntity = new BuisnessEntity();
+  buis_entity_form: BuisnessEntity = new BuisnessEntity();
 
   @Output() updateEvent = new EventEmitter<BuisnessEntity>();
   @Output() deleteEvent = new EventEmitter<void>();
 
-  // ngOnChanges(changes:SimpleChanges){
-  //   this.buis_entity = changes["buis_entity"].currentValue;
-  // }
+  ngOnInit() {
+    this.buis_entity_form = structuredClone(this.buis_entity);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.buis_entity = changes['buis_entity'].currentValue;
+    this.buis_entity_form = structuredClone(this.buis_entity);
+  }
 
   updateEntity() {
-    this.updateEvent.emit(this.buis_entity);
+    this.updateEvent.emit(this.buis_entity_form);
   }
 
   deleteEntity() {
