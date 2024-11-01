@@ -1,0 +1,112 @@
+<main>
+    <h1>Report Details:</h1>
+    <section class="report">
+        <form>
+            <div class="subject">
+                <label for="report.title">Subject: </label>
+                <input type="text" id="report.title" name="report.title" [(ngModel)]="report.title">
+            </div>
+
+            <div class="textbox">
+                <label for="report.description">Description: </label>
+                <textarea type="text" id="report.description" name="report.description" [(ngModel)]="report.description"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="report.location">Primary Location of Incident(s): </label>
+                <input type="text" id="report.location" name="report.location" [(ngModel)]="report.location">
+            </div>
+            
+            <div class="category">
+                <label for="report.category_id">Crime Category: </label>
+                <select id="report.category_id" name="report.category_id" [(ngModel)]="report.category_id">
+                    <option value="">Categories...</option>
+                    @for(category of categories; track $index){
+                        <option value="{{category.id}}">{{category.category_name}}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="category">
+                <label for="report.status_id">Status: </label>
+                <select id="report.status_id" name="report.status_id" [(ngModel)]="report.status_id">
+                    <option value="">Status...</option>
+                    @for(status of statuses; track $index){
+                        <option value="{{status.id}}">{{status.status_name}}</option>
+                    }
+                </select>
+            </div>
+
+            @if(user.userRole === 'Admin'){
+                <div category="category">
+                    <label for="report.assigned_to">Assigned To: </label>
+                    <select id="report.assigned_to" name="report.assigned_to" [(ngModel)]="report.assigned_to">
+                        <option value="">Assign To...</option>
+                        @for(handler of handlers; track $index){
+                            <option value="{{handler.id}}">{{handler.first_name}} {{handler.last_name}}</option>
+                        }
+                    </select>
+                </div>
+            }
+
+            <div class="buttonBlock">
+                <button type="button" (click)="updateReport()">Save</button>
+                <button type="button" (click)="resetReport()">Reset</button>
+            </div>
+        </form>
+
+        @if(buis_entities.length > 0){
+            <h1>Buisnesses Associated With Crime:</h1>
+            <form class="buisness_entity">
+                @for(entity of buis_entities; track $index){
+                    @if(entity.report_id !== 0){
+                        <app-buisness-card [buis_entity]="entity"
+                                        (updateEvent)="updateBuisnessEntity($index, $event)"
+                                        (deleteEvent)="deleteBuisnessEntity($index)"></app-buisness-card>
+                    }
+                }
+            </form>
+        }
+            
+        <h1>New Buisness Association:</h1>
+        <form class="buis_entity_to_add">
+            <div class="field">
+                <label for="buis_entity.name">Business Name: </label>
+                <input type="text" id="buis_entity.name" name="buis_entity.name" [(ngModel)]="buis_entity.name">
+            </div>
+                
+            <div class="field">
+                <label for="buis_entity.industry">Industry: </label>
+                <input type="text" id="buis_entity.industry" name="buis_entity.industry" [(ngModel)]="buis_entity.industry">
+            </div>
+        
+            <div class="field">
+                <label for="buis_entity.address">Buisness Address: </label>
+                <input type="text" id="buis_entity.address" name="buis_entity.address" [(ngModel)]="buis_entity.address">
+            </div>
+        
+            <div class="field">
+                <label for="buis_entity.email">Buisness Email: </label>
+                <input type="text" id="buis_entity.email" name="buis_entity.email" [(ngModel)]="buis_entity.email">
+            </div>
+
+            <div class="field">
+                <label for="buis_entity.phone">Buisness Phone Number: </label>
+                <input type="text" id="buis_entity.phone" name="buis_entity.phone" [(ngModel)]="buis_entity.phone">
+            </div>
+        
+            <div class="field">
+                <label for="buis_entity.relation">Relation to Crime: </label>
+                <input type="text" id="buis_entity.relation" name="buis_entity.relation" [(ngModel)]="buis_entity.relation">
+            </div>
+
+            <button type="button" (click)="addBuisnessEntity()">Add Buisness</button>
+        </form>
+    </section>
+
+    <section class="annotations">
+            <app-annotation-table></app-annotation-table>
+    </section>
+    
+    <button type="button" (click)="returnToTable()">Exit Report Details</button>
+</main>

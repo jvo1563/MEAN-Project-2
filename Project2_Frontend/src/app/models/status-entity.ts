@@ -1,9 +1,9 @@
 export class StatusEntity {
-    id: number;
-    status_name: string;
+  id: number;
+  status_name: string;
 
-    constructor(id:number, status_name:string){
-        this.id = id;
-        this.status_name =status_name;
-    }
+  constructor(id: number = 0, status_name: string = '') {
+    this.id = id;
+    this.status_name = status_name;
+  }
 }

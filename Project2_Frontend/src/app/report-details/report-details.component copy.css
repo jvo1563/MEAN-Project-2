@@ -1,0 +1,107 @@
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.subject>input{
+    width: 100%;
+}
+
+.buttonBlock{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.textbox>textarea{
+    width:100%;
+    display: block;
+    height: 400px;
+}
+
+form{
+    width: 60%;
+}
+
+.field>input{
+    width: 50%;
+}
+
+.report{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.annotations{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.buisness_entity{
+    margin-top: 20px;
+}
+
+p{
+    display: inline-block;
+    margin:0px 0px 3px .5em;
+}
+
+span, label{
+    font-weight: bold;
+}
+
+.buis_entity_to_add>.field>input,label{
+    width:100%;
+}
+
+.buis_entity_to_add>.field{
+    width:90%;
+}
+
+.buis_entity_to_add>button{
+    margin-top: 5px;
+}
+
+.buis_entity_to_add{
+    background-color: rgb(186, 186, 245);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:60%;
+    border-radius: 3%;
+    margin-bottom: 20px;
+    padding: 10px 0px;
+    margin-top: 20px;
+}
+
+h1{
+    margin-top: 40px;
+    margin-bottom: 5px;
+}
+
+main>button{
+    margin-top: 40px;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: lightgray;
+}
+
+main>button:hover{
+    background-color: rgb(199, 199, 199);
+}

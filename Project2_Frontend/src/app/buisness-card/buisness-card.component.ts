@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { BuisnessEntity } from '../models/buisness-entity';
 import { FormsModule } from '@angular/forms';
 
@@ -7,23 +13,32 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './buisness-card.component.html',
-  styleUrl: './buisness-card.component.css'
+  styleUrl: './buisness-card.component.css',
 })
 export class BuisnessCardComponent {
-  @Input() buis_entity: BuisnessEntity = new BuisnessEntity(0,0,'','','','','','');
+  @Input() buis_entity: BuisnessEntity = new BuisnessEntity(
+    0,
+    0,
+    '',
+    '',
+    '',
+    '',
+    '',
+    ''
+  );
 
   @Output() updateEvent = new EventEmitter<BuisnessEntity>();
   @Output() deleteEvent = new EventEmitter<void>();
 
-  ngOnChanges(changes:SimpleChanges){
-    this.buis_entity = changes["buis_entity"].currentValue;
-  }
+  // ngOnChanges(changes:SimpleChanges){
+  //   this.buis_entity = changes["buis_entity"].currentValue;
+  // }
 
-  updateEntity(){
+  updateEntity() {
     this.updateEvent.emit(this.buis_entity);
   }
 
-  deleteEntity(){
+  deleteEntity() {
     this.deleteEvent.emit();
   }
 }

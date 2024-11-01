@@ -14,8 +14,8 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   user: UserInfo = new UserInfo();
 
-  defaultImage =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
+  // defaultImage =
+  //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
 
   constructor(private userAuthService: UserAuthService) {
     this.userAuthService.userAuthObservable.subscribe((data) => {
@@ -37,6 +37,7 @@ export class HeaderComponent {
   }
 
   onImageError(event: any) {
-    event.target.src = this.defaultImage;
+    event.target.src =
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
   }
 }
