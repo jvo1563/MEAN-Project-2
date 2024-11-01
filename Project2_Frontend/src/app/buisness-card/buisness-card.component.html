@@ -1,11 +1,11 @@
 <main>
   <section class="">
-    <div class="py-8 px-4 mx-auto max-w-5xl lg:py-16">
+    <div class="py-4 px-4 mx-auto max-w-5xl">
       <div
-        class="space-y-6 border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-24 py-10 shadow-2xl dark:bg-slate-800"
+        class="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-24 py-10 shadow-2xl dark:bg-slate-800"
       >
         <h2
-          class="mb-[-1rem] text-xl font-extrabold leading-none text-gray-900 md:text-2xl dark:text-white"
+          class="mb-1 text-xl font-extrabold leading-none text-gray-900 md:text-2xl dark:text-white"
         >
           {{ buis_entity.name }}
         </h2>
@@ -64,8 +64,8 @@
           <button
             type="button"
             id="updateBusinessButton"
-            data-modal-target="updateBusinessModal"
-            data-modal-toggle="updateBusinessModal"
+            [attr.data-modal-target]="'updateBusinessModal' + buis_entity.id"
+            [attr.data-modal-toggle]="'updateBusinessModal' + buis_entity.id"
             class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >
             <svg
@@ -88,6 +88,7 @@
           </button>
           <button
             type="button"
+            (click)="deleteEntity()"
             class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
           >
             <svg
@@ -109,16 +110,11 @@
       </div>
     </div>
   </section>
-
-  <div class="buttonBlock">
-    <button type="button" (click)="updateEntity()">Update</button>
-    <button type="button" (click)="deleteEntity()">Delete</button>
-  </div>
 </main>
 
 <!-- Main modal -->
 <div
-  id="updateBusinessModal"
+  [attr.id]="'updateBusinessModal' + buis_entity.id"
   tabindex="-1"
   aria-hidden="true"
   class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
@@ -138,7 +134,7 @@
         <button
           type="button"
           class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          data-modal-toggle="updateBusinessModal"
+          [attr.data-modal-toggle]="'updateBusinessModal' + buis_entity.id"
         >
           <svg
             aria-hidden="true"
@@ -161,90 +157,90 @@
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <label
-              for="buis_entity.name"
+              for="buis_entity_form.name"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Business Name</label
             >
             <input
               type="text"
-              name="buis_entity.name"
-              id="buis_entity.name"
-              [(ngModel)]="buis_entity.name"
+              name="buis_entity_form.name"
+              id="buis_entity_form.name"
+              [(ngModel)]="buis_entity_form.name"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Enter business name"
             />
           </div>
           <div class="sm:col-span-2">
             <label
-              for="buis_entity.address"
+              for="buis_entity_form.address"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Business Address</label
             >
             <input
               type="text"
-              name="buis_entity.address"
-              id="buis_entity.address"
-              [(ngModel)]="buis_entity.address"
+              name="buis_entity_form.address"
+              id="buis_entity_form.address"
+              [(ngModel)]="buis_entity_form.address"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Enter business address"
             />
           </div>
           <div>
             <label
-              for="buis_entity.relation"
+              for="buis_entity_form.relation"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Relation to Crime</label
             >
             <input
               type="text"
-              name="buis_entity.relation"
-              id="buis_entity.relation"
-              [(ngModel)]="buis_entity.relation"
+              name="buis_entity_form.relation"
+              id="buis_entity_form.relation"
+              [(ngModel)]="buis_entity_form.relation"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Enter relation to crime (e.g. Suspect)"
             />
           </div>
           <div>
             <label
-              for="buis_entity.industry"
+              for="buis_entity_form.industry"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Industry</label
             >
             <input
               type="text"
-              name="buis_entity.industry"
-              id="buis_entity.industry"
-              [(ngModel)]="buis_entity.industry"
+              name="buis_entity_form.industry"
+              id="buis_entity_form.industry"
+              [(ngModel)]="buis_entity_form.industry"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Enter industry"
             />
           </div>
           <div>
             <label
-              for="buis_entity.phone"
+              for="buis_entity_form.phone"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Phone Number</label
             >
             <input
               type="text"
-              name="buis_entity.phone"
-              id="buis_entity.phone"
-              [(ngModel)]="buis_entity.phone"
+              name="buis_entity_form.phone"
+              id="buis_entity_form.phone"
+              [(ngModel)]="buis_entity_form.phone"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Enter business phone number"
             />
           </div>
           <div>
             <label
-              for="buis_entity.email"
+              for="buis_entity_form.email"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Email</label
             >
             <input
               type="text"
-              name="buis_entity.email"
-              id="buis_entity.email"
-              [(ngModel)]="buis_entity.email"
+              name="buis_entity_form.email"
+              id="buis_entity_form.email"
+              [(ngModel)]="buis_entity_form.email"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Enter business email"
             />
@@ -253,6 +249,8 @@
         <div class="flex items-center space-x-4 mt-2">
           <button
             type="submit"
+            (click)="updateEntity()"
+            [attr.data-modal-toggle]="'updateBusinessModal' + buis_entity.id"
             class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >
             Update business

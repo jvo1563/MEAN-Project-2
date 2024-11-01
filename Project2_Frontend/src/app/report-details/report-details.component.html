@@ -147,23 +147,29 @@
       </div>
     </div>
   </section>
+  <!-- Business Entity Section -->
+  <section>
+    @if(buis_entities.length > 0){
+    <div class="px-4 mx-auto max-w-5xl mb-2">
+      <h1
+        class="text-4xl font-bold text-gray-900 dark:text-white lg:ml-[-1rem]"
+      >
+        Businesses Associated With Crime
+      </h1>
+    </div>
+    @for(entity of buis_entities; track $index) { @if(entity.report_id !== 0) {
+    <app-buisness-card
+      [buis_entity]="entity"
+      (updateEvent)="updateBuisnessEntity($index, $event)"
+      (deleteEvent)="deleteBuisnessEntity($index)"
+    ></app-buisness-card>
+
+    }}}
+  </section>
 </main>
 
 <main>
   <section class="report">
-    @if(buis_entities.length > 0){
-    <h1>Buisnesses Associated With Crime:</h1>
-    <form class="buisness_entity">
-      @for(entity of buis_entities; track $index){ @if(entity.report_id !== 0){
-      <app-buisness-card
-        [buis_entity]="entity"
-        (updateEvent)="updateBuisnessEntity($index, $event)"
-        (deleteEvent)="deleteBuisnessEntity($index)"
-      ></app-buisness-card>
-      } }
-    </form>
-    }
-
     <h1>New Buisness Association:</h1>
     <form class="buis_entity_to_add">
       <div class="field">

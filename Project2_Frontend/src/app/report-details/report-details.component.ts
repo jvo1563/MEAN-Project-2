@@ -253,6 +253,7 @@ export class ReportDetailsComponent {
       if (data.body) {
         this.buis_entities.push(data.body);
         console.log('Business Successful Create');
+        this.refreshReport();
       } else {
         console.log('!!! Business Create Error !!!');
       }
