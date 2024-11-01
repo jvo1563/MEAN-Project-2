@@ -1,18 +1,165 @@
-<main>
-  <H1>Financial Crimes Reporting Platfom</H1>
-  <div>
-    <img
-      *ngIf="user?.userPicture"
-      [src]="user.userPicture"
-      alt="profile picture"
-    />
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+  <div
+    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+  >
+    <a routerLink="" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <img
+        src="https://i.imgur.com/MYfaIgz.png"
+        class="h-10"
+        alt="Fraud Fighters Logo"
+      />
+      <span
+        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+        >Fraud Fighters</span
+      >
+    </a>
+    <div
+      class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+    >
+      @if (user.userId) {
+      <!-- Profile Icon -->
+      <button
+        type="button"
+        class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 lg:ml-40"
+        id="user-menu-button"
+        aria-expanded="false"
+        data-dropdown-toggle="user-dropdown"
+        data-dropdown-placement="bottom"
+      >
+        <span class="sr-only">Open user menu</span>
+        <img
+          class="w-8 h-8 rounded-full"
+          [src]="user.userPicture || defaultImage"
+          (error)="onImageError($event)"
+          alt="user photo"
+        />
+      </button>
+      <!-- Dropdown menu -->
+      <div
+        class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 shadow-gray-600"
+        id="user-dropdown"
+      >
+        <div class="px-4 py-3">
+          <span class="block text-sm text-gray-900 dark:text-white"
+            >{{ user.userFirstName }} {{ user.userLastName }}</span
+          >
+          <span
+            class="block text-sm text-gray-500 truncate dark:text-gray-400"
+            >{{ user.username }}</span
+          >
+          <span
+            class="block text-sm text-gray-500 truncate dark:text-gray-400"
+            >{{ user.userRole }}</span
+          >
+        </div>
+        <ul class="py-2" aria-labelledby="user-menu-button">
+          <li>
+            <a
+              routerLink="userLanding"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              >Dashboard</a
+            >
+          </li>
+
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              (click)="logout()"
+              >Sign out</a
+            >
+          </li>
+        </ul>
+      </div>
+      } @else {
+      <a
+        class="cursor-pointer text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+        (click)="login()"
+        >Log in</a
+      >
+      <a
+        class="cursor-pointer text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+        (click)="login()"
+        >Get started</a
+      >
+      }
+      <button
+        data-collapse-toggle="navbar-user"
+        type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        aria-controls="navbar-user"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 17 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+      id="navbar-user"
+    >
+      <ul
+        class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+      >
+        <li>
+          <a
+            routerLink=""
+            class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+            aria-current="page"
+            >Home</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="userLanding"
+            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            >Dashboard</a
+          >
+        </li>
+        <li>
+          @if (user.userId){
+          <a
+            routerLink="userLanding/userReport"
+            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            >Create Report</a
+          >
+          } @else {
+          <a
+            routerLink="anonymous"
+            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            >Create Report</a
+          >
+          }
+        </li>
+        <li>
+          <a
+            routerLink=""
+            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            >About</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink=""
+            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            >Contact</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
-  <div>
-    @if (user.username) {
-    <div>Logged in - {{ user.username }}</div>
-    <div>Name - {{ user.userFirstName }} {{ user.userLastName }}</div>
-    <div>Role - {{ user.userRole }}</div>
-    <button (click)="logout()">Logout</button>
-    }
-  </div>
-</main>
+</nav>

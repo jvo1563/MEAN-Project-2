@@ -1,20 +1,23 @@
 import { Component } from '@angular/core';
 import { UserAuthService } from '../services/user-auth.service';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { UserInfo } from '../models/user-info';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   user: UserInfo = new UserInfo();
 
-  constructor(private userAuthService: UserAuthService, private route: Router) {
+  defaultImage =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
+
+  constructor(private userAuthService: UserAuthService) {
     this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;
     });
@@ -26,6 +29,14 @@ export class HeaderComponent {
     // this.userAuthService.updateUserInfo();
     this.userAuthService.refreshUserInfo();
     // Redirect to home page with router
-    this.route.navigate(['/']);
+    // this.route.navigate(['/']);
+  }
+
+  login() {
+    window.location.href = 'http://localhost:3000/auth/google';
+  }
+
+  onImageError(event: any) {
+    event.target.src = this.defaultImage;
   }
 }
