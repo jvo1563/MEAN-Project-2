@@ -61,18 +61,13 @@ export class AnonymousReportComponent {
 submitReport(){
     this.report.status_id = 1;
     this.report.category_id = Number(this.report.category_id);
-    let new_report: Report = new Report(0,0,0,'','','',0,0,new Date(),new Date());
     console.log(this.report);
     this.httpService.createAnonymousReport(this.report).subscribe(data=>{//!!! is sending status/category id to BE sufficient to create relations?
       console.log(data.body);
       if(data.body){
-        new_report = new Report(data.body.id, data.body.created_by, data.body.assigned_to, data.body.title, data.body.description, data.body.location, data.body.category_id, data.body.status_id, data.body.created_at, data.body.updated_at);
-        console.log(new_report);
-      }
-      if(new_report.id){//!!! Need to be able to anonymously post to buis table
-        console.log("HERE");
+        console.log("HERE", data.body[0].id);
         for(let buis of this.buis_entities){
-          buis.report_id = new_report.id;//!!! Is this sufficient for creating relation to report?
+          buis.report_id = data.body[0].id;//!!! Is this sufficient for creating relation to report?
           this.httpService.createAnonymousBuisness(buis).subscribe(data=>{
             console.log(data);
           });

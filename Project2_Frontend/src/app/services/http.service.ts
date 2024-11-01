@@ -38,8 +38,8 @@ export class HttpService {
   private_annotation_endpoint:string = '/annotation';
 
   //could just post user reports this way too...? Want diff function for that with diff endpoint in gateway???
-  createAnonymousReport(new_report:Report): Observable<HttpResponse<Report>>{
-    return this.httpClient.post<Report>(this.anonymous_post_report, 
+  createAnonymousReport(new_report:Report): Observable<HttpResponse<any>>{
+    return this.httpClient.post<any>(this.anonymous_post_report, 
       {
         title: new_report.title,
         description: new_report.description,
