@@ -8,11 +8,12 @@ import { BuisnessEntity } from '../models/buisness-entity';
 import { CategoryEntity } from '../models/category-entity';
 import { HttpService } from '../services/http.service';
 import { StatusEntity } from '../models/status-entity';
+import { BuisnessCardComponent } from '../buisness-card/buisness-card.component';
 
 @Component({
   selector: 'app-user-report',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, BuisnessCardComponent],
   templateUrl: './user-report.component.html',
   styleUrl: './user-report.component.css'
 })
@@ -89,25 +90,25 @@ export class UserReportComponent {
     })
   }
 
+  updateBuisnessEntity(index:number, diffEntity:BuisnessEntity){
+    //doesn't actually do anything here
+  }
+
   addBuisnessEntity(){
-    if(this.buis_entities.length){
-      this.buis_entities[this.buis_entities.length - 1] = this.buis_entity;
-    }
-    this.buis_entities.push(new BuisnessEntity(0,0,'','','','','',''));
+    console.log(this.buis_entity);
+    this.buis_entities.push(this.buis_entity);
     this.buis_entity = new BuisnessEntity(0,0,'','','','','','');
+    console.log(this.buis_entities);
   }
   
-  //for now can only remove last buis_enitity added, but could implement soln to allow any of the added buisness entities to be removed
-  removeBuisnessEntity(){
-    if(this.buis_entities.length>0){
-      if(this.buis_entities.length>1){
-        this.buis_entity = this.buis_entities[this.buis_entities.length - 2];
+  removeBuisnessEntity(index:number){
+    let temp_entities:BuisnessEntity[] = [];
+    for(let i=0; i < this.buis_entities.length; i++){
+      if(i !== index){
+        temp_entities.push(this.buis_entities[i]);
       }
-      else{
-        this.buis_entity = new BuisnessEntity(0,0,'','','','','','');
-      }
-      this.buis_entities.pop();
     }
+    this.buis_entities = temp_entities;
   }
 
 
