@@ -91,3 +91,8 @@ span, label{
     padding: 10px 0px;
     margin-top: 20px;
 }
+
+.buttonBlock{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

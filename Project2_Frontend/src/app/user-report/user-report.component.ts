@@ -6,7 +6,6 @@ import { Report } from '../models/report';
 import { FormsModule } from '@angular/forms';
 import { BuisnessEntity } from '../models/buisness-entity';
 import { CategoryEntity } from '../models/category-entity';
-import { HttpSentEvent } from '@angular/common/http';
 import { HttpService } from '../services/http.service';
 import { StatusEntity } from '../models/status-entity';
 
@@ -111,4 +110,8 @@ export class UserReportComponent {
     }
   }
 
+
+  returnToLanding(){
+    this.router.navigate(['userLanding']);
+  }
 }

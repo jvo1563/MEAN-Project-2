@@ -40,8 +40,9 @@ export class HttpService {
         title: new_report.title,
         description: new_report.description,
         location: new_report.location,
-        status_id: 1,
-        category_id:1,
+        created_by: new_report.created_by,
+        status_id: new_report.status_id,
+        category_id:new_report.category_id,
         created_at: new_report.created_at,
         updated_at: new_report.updated_at
       }, 
@@ -83,6 +84,8 @@ export class HttpService {
         title: diff_report.title,
         description: diff_report.description,
         location: diff_report.location,
+        status_id: diff_report.status_id,
+        assigned_to: diff_report.assigned_to,
         created_at: diff_report.created_at,
         updated_at: diff_report.updated_at
       },
@@ -335,7 +338,7 @@ export class HttpService {
   }
 
   updateAnnotation(annotation_id:number, diff_annotation: Annotation): Observable<HttpResponse<Annotation>>{
-    
+    console.log(diff_annotation);
     return this.httpClient.put<Annotation>(this.aws_gw_url+this.private_annotation_endpoint + `/${annotation_id}`,
       {
         id: diff_annotation.id,

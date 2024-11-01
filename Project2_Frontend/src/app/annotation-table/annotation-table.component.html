@@ -20,6 +20,9 @@
                     <td>{{annotation.title}}</td>
                     <td>{{annotation.created_at}}</td>
                     <button (click)="details(annotation.id)">details</button>
+                    @if(user.userRole === 'Admin'){
+                        <button (click)="deleteAnnotation(annotation.id)">delete</button>
+                    }
                 </tr>
             }
         </tbody>
