@@ -1,0 +1,39 @@
+<main>
+    <h1>Annotations:</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Annotation ID</th>
+                <th>Report ID</th>
+                <th>User ID</th>
+                <th>Title</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for(annotation of annotationsToDisplay; track $index){
+                <tr>
+                    <td>{{annotation.id}}</td>
+                    <td>{{annotation.report_id}}</td>
+                    <td>{{annotation.created_by}}</td>
+                    <td>{{annotation.title}}</td>
+                    <td>{{annotation.created_at}}</td>
+                    <button (click)="details(annotation.id)">details</button>
+                    @if(user.userRole === 'Admin'){
+                        <button (click)="deleteAnnotation(annotation.id)">delete</button>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="navButtons">
+        <button type="button" (click)="backPage()">&#60;-</button>
+        <button type="button" (click)="forwardPage()">-></button>
+    </div>
+
+    <div class="spacedButton">
+        <button type="button" (click)="addAnnotation()">Add Annotation</button>
+    </div>
+</main>

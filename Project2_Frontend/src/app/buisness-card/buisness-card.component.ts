@@ -38,4 +38,8 @@ export class BuisnessCardComponent {
   deleteEntity() {
     this.deleteEvent.emit();
   }
+
+  resetForm() {
+    this.buis_entity_form = structuredClone(this.buis_entity);
+  }
 }

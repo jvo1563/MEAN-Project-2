@@ -1,7 +1,7 @@
 <main class="">
   <!-- Report Details -->
   <section class="">
-    <div class="py-8 px-4 mx-auto max-w-6xl lg:py-16">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
       <h1
         class="mb-8 text-4xl font-bold text-gray-900 dark:text-white lg:ml-[-1rem]"
       >
@@ -28,6 +28,26 @@
           </dt>
           <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
             {{ report.description }}
+          </dd>
+        </dl>
+        <dl>
+          <dt
+            class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+          >
+            Created
+          </dt>
+          <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+            {{ report.created_at | date : "medium" }}
+          </dd>
+        </dl>
+        <dl>
+          <dt
+            class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+          >
+            Last update
+          </dt>
+          <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+            {{ report.updated_at | date : "medium" }}
           </dd>
         </dl>
         <dl class="flex items-center space-x-6 lg:space-x-12">
@@ -96,53 +116,82 @@
             </dd>
           </div>
         </dl>
-        <div class="flex items-center space-x-4">
-          <button
-            id="updateReportButton"
-            data-modal-target="updateReportModal"
-            data-modal-toggle="updateReportModal"
-            type="button"
-            class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-          >
-            <svg
-              aria-hidden="true"
-              class="mr-1 -ml-1 w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+        <div class="flex items-center justify-between space-x-4">
+          <div class="flex items-center space-x-4">
+            <button
+              id="updateReportButton"
+              data-modal-target="updateReportModal"
+              data-modal-toggle="updateReportModal"
+              type="button"
+              class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
-              <path
-                d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
-              ></path>
-              <path
-                fill-rule="evenodd"
-                d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            Edit
-          </button>
-          @if (user.userRole === 'Admin') {
+              <svg
+                aria-hidden="true"
+                class="mr-1 -ml-1 w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
+                ></path>
+                <path
+                  fill-rule="evenodd"
+                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              Edit
+            </button>
+            @if (user.userRole === 'Admin') {
+            <button
+              type="button"
+              class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 mr-1.5 -ml-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              Delete
+            </button>
+            }
+          </div>
           <button
+            id="addBusinessButton"
             type="button"
-            class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+            data-modal-target="newBusinessModal"
+            data-modal-toggle="newBusinessModal"
+            class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-lime-700 dark:hover:bg-lime-800 dark:focus:ring-lime-900"
           >
             <svg
-              aria-hidden="true"
               class="w-5 h-5 mr-1.5 -ml-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
             >
               <path
-                fill-rule="evenodd"
-                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                clip-rule="evenodd"
-              ></path>
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 12c.263 0 .524-.06.767-.175a2 2 0 0 0 .65-.491c.186-.21.333-.46.433-.734.1-.274.15-.568.15-.864a2.4 2.4 0 0 0 .586 1.591c.375.422.884.659 1.414.659.53 0 1.04-.237 1.414-.659A2.4 2.4 0 0 0 12 9.736a2.4 2.4 0 0 0 .586 1.591c.375.422.884.659 1.414.659.53 0 1.04-.237 1.414-.659A2.4 2.4 0 0 0 16 9.736c0 .295.052.588.152.861s.248.521.434.73a2 2 0 0 0 .649.488 1.809 1.809 0 0 0 1.53 0 2.03 2.03 0 0 0 .65-.488c.185-.209.332-.457.433-.73.1-.273.152-.566.152-.861 0-.974-1.108-3.85-1.618-5.121A.983.983 0 0 0 17.466 4H6.456a.986.986 0 0 0-.93.645C5.045 5.962 4 8.905 4 9.736c.023.59.241 1.148.611 1.567.37.418.865.667 1.389.697Zm0 0c.328 0 .651-.091.94-.266A2.1 2.1 0 0 0 7.66 11h.681a2.1 2.1 0 0 0 .718.734c.29.175.613.266.942.266.328 0 .651-.091.94-.266.29-.174.537-.427.719-.734h.681a2.1 2.1 0 0 0 .719.734c.289.175.612.266.94.266.329 0 .652-.091.942-.266.29-.174.536-.427.718-.734h.681c.183.307.43.56.719.734.29.174.613.266.941.266a1.819 1.819 0 0 0 1.06-.351M6 12a1.766 1.766 0 0 1-1.163-.476M5 12v7a1 1 0 0 0 1 1h2v-5h3v5h7a1 1 0 0 0 1-1v-7m-5 3v2h2v-2h-2Z"
+              />
             </svg>
-            Delete
+
+            Add Business
           </button>
-          }
         </div>
       </div>
     </div>
@@ -150,12 +199,12 @@
   <!-- Business Entity Section -->
   <section>
     @if(buis_entities.length > 0){
-    <div class="px-4 mx-auto max-w-5xl mb-2">
-      <h1
+    <div class="px-4 mx-auto max-w-6xl mb-2">
+      <h2
         class="text-4xl font-bold text-gray-900 dark:text-white lg:ml-[-1rem]"
       >
         Businesses Associated With Crime
-      </h1>
+      </h2>
     </div>
     @for(entity of buis_entities; track $index) { @if(entity.report_id !== 0) {
     <app-buisness-card
@@ -163,79 +212,11 @@
       (updateEvent)="updateBuisnessEntity($index, $event)"
       (deleteEvent)="deleteBuisnessEntity($index)"
     ></app-buisness-card>
-
     }}}
   </section>
 </main>
 
 <main>
-  <section class="report">
-    <h1>New Buisness Association:</h1>
-    <form class="buis_entity_to_add">
-      <div class="field">
-        <label for="buis_entity.name">Business Name: </label>
-        <input
-          type="text"
-          id="buis_entity.name"
-          name="buis_entity.name"
-          [(ngModel)]="buis_entity.name"
-        />
-      </div>
-
-      <div class="field">
-        <label for="buis_entity.industry">Industry: </label>
-        <input
-          type="text"
-          id="buis_entity.industry"
-          name="buis_entity.industry"
-          [(ngModel)]="buis_entity.industry"
-        />
-      </div>
-
-      <div class="field">
-        <label for="buis_entity.address">Buisness Address: </label>
-        <input
-          type="text"
-          id="buis_entity.address"
-          name="buis_entity.address"
-          [(ngModel)]="buis_entity.address"
-        />
-      </div>
-
-      <div class="field">
-        <label for="buis_entity.email">Buisness Email: </label>
-        <input
-          type="text"
-          id="buis_entity.email"
-          name="buis_entity.email"
-          [(ngModel)]="buis_entity.email"
-        />
-      </div>
-
-      <div class="field">
-        <label for="buis_entity.phone">Buisness Phone Number: </label>
-        <input
-          type="text"
-          id="buis_entity.phone"
-          name="buis_entity.phone"
-          [(ngModel)]="buis_entity.phone"
-        />
-      </div>
-
-      <div class="field">
-        <label for="buis_entity.relation">Relation to Crime: </label>
-        <input
-          type="text"
-          id="buis_entity.relation"
-          name="buis_entity.relation"
-          [(ngModel)]="buis_entity.relation"
-        />
-      </div>
-
-      <button type="button" (click)="addBuisnessEntity()">Add Buisness</button>
-    </form>
-  </section>
-
   <section class="annotations">
     <app-annotation-table></app-annotation-table>
   </section>
@@ -436,3 +417,153 @@
   </div>
 </div>
 <!-- !Report modal -->
+
+<!-- New business entity modal -->
+<div
+  [attr.id]="'newBusinessModal'"
+  tabindex="-1"
+  aria-hidden="true"
+  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
+>
+  <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+    <!-- Modal content -->
+    <div
+      class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+    >
+      <!-- Modal header -->
+      <div
+        class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
+      >
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          Update Business
+        </h3>
+        <button
+          type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          [attr.data-modal-toggle]="'newBusinessModal'"
+        >
+          <svg
+            aria-hidden="true"
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <form action="#">
+        <div class="grid gap-4 mb-4 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <label
+              for="buis_entity.name"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Business Name</label
+            >
+            <input
+              type="text"
+              name="buis_entity.name"
+              id="buis_entity.name"
+              [(ngModel)]="buis_entity.name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Enter business name"
+            />
+          </div>
+          <div class="sm:col-span-2">
+            <label
+              for="buis_entity.address"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Business Address</label
+            >
+            <input
+              type="text"
+              name="buis_entity.address"
+              id="buis_entity.address"
+              [(ngModel)]="buis_entity.address"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Enter business address"
+            />
+          </div>
+          <div>
+            <label
+              for="buis_entity.relation"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Relation to Crime</label
+            >
+            <input
+              type="text"
+              name="buis_entity.relation"
+              id="buis_entity.relation"
+              [(ngModel)]="buis_entity.relation"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Enter relation to crime (e.g. Suspect)"
+            />
+          </div>
+          <div>
+            <label
+              for="buis_entity.industry"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Industry</label
+            >
+            <input
+              type="text"
+              name="buis_entity.industry"
+              id="buis_entity.industry"
+              [(ngModel)]="buis_entity.industry"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Enter industry"
+            />
+          </div>
+          <div>
+            <label
+              for="buis_entity.phone"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Phone Number</label
+            >
+            <input
+              type="text"
+              name="buis_entity.phone"
+              id="buis_entity.phone"
+              [(ngModel)]="buis_entity.phone"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Enter business phone number"
+            />
+          </div>
+          <div>
+            <label
+              for="buis_entity_form.email"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Email</label
+            >
+            <input
+              type="text"
+              name="buis_entity_form.email"
+              id="buis_entity_form.email"
+              [(ngModel)]="buis_entity.email"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Enter business email"
+            />
+          </div>
+        </div>
+        <div class="flex items-center space-x-4 mt-2">
+          <button
+            type="submit"
+            [attr.data-modal-toggle]="'newBusinessModal'"
+            (click)="addBuisnessEntity()"
+            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-lime-700 dark:hover:bg-lime-800 dark:focus:ring-lime-900"
+          >
+            Add business
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- !New business entity modal -->
