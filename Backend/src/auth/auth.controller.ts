@@ -38,6 +38,8 @@ export class AuthController {
 
     // return res.status(HttpStatus.OK).send();
     // Option 1: Redirect with token as query parameter
+
+    // return res.redirect(`http://fraud-fighters-fe.s3-website-us-east-1.amazonaws.com/auth-callback?token=${token}`);
     return res.redirect(`http://localhost:4200/auth-callback?token=${token}`);
 
     // Option 2: Redirect with token as URL fragment (more secure)
