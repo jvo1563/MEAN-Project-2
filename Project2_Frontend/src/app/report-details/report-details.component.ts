@@ -226,6 +226,14 @@ export class ReportDetailsComponent {
     this.httpService.updateBuisness(entity.id, entity).subscribe((data) => {
       if (data.body) {
         console.log('Business Successful Update');
+        this.httpService.updateUpdatedAtReport(this.report.id, new Date()).subscribe(data=>{
+          if(data.body){
+            console.log("Report Updated After Business Update Too");
+          }
+          else{
+            console.log("!!! Report Updated After Business Update Error !!!");
+          }
+        });
       } else {
         console.log('!!! Business Update Error !!!');
       }
@@ -244,6 +252,15 @@ export class ReportDetailsComponent {
       .subscribe((data) => {
         this.buis_entities = temp_entities;
         console.log('Business Successful Delete');
+        this.httpService.updateUpdatedAtReport(this.report.id, new Date()).subscribe(data=>{
+          if(data.body){
+            console.log("Report Updated After Business Update Too");
+            this.report.updated_at = data.body.updated_at;
+          }
+          else{
+            console.log("!!! Report Updated After Business Update Error !!!");
+          }
+        });
       });
   }
 
@@ -253,6 +270,14 @@ export class ReportDetailsComponent {
       if (data.body) {
         this.buis_entities.push(data.body);
         console.log('Business Successful Create');
+        this.httpService.updateUpdatedAtReport(this.report.id, new Date()).subscribe(data=>{
+          if(data.body){
+            console.log("Report Updated After Business Update Too");
+          }
+          else{
+            console.log("!!! Report Updated After Business Update Error !!!");
+          }
+        });
         this.refreshReport();
       } else {
         console.log('!!! Business Create Error !!!');

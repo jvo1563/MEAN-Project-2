@@ -98,6 +98,16 @@ export class HttpService {
     );
   }
 
+  updateUpdatedAtReport(report_id:number,new_date:Date): Observable<HttpResponse<any>>{
+    
+    return this.httpClient.put<any>(this.aws_gw_url + this.private_report_endpoint + `/${report_id}`, 
+      {
+        updated_at:new_date
+      },
+      {observe: 'response'}
+    );
+  }
+
   deleteReport(report_id: number):Observable<void>{
     
     return this.httpClient.delete<void>(this.aws_gw_url+this.private_report_endpoint+`/${report_id}`);
