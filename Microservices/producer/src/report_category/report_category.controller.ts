@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  SetMetadata,
 } from '@nestjs/common';
 import { ReportCategoryService } from './report_category.service';
 
@@ -14,12 +15,14 @@ import { ReportCategoryService } from './report_category.service';
 export class ReportCategoryController {
   constructor(private service: ReportCategoryService) {}
 
+  @SetMetadata('isPublic', true)
   @Get()
   @HttpCode(200)
   getAllReportCategory(): Promise<any[]> {
     return this.service.getAllReportCategory();
   }
 
+  @SetMetadata('isPublic', true)
   @Get(':id')
   @HttpCode(200)
   getReportCategoryById(@Param('id') id: number): Promise<any> {

@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
@@ -29,6 +30,7 @@ export class ReportController {
     return this.service.getReportById(id);
   }
 
+  @SetMetadata('isPublic', true)
   @Post()
   @HttpCode(201)
   createReport(@Body() report: any): Promise<any> {

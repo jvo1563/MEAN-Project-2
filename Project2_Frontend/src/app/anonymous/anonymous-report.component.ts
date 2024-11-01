@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Report } from '../models/report';
 import { Router } from '@angular/router';
 import { BuisnessEntity } from '../models/buisness-entity';
@@ -15,15 +15,34 @@ import { BuisnessCardComponent } from '../buisness-card/buisness-card.component'
   standalone: true,
   imports: [FormsModule, BuisnessCardComponent],
   templateUrl: './anonymous-report.component.html',
-  styleUrl: './anonymous-report.component.css'
+  styleUrl: './anonymous-report.component.css',
 })
 export class AnonymousReportComponent {
-  report: Report = new Report(0,0,0,'','','',0,0,new Date(),new Date());
+  report: Report = new Report(
+    0,
+    0,
+    0,
+    '',
+    '',
+    '',
+    0,
+    0,
+    new Date(),
+    new Date()
+  );
   buis_entities: BuisnessEntity[] = [];
-  buis_entity: BuisnessEntity = new BuisnessEntity(0,0,'','','','','','');
+  buis_entity: BuisnessEntity = new BuisnessEntity(
+    0,
+    0,
+    '',
+    '',
+    '',
+    '',
+    '',
+    ''
+  );
   categories: CategoryEntity[] = [];
-  statuses: StatusEntity[] = []
-  
+  statuses: StatusEntity[] = [];
 
   constructor(private router:Router, private httpService:HttpService){
     this.httpService.anonymousGetCategories().subscribe(data=>{

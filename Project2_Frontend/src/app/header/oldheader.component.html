@@ -1,0 +1,18 @@
+<main>
+  <H1>Financial Crimes Reporting Platfom</H1>
+  <div>
+    <img
+      *ngIf="user?.userPicture"
+      [src]="user.userPicture"
+      alt="profile picture"
+    />
+  </div>
+  <div>
+    @if (user.username) {
+    <div>Logged in - {{ user.username }}</div>
+    <div>Name - {{ user.userFirstName }} {{ user.userLastName }}</div>
+    <div>Role - {{ user.userRole }}</div>
+    <button (click)="logout()">Logout</button>
+    }
+  </div>
+</main>
