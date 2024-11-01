@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  SetMetadata,
 } from '@nestjs/common';
 import { ReportStatusService } from './report_status.service';
 
@@ -14,12 +15,14 @@ import { ReportStatusService } from './report_status.service';
 export class ReportStatusController {
   constructor(private service: ReportStatusService) {}
 
+  @SetMetadata('isPublic', true)
   @Get()
   @HttpCode(200)
   getAllReportStatus(): Promise<any[]> {
     return this.service.getAllReportStatus();
   }
 
+  @SetMetadata('isPublic', true)
   @Get(':id')
   @HttpCode(200)
   getReportStatusById(@Param('id') id: number): Promise<any> {
