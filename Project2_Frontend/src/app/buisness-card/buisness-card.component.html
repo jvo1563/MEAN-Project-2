@@ -112,7 +112,7 @@
   </section>
 </main>
 
-<!-- Main modal -->
+<!-- Edit business entity modal -->
 <div
   [attr.id]="'updateBusinessModal' + buis_entity.id"
   tabindex="-1"
@@ -153,102 +153,283 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form action="#">
+      <form #updateBusinessForm="ngForm">
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <label
               for="buis_entity_form.name"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateBusinessFormName.invalid &&
+                  updateBusinessFormName.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateBusinessFormName.invalid &&
+                  updateBusinessFormName.touched
+              }"
               >Business Name</label
             >
             <input
               type="text"
               name="buis_entity_form.name"
               id="buis_entity_form.name"
+              #updateBusinessFormName="ngModel"
               [(ngModel)]="buis_entity_form.name"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateBusinessFormName.invalid &&
+                  updateBusinessFormName.touched
+              }"
               placeholder="Enter business name"
+              required
             />
+            <div
+              *ngIf="
+                updateBusinessFormName.invalid &&
+                (updateBusinessFormName.dirty || updateBusinessFormName.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateBusinessFormName.hasError('required')">
+                Business name is required.
+              </div>
+            </div>
           </div>
+
           <div class="sm:col-span-2">
             <label
               for="buis_entity_form.address"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateBusinessFormAddress.invalid &&
+                  updateBusinessFormAddress.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateBusinessFormAddress.invalid &&
+                  updateBusinessFormAddress.touched
+              }"
               >Business Address</label
             >
             <input
               type="text"
               name="buis_entity_form.address"
               id="buis_entity_form.address"
+              #updateBusinessFormAddress="ngModel"
               [(ngModel)]="buis_entity_form.address"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateBusinessFormAddress.invalid &&
+                  updateBusinessFormAddress.touched
+              }"
               placeholder="Enter business address"
+              required
             />
+            <div
+              *ngIf="
+                updateBusinessFormAddress.invalid &&
+                (updateBusinessFormAddress.dirty ||
+                  updateBusinessFormAddress.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateBusinessFormAddress.hasError('required')">
+                Business address is required.
+              </div>
+            </div>
           </div>
+
           <div>
             <label
               for="buis_entity_form.relation"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateBusinessFormRelation.invalid &&
+                  updateBusinessFormRelation.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateBusinessFormRelation.invalid &&
+                  updateBusinessFormRelation.touched
+              }"
               >Relation to Crime</label
             >
             <input
               type="text"
               name="buis_entity_form.relation"
               id="buis_entity_form.relation"
+              #updateBusinessFormRelation="ngModel"
               [(ngModel)]="buis_entity_form.relation"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateBusinessFormRelation.invalid &&
+                  updateBusinessFormRelation.touched
+              }"
               placeholder="Enter relation to crime (e.g. Suspect)"
+              required
             />
+            <div
+              *ngIf="
+                updateBusinessFormRelation.invalid &&
+                (updateBusinessFormRelation.dirty ||
+                  updateBusinessFormRelation.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateBusinessFormRelation.hasError('required')">
+                Relation is required.
+              </div>
+            </div>
           </div>
+
           <div>
             <label
               for="buis_entity_form.industry"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateBusinessFormIndustry.invalid &&
+                  updateBusinessFormIndustry.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateBusinessFormIndustry.invalid &&
+                  updateBusinessFormIndustry.touched
+              }"
               >Industry</label
             >
             <input
               type="text"
               name="buis_entity_form.industry"
               id="buis_entity_form.industry"
+              #updateBusinessFormIndustry="ngModel"
               [(ngModel)]="buis_entity_form.industry"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateBusinessFormIndustry.invalid &&
+                  updateBusinessFormIndustry.touched
+              }"
               placeholder="Enter industry"
+              required
             />
+            <div
+              *ngIf="
+                updateBusinessFormIndustry.invalid &&
+                (updateBusinessFormIndustry.dirty ||
+                  updateBusinessFormIndustry.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateBusinessFormIndustry.hasError('required')">
+                Industry is required.
+              </div>
+            </div>
           </div>
+
           <div>
             <label
               for="buis_entity_form.phone"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateBusinessFormPhone.invalid &&
+                  updateBusinessFormPhone.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateBusinessFormPhone.invalid &&
+                  updateBusinessFormPhone.touched
+              }"
               >Phone Number</label
             >
             <input
               type="text"
               name="buis_entity_form.phone"
               id="buis_entity_form.phone"
+              #updateBusinessFormPhone="ngModel"
               [(ngModel)]="buis_entity_form.phone"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateBusinessFormPhone.invalid &&
+                  updateBusinessFormPhone.touched
+              }"
               placeholder="Enter business phone number"
+              required
+              pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
             />
+            <div
+              *ngIf="
+                updateBusinessFormPhone.invalid &&
+                (updateBusinessFormPhone.dirty ||
+                  updateBusinessFormPhone.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateBusinessFormPhone.hasError('required')">
+                Phone number is required.
+              </div>
+              <div *ngIf="updateBusinessFormPhone.hasError('pattern')">
+                Enter a valid phone number.
+              </div>
+            </div>
           </div>
+
           <div>
             <label
               for="buis_entity_form.email"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateBusinessFormEmail.invalid &&
+                  updateBusinessFormEmail.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateBusinessFormEmail.invalid &&
+                  updateBusinessFormEmail.touched
+              }"
               >Email</label
             >
             <input
               type="text"
               name="buis_entity_form.email"
               id="buis_entity_form.email"
+              #updateBusinessFormEmail="ngModel"
               [(ngModel)]="buis_entity_form.email"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateBusinessFormEmail.invalid &&
+                  updateBusinessFormEmail.touched
+              }"
               placeholder="Enter business email"
+              required
+              pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
             />
+            <div
+              *ngIf="
+                updateBusinessFormEmail.invalid &&
+                (updateBusinessFormEmail.dirty ||
+                  updateBusinessFormEmail.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateBusinessFormEmail.hasError('required')">
+                Email is required.
+              </div>
+              <div *ngIf="updateBusinessFormEmail.hasError('pattern')">
+                Enter a valid email.
+              </div>
+            </div>
           </div>
         </div>
         <div class="flex items-center space-x-4 mt-2">
           <button
             type="submit"
+            [disabled]="!updateBusinessForm.form.valid"
             (click)="updateEntity()"
             [attr.data-modal-toggle]="'updateBusinessModal' + buis_entity.id"
             class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -285,3 +466,4 @@
     </div>
   </div>
 </div>
+<!-- !Edit business entity modal -->
