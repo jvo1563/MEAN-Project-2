@@ -25,11 +25,31 @@
         >
           <td class="px-6 py-4">{{ report.id }}</td>
           @if(report.created_by !== 0){
-          <td class="px-6 py-4">{{ report.created_by }}</td>
+          <td class="px-6 py-4">
+            <img
+              *ngIf="report.user_created?.picture"
+              class="rounded-full w-6 h-6 inline mr-1"
+              [src]="report.user_created.picture"
+              (error)="onImageError($event)"
+              alt="pfp"
+            />
+            {{ report.user_created?.first_name }}
+            {{ report.user_created?.last_name }}
+          </td>
           } @else{
           <td class="px-6 py-4">NA</td>
           } @if(report.assigned_to !== 0){
-          <td class="px-6 py-4">{{ report.assigned_to }}</td>
+          <td class="px-6 py-4">
+            <img
+              *ngIf="report.user_assigned?.picture"
+              class="rounded-full w-6 h-6 inline mr-1"
+              [src]="report.user_assigned.picture"
+              (error)="onImageError($event)"
+              alt="pfp"
+            />
+            {{ report.user_assigned?.first_name }}
+            {{ report.user_assigned?.last_name }}
+          </td>
           } @else{
           <td class="px-6 py-4">NA</td>
           }

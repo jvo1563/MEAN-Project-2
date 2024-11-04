@@ -8,6 +8,7 @@ import { CategoryEntity } from '../models/category-entity';
 import { HttpService } from '../services/http.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserEntity } from '../models/user-entity';
 
 @Component({
   selector: 'app-report-table',
@@ -65,7 +66,13 @@ export class ReportTableComponent {
               status_id: number;
               created_at: Date;
               updated_at: Date;
+              user_created: UserEntity;
+              user_assigned: UserEntity;
             }) => {
+              if (!report.user_created)
+                report.user_created = new UserEntity(0, '', 'Anonymous');
+              if (!report.user_assigned)
+                report.user_assigned = new UserEntity(0, '', 'No one');
               return new Report(
                 report.id,
                 report.created_by,
@@ -76,7 +83,9 @@ export class ReportTableComponent {
                 report.category_id,
                 report.status_id,
                 report.created_at,
-                report.updated_at
+                report.updated_at,
+                report.user_created,
+                report.user_assigned
               );
             }
           )
@@ -120,11 +129,17 @@ export class ReportTableComponent {
           }
         }
         this.reports = tempReports;
+        this.reportsToDisplay = this.reports;
       });
     }
   }
 
   returnToLanding() {
     this.router.navigate([`userLanding`]);
+  }
+
+  onImageError(event: any) {
+    event.target.src =
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
   }
 }
