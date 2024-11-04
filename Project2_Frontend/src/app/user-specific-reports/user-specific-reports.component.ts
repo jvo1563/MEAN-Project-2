@@ -46,9 +46,9 @@ export class UserSpecificReportsComponent {
     }
     console.log(this.user)
     if(this.user.userRole !== 'Admin'){
-      this.httpService.getReportsByAssignedId(this.user.userId).subscribe(data=>{
+      this.httpService.getUserById(this.user.userId).subscribe(data=>{
         console.log(data.body);
-        this.reports = (data.body)?data.body.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; })=>{
+        this.reports = (data.body.reports)?data.body.reports.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; })=>{
             return new Report(
               report.id, 
               report.created_by, 

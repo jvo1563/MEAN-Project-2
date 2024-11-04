@@ -279,6 +279,7 @@
     </div>
   </section>
   <!-- End block -->
+
   <!-- Create modal -->
   <div
     id="createAnnotationModal"
@@ -321,64 +322,86 @@
           </button>
         </div>
         <!-- Modal body -->
-        <form action="#">
+        <form (ngSubmit) = "createAnnotation()" action="#" #actorForm="ngForm">
           <div class="grid gap-4 mb-4 sm:grid-cols-2">
             <div class="sm:col-span-2">
               <label
                 for="newAnnotationForm.title"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Name</label
               >
+              <span class="asterisk">*</span>
               <input
                 type="text"
                 name="newAnnotationForm.title"
                 id="newAnnotationForm.title"
                 [(ngModel)]="newAnnotationForm.title"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter tile"
-                required=""
+                placeholder="Enter title"
+                required
+                #titleField="ngModel"
               />
+              <div *ngIf="(titleField.invalid && (titleField.touched || titleField.dirty))">
+                <div *ngIf="titleField.hasError('required')" style="color:red; font-weight: bold;">
+                  *This field is required!
+                </div>
+              </div>
             </div>
 
             <div class="sm:col-span-2">
               <label
                 for="newAnnotationForm.annotation"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Description</label
-              ><textarea
+              >
+              <span class="asterisk">*</span>
+              <textarea
                 id="newAnnotationForm.annotation"
                 name="newAnnotationForm.annotation"
+                required
                 [(ngModel)]="newAnnotationForm.annotation"
                 rows="5"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter annotation"
+                #descField="ngModel"
               ></textarea>
+
+              <div *ngIf="(descField.invalid && (descField.touched || descField.dirty))">
+                <div *ngIf="descField.hasError('required')" class="invalidForm" style="color:red; font-weight: bold;">
+                  *This field is required!
+                </div>
+              </div>
             </div>
           </div>
-          <button
-            type="submit"
-            data-modal-toggle="createAnnotationModal"
-            (click)="createAnnotation()"
-            class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-          >
-            <svg
-              class="mr-1 -ml-1 w-6 h-6"
-              fill="currentColor"
-              viewbox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            Add annotation
-          </button>
+          <div class="buttonError">
+            <button
+              type="submit"
+              data-modal-toggle="createAnnotationModal"
+              id="submitButton"
+              class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              [disabled]="!actorForm.form.valid"
+              >
+              <svg
+                class="mr-1 -ml-1 w-6 h-6"
+                fill="currentColor"
+                viewbox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              Add annotation
+            </button>
+            <p class="hoverInvalid">*Can't submit till all fields are valid</p>
+          </div>
         </form>
       </div>
     </div>
   </div>
+
   <!-- Update modal -->
   <div
     id="updateAnnotationModal"
@@ -421,7 +444,7 @@
           </button>
         </div>
         <!-- Modal body -->
-        <form action="#">
+        <form (ngSubmit)="updateAnnotationModal()" action="#" #updateForm="ngForm">
           <div class="grid gap-4 mb-4 sm:grid-cols-2">
             <div class="sm:col-span-2">
               <label
@@ -436,7 +459,14 @@
                 [(ngModel)]="selectedAnnotation.title"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
+                #titleFieldTwo="ngModel"
+                required
               />
+              <div *ngIf="(!titleFieldTwo.valid && (titleFieldTwo.touched || titleFieldTwo.dirty))">
+                <div *ngIf="titleFieldTwo.hasError('required')" class="invalidForm">
+                  *This field is required!
+                </div>
+              </div>
             </div>
 
             <div class="sm:col-span-2">
@@ -451,23 +481,32 @@
                 rows="5"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter annotation"
+                #descFieldTwo="ngModel"
+                required
               ></textarea>
+              <div *ngIf="(!descFieldTwo.valid && (descFieldTwo.dirty || descFieldTwo.touched))">
+                <div *ngIf="descFieldTwo.hasError('required')" class="invalidForm">
+                  *This field is required!
+                </div>
+              </div>
             </div>
           </div>
-          <div class="flex items-center space-x-4">
+          <div class="buttonError flex items-center space-x-4">
             <button
               type="submit"
               data-modal-toggle="updateAnnotationModal"
-              (click)="updateAnnotationModal()"
               class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              [disabled]="!updateForm.form.valid"
             >
               Update annotation
             </button>
+            <p class="hoverInvalid">*Can't submit till all fields are valid</p>
           </div>
         </form>
       </div>
     </div>
   </div>
+
   <!-- Read modal -->
   <div
     id="readAnnotationModal"
@@ -594,6 +633,7 @@
       </div>
     </div>
   </div>
+
   <!-- Delete modal -->
   <div
     id="deleteModal"

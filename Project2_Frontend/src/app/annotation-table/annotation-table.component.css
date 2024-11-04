@@ -1,0 +1,28 @@
+button:disabled{
+    background-color: grey;
+}
+
+.buttonError{
+    display: flex;
+    flex-direction: row;
+}
+
+.hoverInvalid{
+    color:rgba(240, 248, 255, 0);
+    vertical-align: middle;
+    margin-top: 10px;
+}
+
+.buttonError>button:disabled:hover + .hoverInvalid{
+    color:red;
+}
+
+.asterisk{
+    margin-left: 3px;
+    color:red;
+}
+
+.invalidForm{
+    color:red;
+    font-weight: bold;
+}
