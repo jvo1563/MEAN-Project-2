@@ -232,23 +232,23 @@ export class HttpService {
     );
   }
 
-  getAllUsers(): Observable<HttpResponse<UserEntity[]>>{
+  getAllUsers(): Observable<HttpResponse<any[]>>{
     
-    return this.httpClient.get<UserEntity[]>(this.aws_gw_url+this.private_user_endpoint,
+    return this.httpClient.get<any[]>(this.aws_gw_url+this.private_user_endpoint,
       {observe:'response'}
     );
   }
 
-  getUserById(user_id:number): Observable<HttpResponse<UserEntity>>{
+  getUserById(user_id:number): Observable<HttpResponse<any>>{
     
-    return this.httpClient.get<UserEntity>(this.aws_gw_url+this.private_user_endpoint + `/${user_id}`,
+    return this.httpClient.get<any>(this.aws_gw_url+this.private_user_endpoint + `/${user_id}`,
       {observe:'response'}
     );
   }
 
-  updateUser(user_id:number, diff_user: UserEntity): Observable<HttpResponse<UserEntity>>{
+  updateUser(user_id:number, diff_user: UserEntity): Observable<HttpResponse<any>>{
     
-    return this.httpClient.put<UserEntity>(this.aws_gw_url+this.private_user_endpoint + `/${user_id}`,
+    return this.httpClient.put<any>(this.aws_gw_url+this.private_user_endpoint + `/${user_id}`,
       {
         id: diff_user.id,
         email:diff_user.email,

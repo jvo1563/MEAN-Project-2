@@ -7,7 +7,7 @@ import { AnnotationInfo } from '../models/annotation-info';
 import { UserAuthService } from '../services/user-auth.service';
 import { CommonModule } from '@angular/common';
 import { initFlowbite, initModals, initDropdowns } from 'flowbite';
-import { FormsModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-annotation-table',
@@ -25,6 +25,7 @@ export class AnnotationTableComponent {
   annotationCount: number = 0;
   selectedAnnotation: Annotation = new Annotation();
   newAnnotationForm: Annotation = new Annotation();
+  pressFlag: boolean = false;
   @Output() refreshParent = new EventEmitter<void>();
 
   //note we are embedding this in the report details page and don't need to check auth, since parent will do that
@@ -32,7 +33,7 @@ export class AnnotationTableComponent {
     private route: ActivatedRoute,
     private router: Router,
     private httpService: HttpService,
-    private userAuthService: UserAuthService
+    private userAuthService: UserAuthService,
   ) {
     this.route.params.subscribe((data) => {
       this.annotationInfo.report_id = data['report_id'];
@@ -159,5 +160,9 @@ export class AnnotationTableComponent {
   onImageError(event: any) {
     event.target.src =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
+  }
+
+  submitAttempt(){
+    this.pressFlag = true;
   }
 }
