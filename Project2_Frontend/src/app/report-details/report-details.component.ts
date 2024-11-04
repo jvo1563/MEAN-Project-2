@@ -70,7 +70,7 @@ export class ReportDetailsComponent {
 
     this.route.params.subscribe((data) => {
       this.report.id = data['report_id'];
-      console.log('report id is: ' + this.report.id);
+      // console.log('report id is: ' + this.report.id);
       this.refreshReport();
       // this.httpService.getReportById(this.report.id).subscribe((data) => {
       //   if (data.body) {
@@ -147,18 +147,9 @@ export class ReportDetailsComponent {
             data.body.created_at,
             data.body.updated_at
           );
-          this.update_report_form = new Report(
-            data.body.id,
-            data.body.created_by,
-            data.body.assigned_to,
-            data.body.title,
-            data.body.description,
-            data.body.location,
-            data.body.category_id,
-            data.body.status_id,
-            data.body.created_at,
-            data.body.updated_at
-          );
+          // Used as a workaround to avoid reference issues
+          this.update_report_form = structuredClone(this.report);
+
           this.buis_entities = data.body.business_entities;
           this.annotationService.setAnnotation(
             new AnnotationInfo(data.body.id, data.body.annotations)
@@ -171,32 +162,30 @@ export class ReportDetailsComponent {
           if (data.body.user_created)
             this.report_created_by = data.body.user_created;
           else this.report_created_by.first_name = 'Anonymous';
-          setTimeout(() => {
-            initFlowbite();
-          }, 100);
+          this.refreshFlowbite();
         }
       });
     }
   }
 
-  resetReport() {
-    this.httpService.getReportById(this.report.id).subscribe((data) => {
-      // this.report = data.body
-      //   ? new Report(
-      //       data.body.id,
-      //       data.body.created_by,
-      //       data.body.assigned_to,
-      //       data.body.title,
-      //       data.body.description,
-      //       data.body.location,
-      //       data.body.category_id,
-      //       data.body.status_id,
-      //       data.body.created_at,
-      //       data.body.updated_at
-      //     )
-      //   : new Report(0, 0, 0, '', '', '', 0, 0, new Date(), new Date());
-    });
-  }
+  // resetReport() {
+  //   this.httpService.getReportById(this.report.id).subscribe((data) => {
+  //     this.report = data.body
+  //       ? new Report(
+  //           data.body.id,
+  //           data.body.created_by,
+  //           data.body.assigned_to,
+  //           data.body.title,
+  //           data.body.description,
+  //           data.body.location,
+  //           data.body.category_id,
+  //           data.body.status_id,
+  //           data.body.created_at,
+  //           data.body.updated_at
+  //         )
+  //       : new Report(0, 0, 0, '', '', '', 0, 0, new Date(), new Date());
+  //   });
+  // }
 
   updateReport() {
     this.update_report_form.updated_at = new Date();
@@ -226,14 +215,15 @@ export class ReportDetailsComponent {
     this.httpService.updateBuisness(entity.id, entity).subscribe((data) => {
       if (data.body) {
         console.log('Business Successful Update');
-        this.httpService.updateUpdatedAtReport(this.report.id, new Date()).subscribe(data=>{
-          if(data.body){
-            console.log("Report Updated After Business Update Too");
-          }
-          else{
-            console.log("!!! Report Updated After Business Update Error !!!");
-          }
-        });
+        this.httpService
+          .updateUpdatedAtReport(this.report.id, new Date())
+          .subscribe((data) => {
+            if (data.body) {
+              console.log('Report Updated After Business Update Too');
+            } else {
+              console.log('!!! Report Updated After Business Update Error !!!');
+            }
+          });
       } else {
         console.log('!!! Business Update Error !!!');
       }
@@ -252,15 +242,16 @@ export class ReportDetailsComponent {
       .subscribe((data) => {
         this.buis_entities = temp_entities;
         console.log('Business Successful Delete');
-        this.httpService.updateUpdatedAtReport(this.report.id, new Date()).subscribe(data=>{
-          if(data.body){
-            console.log("Report Updated After Business Update Too");
-            this.report.updated_at = data.body.updated_at;
-          }
-          else{
-            console.log("!!! Report Updated After Business Update Error !!!");
-          }
-        });
+        this.httpService
+          .updateUpdatedAtReport(this.report.id, new Date())
+          .subscribe((data) => {
+            if (data.body) {
+              console.log('Report Updated After Business Update Too');
+              this.report.updated_at = data.body.updated_at;
+            } else {
+              console.log('!!! Report Updated After Business Update Error !!!');
+            }
+          });
       });
   }
 
@@ -270,14 +261,15 @@ export class ReportDetailsComponent {
       if (data.body) {
         this.buis_entities.push(data.body);
         console.log('Business Successful Create');
-        this.httpService.updateUpdatedAtReport(this.report.id, new Date()).subscribe(data=>{
-          if(data.body){
-            console.log("Report Updated After Business Update Too");
-          }
-          else{
-            console.log("!!! Report Updated After Business Update Error !!!");
-          }
-        });
+        this.httpService
+          .updateUpdatedAtReport(this.report.id, new Date())
+          .subscribe((data) => {
+            if (data.body) {
+              console.log('Report Updated After Business Update Too');
+            } else {
+              console.log('!!! Report Updated After Business Update Error !!!');
+            }
+          });
         this.refreshReport();
       } else {
         console.log('!!! Business Create Error !!!');
@@ -288,6 +280,12 @@ export class ReportDetailsComponent {
 
   returnToTable() {
     this.router.navigate(['userLanding/reportTable']);
+  }
+
+  refreshFlowbite() {
+    setTimeout(() => {
+      initFlowbite();
+    }, 100);
   }
 
   onImageError(event: any) {

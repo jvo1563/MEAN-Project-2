@@ -43,7 +43,10 @@ export class Annotation {
   @IsNotEmpty()
   created_at: Timestamp;
 
-  @ManyToOne(() => User, (user) => user.annotations, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.annotations, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
   @JoinColumn({ name: 'created_by' })
   user: User;
 
