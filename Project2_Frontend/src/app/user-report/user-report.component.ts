@@ -9,110 +9,126 @@ import { CategoryEntity } from '../models/category-entity';
 import { HttpService } from '../services/http.service';
 import { StatusEntity } from '../models/status-entity';
 import { BuisnessCardComponent } from '../buisness-card/buisness-card.component';
+import { CommonModule } from '@angular/common';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-user-report',
   standalone: true,
-  imports: [FormsModule, BuisnessCardComponent],
+  imports: [FormsModule, BuisnessCardComponent, CommonModule],
   templateUrl: './user-report.component.html',
-  styleUrl: './user-report.component.css'
+  styleUrl: './user-report.component.css',
 })
 export class UserReportComponent {
-  user:UserInfo = new UserInfo(0,'','','');
-  report: Report = new Report(0,0,0,'','','',0,0,new Date(), new Date());
+  user: UserInfo = new UserInfo(0, '', '', '');
+  report: Report = new Report();
   buis_entities: BuisnessEntity[] = [];
-  buis_entity: BuisnessEntity = new BuisnessEntity(0,0,'','','','','','');
+  buis_entity: BuisnessEntity = new BuisnessEntity();
   categories: CategoryEntity[] = [];
   statuses: StatusEntity[] = [];
 
-  constructor(private userAuthService:UserAuthService, private router:Router, private httpService: HttpService){
-    this.userAuthService.userAuthObservable.subscribe(data=>{
+  constructor(
+    private userAuthService: UserAuthService,
+    private router: Router,
+    private httpService: HttpService
+  ) {
+    this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;
     });
 
-    if(!this.user.userToken){//check token auth
+    if (!this.user.userToken) {
+      //check token auth
       this.router.navigate(['']);
     }
 
-    this.httpService.getAllCategories().subscribe(data=>{
-      if(data.body){
+    this.httpService.getAllCategories().subscribe((data) => {
+      if (data.body) {
         this.categories = data.body;
         console.log(this.categories);
       }
     });
 
-    this.httpService.getAllStatus().subscribe(data=>{
-      if(data.body){
+    this.httpService.getAllStatus().subscribe((data) => {
+      if (data.body) {
         this.statuses = data.body;
       }
-    })
+    });
+    this.refreshFlowbite();
   }
 
   //order for submitting to BE should be identical to that of the anonymous report
-  submitReport(){
-    for(let status of this.statuses){//find id for pending
-      if(status.status_name === 'Pending'){
+  submitReport() {
+    for (let status of this.statuses) {
+      //find id for pending
+      if (status.status_name === 'Pending') {
         this.report.status_id = status.id;
       }
     }
 
-    this.report.created_by = this.user.userId;//set created_by to current user's id
+    this.report.created_by = this.user.userId; //set created_by to current user's id
 
     this.report.category_id = Number(this.report.category_id);
 
-
-    if(this.buis_entities.length){
+    if (this.buis_entities.length) {
       this.buis_entities[this.buis_entities.length - 1] = this.buis_entity;
     }
- 
-    console.log(this.report);
-    let newReportId:number = 0;
 
-    this.httpService.createReport(this.report).subscribe(data=>{
-      if(data.body){
+    console.log(this.report);
+    let newReportId: number = 0;
+
+    this.httpService.createReport(this.report).subscribe((data) => {
+      if (data.body) {
         console.log(data.body);
         newReportId = data.body.id;
-        if(newReportId === 0){
-          console.log("OH NO REPORT ID IS 00000000");
+        if (newReportId === 0) {
+          console.log('OH NO REPORT ID IS 00000000');
           this.router.navigate(['userLanding']);
-        }
-        else{
+        } else {
           console.log(`new id: ${newReportId}`);
-          for(let buis of this.buis_entities){
+          for (let buis of this.buis_entities) {
             buis.report_id = newReportId;
-            this.httpService.createBuisness(buis).subscribe(data=>{
+            this.httpService.createBuisness(buis).subscribe((data) => {
               console.log(data.body);
-            })
+            });
           }
           this.router.navigate(['userLanding']);
         }
       }
-    })
+    });
   }
 
-  updateBuisnessEntity(index:number, diffEntity:BuisnessEntity){
-    //doesn't actually do anything here
+  updateBuisnessEntity(index: number, diffEntity: BuisnessEntity) {
+    // Find entity at index and update it
+    this.buis_entities[index] = diffEntity;
   }
 
-  addBuisnessEntity(){
-    console.log(this.buis_entity);
+  // they need their own id for the modal to work
+  counter: number = 1;
+  addBuisnessEntity() {
+    this.buis_entity.id = this.counter;
+    this.counter++;
     this.buis_entities.push(this.buis_entity);
-    this.buis_entity = new BuisnessEntity(0,0,'','','','','','');
-    console.log(this.buis_entities);
+    this.buis_entity = new BuisnessEntity();
+    this.refreshFlowbite();
   }
-  
-  removeBuisnessEntity(index:number){
-    let temp_entities:BuisnessEntity[] = [];
-    for(let i=0; i < this.buis_entities.length; i++){
-      if(i !== index){
+
+  removeBuisnessEntity(index: number) {
+    let temp_entities: BuisnessEntity[] = [];
+    for (let i = 0; i < this.buis_entities.length; i++) {
+      if (i !== index) {
         temp_entities.push(this.buis_entities[i]);
       }
     }
     this.buis_entities = temp_entities;
   }
 
-
-  returnToLanding(){
+  returnToLanding() {
     this.router.navigate(['userLanding']);
+  }
+
+  refreshFlowbite() {
+    setTimeout(() => {
+      initFlowbite();
+    }, 100);
   }
 }
