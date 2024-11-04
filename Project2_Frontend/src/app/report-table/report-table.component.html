@@ -1,3 +1,14 @@
+<!--INCORPORTATE THIS!!! <td class="px-4 py-3">
+    <img
+      *ngIf="report_row.user.picture"
+      class="rounded-full w-6 h-6 inline mr-2"
+      [src]="report_row.user.picture"
+      (error)="onImageError($event)"
+      alt="pfp"
+    />{{ annotation.user.first_name }}
+    {{ annotation.user.last_name }}
+  </td> -->
+
 <main>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

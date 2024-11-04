@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { UserInfo } from '../models/user-info';
 import { UserAuthService } from '../services/user-auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { UserSpecificReportsComponent } from '../user-specific-reports/user-specific-reports.component';
 
 @Component({
   selector: 'app-user-landing',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, UserSpecificReportsComponent],
   templateUrl: './user-landing.component.html',
   styleUrl: './user-landing.component.css'
 })

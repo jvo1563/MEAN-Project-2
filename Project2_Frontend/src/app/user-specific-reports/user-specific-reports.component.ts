@@ -7,11 +7,13 @@ import { StatusEntity } from '../models/status-entity';
 import { CategoryEntity } from '../models/category-entity';
 import { HttpService } from '../services/http.service';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { UserEntity } from '../models/user-entity';
 
 @Component({
   selector: 'app-user-specific-reports',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './user-specific-reports.component.html',
   styleUrl: './user-specific-reports.component.css'
 })
@@ -20,12 +22,16 @@ export class UserSpecificReportsComponent {
   statuses: StatusEntity[] = [];
   categories: CategoryEntity[] = [];
   reports: Report[] =[]
+  reportsForUser: Report[] = [];
   reportsToDisplay: Report[] = [];
+  selectedReport: Report = new Report(0,0,0,'','','',0,0,new Date(), new Date());
   selectedStatus: number = 0;
   selectedAssignedTo: number = 0;
   selectedCreatedBy: number = 0;
   user_assigned_ids: number[] =[];
   user_created_ids: number[] =[];
+  currentPage:number = 0;
+  totalPages:number = 0;
 
   constructor(private userAuthService: UserAuthService, private router: Router, private httpService: HttpService){
     this.userAuthService.userAuthObservable.subscribe(data=>{
@@ -48,7 +54,7 @@ export class UserSpecificReportsComponent {
     if(this.user.userRole !== 'Admin'){
       this.httpService.getUserById(this.user.userId).subscribe(data=>{
         console.log(data.body);
-        this.reports = (data.body.reports)?data.body.reports.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; })=>{
+        this.reports = (data.body.reports)?data.body.reports.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; user_assigned: UserEntity; user_created: UserEntity; })=>{
             return new Report(
               report.id, 
               report.created_by, 
@@ -59,16 +65,20 @@ export class UserSpecificReportsComponent {
               report.category_id, 
               report.status_id, 
               report.created_at, 
-              report.updated_at);
+              report.updated_at,
+              new UserEntity(report?.user_assigned?.id, report?.user_assigned?.email, report?.user_assigned?.first_name, report?.user_assigned?.last_name, report?.user_assigned?.picture, report?.user_assigned?.role),
+              new UserEntity(report?.user_created?.id, report?.user_created?.email, report?.user_created?.first_name, report?.user_created?.last_name, report?.user_created?.picture, report?.user_created?.role)
+            );
           }
         ):[];
-        this.reportsToDisplay = this.reports;
+        this.reportsForUser = this.reports;
+        this.getPageOfReports();
       });
     }
     else{
       this.httpService.getAllReports().subscribe(data=>{
         console.log(data.body);
-        this.reports = (data.body)?data.body.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; })=>{
+        this.reports = (data.body)?data.body.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; user_assigned: UserEntity; user_created:UserEntity;})=>{
             return new Report(
               report.id, 
               report.created_by, 
@@ -79,13 +89,17 @@ export class UserSpecificReportsComponent {
               report.category_id, 
               report.status_id, 
               report.created_at, 
-              report.updated_at);
+              report.updated_at,
+              new UserEntity(report?.user_assigned?.id, report?.user_assigned?.email, report?.user_assigned?.first_name, report?.user_assigned?.last_name, report?.user_assigned?.picture, report?.user_assigned?.role),
+              new UserEntity(report?.user_created?.id, report?.user_created?.email, report?.user_created?.first_name, report?.user_created?.last_name, report?.user_created?.picture, report?.user_created?.role)
+            );
           }
         ):[];
 
-        this.reportsToDisplay = this.reports;
+        this.reportsForUser = this.reports;
         this.listUserAssignedIds();
         this.listUserCreatedIds();
+        this.getPageOfReports();
       });
     }
   }
@@ -135,7 +149,7 @@ export class UserSpecificReportsComponent {
 
   filter(){
     let tempReports: Report[] = this.reports;
-    this.reportsToDisplay = [];
+    this.reportsForUser = [];
     this.selectedStatus = Number(this.selectedStatus);
     this.selectedAssignedTo = Number(this.selectedAssignedTo);
     this.selectedCreatedBy = Number(this.selectedCreatedBy);
@@ -172,7 +186,8 @@ export class UserSpecificReportsComponent {
       });
     }
 
-    this.reportsToDisplay = tempReports;
+    this.reportsForUser = tempReports;
+    this.getPageOfReports();
   }
 
 
@@ -199,7 +214,38 @@ export class UserSpecificReportsComponent {
 
 
 
-  returnToLanding(){
-    this.router.navigate([`userLanding`]);
+  getPageOfReports() {
+    //here we would use currentPage and report id to get the corrent range of annotations(5 per page)
+    //but for now since no BE yet we'll use the above as our mock db, comment above and below out when BE
+    //active
+    let result: Report[] = [];
+    for (let i = 0; i < this.reportsForUser.length; i++) {
+      if (i >= this.currentPage * 5 && i < (this.currentPage + 1) * 5) {
+        result.push(this.reportsForUser[i]);
+      }
+    }
+    this.reportsToDisplay = result;
+
+    this.totalPages = Math.ceil(this.reportsForUser.length/5);
+  }
+
+  backPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
+    this.getPageOfReports();
+  }
+
+  //divide length and ceil to get number of pages... 5 annotation rows per page
+  forwardPage() {
+    if (this.currentPage < Math.ceil(this.reportsForUser.length / 5) - 1) {
+      this.currentPage++;
+    }
+    this.getPageOfReports();
+  }
+
+  onImageError(event: any) {
+    event.target.src =
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
   }
 }
