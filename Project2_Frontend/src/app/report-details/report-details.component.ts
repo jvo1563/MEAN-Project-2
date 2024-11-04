@@ -186,6 +186,9 @@ export class ReportDetailsComponent {
   //       : new Report(0, 0, 0, '', '', '', 0, 0, new Date(), new Date());
   //   });
   // }
+  resetReportUpdateForm() {
+    this.update_report_form = structuredClone(this.report);
+  }
 
   updateReport() {
     this.update_report_form.updated_at = new Date();

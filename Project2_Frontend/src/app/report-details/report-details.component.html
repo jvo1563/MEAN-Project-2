@@ -276,39 +276,96 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form action="#">
+      <form #updateReportForm="ngForm">
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <label
               for="update_report_form.title"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateReportFormTitle.invalid && updateReportFormTitle.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateReportFormTitle.invalid && updateReportFormTitle.touched
+              }"
               >Subject</label
             >
             <input
               type="text"
               name="update_report_form.title"
               id="update_report_form.title"
+              #updateReportFormTitle="ngModel"
               [(ngModel)]="update_report_form.title"
               placeholder="Enter title"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateReportFormTitle.invalid && updateReportFormTitle.touched
+              }"
+              required
+              minlength="4"
             />
+            <div
+              *ngIf="
+                updateReportFormTitle.invalid &&
+                (updateReportFormTitle.dirty || updateReportFormTitle.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateReportFormTitle.hasError('required')">
+                Title is required.
+              </div>
+              <div *ngIf="updateReportFormTitle.hasError('minlength')">
+                Title must be at least 4 characters long.
+              </div>
+            </div>
           </div>
 
           <div class="sm:col-span-2">
             <label
               for="update_report_form.location"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Location</label
+              [ngClass]="{
+                'block mb-2 text-sm font-medium ': true,
+                'text-gray-900 dark:text-white': !(
+                  updateReportFormLocation.invalid &&
+                  updateReportFormLocation.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateReportFormLocation.invalid &&
+                  updateReportFormLocation.touched
+              }"
+              >Location of Incident(s)</label
             >
             <input
               type="text"
               name="update_report_form.location"
               id="update_report_form.location"
+              #updateReportFormLocation="ngModel"
               [(ngModel)]="update_report_form.location"
               placeholder="Enter location"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateReportFormLocation.invalid &&
+                  updateReportFormLocation.touched
+              }"
+              required
             />
+            <div
+              *ngIf="
+                updateReportFormLocation.invalid &&
+                (updateReportFormLocation.dirty ||
+                  updateReportFormLocation.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateReportFormLocation.hasError('required')">
+                Location is required.
+              </div>
+            </div>
           </div>
+
           @if(user.userRole === 'Admin') {
           <div class="sm:col-span-2">
             <label
@@ -374,23 +431,55 @@
           <div class="sm:col-span-2">
             <label
               for="update_report_form.description"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              [ngClass]="{
+                'block mb-2 text-sm font-medium': true,
+                'text-gray-900 dark:text-white': !(
+                  updateReportFormDescription.invalid &&
+                  updateReportFormDescription.touched
+                ),
+                'text-red-700 dark:text-red-500':
+                  updateReportFormDescription.invalid &&
+                  updateReportFormDescription.touched
+              }"
               >Description</label
             >
             <textarea
               id="update_report_form.description"
               name="update_report_form.description"
+              #updateReportFormDescription="ngModel"
               [(ngModel)]="update_report_form.description"
-              rows="5"
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              rows="8"
+              [ngClass]="{
+                'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500': true,
+                'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 block  dark:text-red-500 dark:placeholder-red-500 dark:border-red-500':
+                  updateReportFormDescription.invalid &&
+                  updateReportFormDescription.touched
+              }"
               placeholder="Write a description..."
+              required=""
+              minlength="4"
             ></textarea>
+            <div
+              *ngIf="
+                updateReportFormDescription.invalid &&
+                (updateReportFormDescription.dirty ||
+                  updateReportFormDescription.touched)
+              "
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <div *ngIf="updateReportFormDescription.hasError('required')">
+                Description is required.
+              </div>
+              <div *ngIf="updateReportFormDescription.hasError('minlength')">
+                Description must be at least 4 characters long.
+              </div>
+            </div>
           </div>
         </div>
         <div class="flex items-center space-x-4">
           <button
             type="submit"
-            data-modal-target="updateReportModal"
+            [disabled]="!updateReportForm.form.valid"
             data-modal-hide="updateReportModal"
             (click)="updateReport()"
             class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -399,7 +488,7 @@
           </button>
           <button
             type="button"
-            (click)="refreshReport()"
+            (click)="resetReportUpdateForm()"
             class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
           >
             <svg
