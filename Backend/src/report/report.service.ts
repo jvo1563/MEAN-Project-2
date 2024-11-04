@@ -31,6 +31,25 @@ export class ReportService {
       });
   }
 
+  // Get report by Assigned User ID
+  async getReportsByAssignedId(user_id: number): Promise<Report[]> {
+    return this.repo
+      .find({ where: { assigned_to: user_id } })
+      .then((report) => {
+        if (!report)
+          throw new HttpException('Report not found', HttpStatus.NOT_FOUND);
+        return report;
+      })
+      .catch((error) => {
+        if (error instanceof HttpException) throw error;
+        // If given ID param is invalid (not a number)
+        if (error.code == '22P02')
+          throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+        // Unexpected Error
+        throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
+  }
+
   // Create new report
   async createReport(report: Report): Promise<Report> {
     delete report.id;

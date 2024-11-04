@@ -6,11 +6,12 @@ import { Report } from '../models/report';
 import { StatusEntity } from '../models/status-entity';
 import { CategoryEntity } from '../models/category-entity';
 import { HttpService } from '../services/http.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-report-table',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './report-table.component.html',
   styleUrl: './report-table.component.css'
 })
@@ -18,9 +19,13 @@ export class ReportTableComponent {
   user: UserInfo = new UserInfo(0,'', '', '');
   statuses: StatusEntity[] = [];
   categories: CategoryEntity[] = [];
-  
-
   reports: Report[] =[]
+  reportsToDisplay: Report[] = [];
+  selectedStatus: number = 0;
+  selectedAssignedTo: number = 0;
+  selectedCreatedBy: number = 0;
+  user_assigned_ids: number[] =[];
+  user_created_ids: number[] =[];
 
   constructor(private userAuthService: UserAuthService, private router: Router, private httpService: HttpService){
     this.userAuthService.userAuthObservable.subscribe(data=>{
@@ -39,7 +44,7 @@ export class ReportTableComponent {
     if(!this.user.userToken){
       this.router.navigate(['']);
     }
-
+    console.log(this.user)
     this.httpService.getAllReports().subscribe(data=>{
       console.log(data.body);
       this.reports = (data.body)?data.body.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; })=>{
@@ -56,6 +61,8 @@ export class ReportTableComponent {
             report.updated_at);
         }
       ):[];
+
+      this.reportsToDisplay = this.reports;
     });
   }
 
@@ -95,7 +102,6 @@ export class ReportTableComponent {
       });
     }
   }
-
 
   returnToLanding(){
     this.router.navigate([`userLanding`]);
