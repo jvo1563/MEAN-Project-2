@@ -1,54 +1,68 @@
 <main>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">Report</th>
-                    <th scope="col" class="px-6 py-3">Created By</th>
-                    <th scope="col" class="px-6 py-3">Assigned To</th>
-                    <th scope="col" class="px-6 py-3">Title</th>
-                    <th scope="col" class="px-6 py-3">Location</th>
-                    <th scope="col" class="px-6 py-3">Category</th>
-                    <th scope="col" class="px-6 py-3">Created At</th>
-                    <th scope="col" class="px-6 py-3">Updated At</th>
-                    <th scope="col" class="px-6 py-3">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for(report of reportsToDisplay; track $index){
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4">{{report.id}}</td>
-                        @if(report.created_by !== 0){
-                            <td class="px-6 py-4">{{report.created_by}}</td>
-                        }
-                        @else{
-                            <td class="px-6 py-4">NA</td>
-                        }
-                        @if(report.assigned_to !== 0){
-                            <td class="px-6 py-4">{{report.assigned_to}}</td>
-                        }
-                        @else{
-                            <td class="px-6 py-4">NA</td>
-                        }
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{report.title}}</th>
-                        <td class="px-6 py-4">{{report.location}}</td>
-                        <td class="px-6 py-4">{{findCategory(report.category_id)}}</td>
-                        <td class="px-6 py-4">{{report.created_at}}</td>
-                        <td class="px-6 py-4">{{report.updated_at}}</td>
-                        <td class="px-6 py-4">{{findStatus(report.status_id)}}</td>
-                        <div class="rowButton">
-                            <button type="button" (click)="reportDetails(report.id)">Report Details</button>
-                            @if(user.userRole === 'Admin'){
-                                <button type="button" (click)="deleteReport(report.id)">Delete</button>
-                            }
-                        </div>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3">Report</th>
+          <th scope="col" class="px-6 py-3">Created By</th>
+          <th scope="col" class="px-6 py-3">Assigned To</th>
+          <th scope="col" class="px-6 py-3">Title</th>
+          <th scope="col" class="px-6 py-3">Location</th>
+          <th scope="col" class="px-6 py-3">Category</th>
+          <th scope="col" class="px-6 py-3">Created At</th>
+          <th scope="col" class="px-6 py-3">Updated At</th>
+          <th scope="col" class="px-6 py-3">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(report of reportsToDisplay; track $index){
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          <td class="px-6 py-4">{{ report.id }}</td>
+          @if(report.created_by !== 0){
+          <td class="px-6 py-4">{{ report.created_by }}</td>
+          } @else{
+          <td class="px-6 py-4">NA</td>
+          } @if(report.assigned_to !== 0){
+          <td class="px-6 py-4">{{ report.assigned_to }}</td>
+          } @else{
+          <td class="px-6 py-4">NA</td>
+          }
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ report.title }}
+          </th>
+          <td class="px-6 py-4">{{ report.location }}</td>
+          <td class="px-6 py-4">{{ findCategory(report.category_id) }}</td>
+          <td class="px-6 py-4">{{ report.created_at | date : "medium" }}</td>
+          <td class="px-6 py-4">{{ report.updated_at | date : "medium" }}</td>
+          <td class="px-6 py-4">{{ findStatus(report.status_id) }}</td>
+          <div class="rowButton">
+            <button type="button" (click)="reportDetails(report.id)">
+              Report Details
+            </button>
+            @if(user.userRole === 'Admin'){
+            <button type="button" (click)="deleteReport(report.id)">
+              Delete
+            </button>
+            }
+          </div>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 
-    <div class="returnButton">
-        <button type="button" (click)="returnToLanding()">Return to User Home</button>
-    </div>
+  <div class="returnButton">
+    <button type="button" (click)="returnToLanding()">
+      Return to User Home
+    </button>
+  </div>
 </main>
