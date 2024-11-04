@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UserAuthService {
-  constructor(private route: Router) {
+  constructor(private router: Router) {
     // Optional: Listen to storage events for multi-tab support
     window.addEventListener('storage', () => {
       this.userAuthSubject.next(this.getUserFromStorage());
       if (!localStorage.getItem('auth_token')) {
-        this.route.navigate(['/']);
+        this.router.navigate(['']);
       }
     });
   }
