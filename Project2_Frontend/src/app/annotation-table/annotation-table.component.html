@@ -468,9 +468,10 @@
             <div class="sm:col-span-2">
               <label
                 for="selectedAnnotation.title"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Title</label
               >
+              <span class="asterisk">*</span>
               <input
                 type="text"
                 name="selectedAnnotation.title"
@@ -499,9 +500,11 @@
             <div class="sm:col-span-2">
               <label
                 for="selectedAnnotation.annotation"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Annotation</label
-              ><textarea
+              >
+              <span class="asterisk">*</span>
+              <textarea
                 id="selectedAnnotation.annotation"
                 name="selectedAnnotation.annotation"
                 [(ngModel)]="selectedAnnotation.annotation"
