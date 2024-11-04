@@ -211,6 +211,12 @@ export class ReportDetailsComponent {
       });
   }
 
+  deleteReport() {
+    this.httpService.deleteReport(this.report.id).subscribe(() => {
+      this.router.navigate(['/userLanding']);
+    });
+  }
+
   //Should we call update report here? Want to update the last updated at time stamp....!!!
   //enable editing, adding, or removing businesses associated with this report
   updateBuisnessEntity(index: number, entity: BuisnessEntity) {
