@@ -7,11 +7,12 @@ import {
 } from '@angular/core';
 import { BuisnessEntity } from '../models/buisness-entity';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-buisness-card',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './buisness-card.component.html',
   styleUrl: './buisness-card.component.css',
 })
