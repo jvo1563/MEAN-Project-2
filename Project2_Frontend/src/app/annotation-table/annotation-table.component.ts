@@ -17,12 +17,14 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './annotation-table.component.css',
 })
 export class AnnotationTableComponent {
-  user: UserInfo = new UserInfo(0, '', '', '', '', '', '');
+  user: UserInfo = new UserInfo();
   annotationInfo: AnnotationInfo = new AnnotationInfo(0, []);
   annotationsToDisplay: Annotation[] = [];
   currentPage: number = 0;
+  totalPages: number = 1;
   annotationCount: number = 0;
   selectedAnnotation: Annotation = new Annotation();
+  newAnnotationForm: Annotation = new Annotation();
 
   //note we are embedding this in the report details page and don't need to check auth, since parent will do that
   constructor(
@@ -51,8 +53,8 @@ export class AnnotationTableComponent {
           // sort temp_annotations by id
           temp_annotations.sort((a, b) => a.id - b.id);
           this.annotationInfo.annotations = temp_annotations;
-
           this.annotationCount = this.annotationInfo.annotations.length;
+          this.totalPages = Math.ceil(this.annotationCount / 5);
           this.getPageOfAnnotations();
         }
         this.refreshFlowbite();
@@ -70,6 +72,7 @@ export class AnnotationTableComponent {
       }
     }
     this.annotationsToDisplay = result;
+    this.refreshFlowbite();
   }
 
   backPage() {
@@ -95,19 +98,33 @@ export class AnnotationTableComponent {
     ]);
   }
 
+  createAnnotation() {
+    this.newAnnotationForm.created_by = this.user.userId;
+    this.newAnnotationForm.report_id = this.annotationInfo.report_id;
+    this.httpService
+      .createAnnotation(this.newAnnotationForm)
+      .subscribe((data) => {
+        console.log('Annotation Created Successfully');
+        this.refreshAnnotations();
+      });
+    this.newAnnotationForm = new Annotation();
+  }
+
   deleteAnnotation(annotation_id: number) {
     if (this.user.userRole === 'Admin') {
       this.httpService.deleteAnnotation(annotation_id).subscribe((data) => {
         console.log('Annotation Delete Success!');
-        let tempAnnotations: Annotation[] = [];
-        for (let annotation of this.annotationInfo.annotations) {
-          if (annotation.id !== annotation_id) {
-            tempAnnotations.push(annotation);
-          }
-        }
-        this.annotationInfo.annotations = tempAnnotations;
+        // let tempAnnotations: Annotation[] = [];
+        // for (let annotation of this.annotationInfo.annotations) {
+        //   if (annotation.id !== annotation_id) {
+        //     tempAnnotations.push(annotation);
+        //   }
+        // }
         this.currentPage = 0;
-        this.getPageOfAnnotations();
+        // this.annotationInfo.annotations = tempAnnotations;
+        // this.getPageOfAnnotations();
+        // this.refreshFlowbite();
+        this.refreshAnnotations();
       });
     }
   }
@@ -135,5 +152,9 @@ export class AnnotationTableComponent {
     setTimeout(() => {
       initFlowbite();
     }, 100);
+  }
+  onImageError(event: any) {
+    event.target.src =
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
   }
 }

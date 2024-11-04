@@ -1,3 +1,5 @@
+import { UserEntity } from './user-entity';
+
 export class Annotation {
   id: number;
   report_id: number;
@@ -5,6 +7,7 @@ export class Annotation {
   title: string;
   annotation: string;
   created_at: Date;
+  user: UserEntity;
 
   constructor(
     id: number = 0,
@@ -12,7 +15,8 @@ export class Annotation {
     created_by: number = 0,
     title: string = '',
     annotation: string = '',
-    created_at: Date = new Date()
+    created_at: Date = new Date(),
+    user: UserEntity = new UserEntity()
   ) {
     this.id = id;
     this.report_id = report_id;
@@ -20,5 +24,6 @@ export class Annotation {
     this.title = title;
     this.annotation = annotation;
     this.created_at = created_at;
+    this.user = user;
   }
 }
