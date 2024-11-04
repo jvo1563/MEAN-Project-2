@@ -186,6 +186,9 @@ export class ReportDetailsComponent {
   //       : new Report(0, 0, 0, '', '', '', 0, 0, new Date(), new Date());
   //   });
   // }
+  resetReportUpdateForm() {
+    this.update_report_form = structuredClone(this.report);
+  }
 
   updateReport() {
     this.update_report_form.updated_at = new Date();
@@ -206,6 +209,12 @@ export class ReportDetailsComponent {
           console.log('!!! Report Update Error !!!');
         }
       });
+  }
+
+  deleteReport() {
+    this.httpService.deleteReport(this.report.id).subscribe(() => {
+      this.router.navigate(['/userLanding']);
+    });
   }
 
   //Should we call update report here? Want to update the last updated at time stamp....!!!

@@ -65,7 +65,7 @@
             type="button"
             id="updateBusinessButton"
             [attr.data-modal-target]="'updateBusinessModal' + buis_entity.id"
-            [attr.data-modal-toggle]="'updateBusinessModal' + buis_entity.id"
+            [attr.data-modal-show]="'updateBusinessModal' + buis_entity.id"
             class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >
             <svg
@@ -134,7 +134,7 @@
         <button
           type="button"
           class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          [attr.data-modal-toggle]="'updateBusinessModal' + buis_entity.id"
+          [attr.data-modal-hide]="'updateBusinessModal' + buis_entity.id"
         >
           <svg
             aria-hidden="true"
@@ -431,7 +431,7 @@
             type="submit"
             [disabled]="!updateBusinessForm.form.valid"
             (click)="updateEntity()"
-            [attr.data-modal-toggle]="'updateBusinessModal' + buis_entity.id"
+            [attr.data-modal-hide]="'updateBusinessModal' + buis_entity.id"
             class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >
             Update business
