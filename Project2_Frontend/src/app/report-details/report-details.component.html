@@ -1,4 +1,5 @@
 <main class="">
+  <!-- Return to table button -->
   <div
     class="absolute top-24 right-10 p-4 space-x-2 flex items-center justify-between"
   >
@@ -217,7 +218,8 @@
         Businesses Associated With Crime
       </h2>
     </div>
-    @for(entity of buis_entities; track $index) { @if(entity.report_id !== 0) {
+    @for(entity of buis_entities; track entity.id) { @if(entity.report_id !== 0)
+    {
     <app-buisness-card
       [buis_entity]="entity"
       (updateEvent)="updateBuisnessEntity($index, $event)"
@@ -225,14 +227,15 @@
     ></app-buisness-card>
     }}}
   </section>
-  <section class="annotations">
+  <!-- Annotation Table Section -->
+  <section>
     <app-annotation-table
       (refreshParent)="refreshReport()"
     ></app-annotation-table>
   </section>
 </main>
 
-<!-- Report modal -->
+<!-- Report edit modal -->
 <div
   id="updateReportModal"
   tabindex="-1"
@@ -424,7 +427,7 @@
     </div>
   </div>
 </div>
-<!-- !Report modal -->
+<!-- !Report edit modal -->
 
 <!-- New business entity modal -->
 <div

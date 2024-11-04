@@ -23,6 +23,7 @@ export class BuisnessCardComponent {
   @Output() deleteEvent = new EventEmitter<void>();
 
   ngOnInit() {
+    console.log(this.buis_entity);
     this.buis_entity_form = structuredClone(this.buis_entity);
   }
 
