@@ -81,6 +81,10 @@ export class HttpService {
     return this.httpClient.get<any>(this.aws_gw_url+this.private_report_endpoint+`/${report_id}`, {observe: 'response'});
   }
 
+  getReportsByAssignedId(user_id: number): Observable<HttpResponse<any>>{
+    return this.httpClient.get<any>(this.aws_gw_url+this.private_report_endpoint+`/assigned_to/${user_id}`, {observe: 'response'});
+  }
+
   updateReport(report_id:number,diff_report:Report): Observable<HttpResponse<any>>{
     
     return this.httpClient.put<any>(this.aws_gw_url + this.private_report_endpoint + `/${report_id}`, 

@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import { Report } from './report';
 import { DeleteResult } from 'typeorm';
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
+import { Request } from 'express';
 
 @Controller('report')
 export class ReportController {
@@ -24,6 +26,12 @@ export class ReportController {
   @HttpCode(200)
   getAllReports(): Promise<Report[]> {
     return this.service.getAllReports();
+  }
+
+  @Get('assigned_to/:userid')
+  @HttpCode(200)
+  getReportsByAssignedId(@Param('userid') userid: number): Promise<Report[]> {
+    return this.service.getReportsByAssignedId(userid);
   }
 
   @Get(':id')
