@@ -1,5 +1,7 @@
 <main class="">
-  <div class="px-4 mx-auto mt-5">
+  <div
+    class="absolute top-24 right-10 p-4 space-x-2 flex items-center justify-between"
+  >
     <button
       type="button"
       (click)="returnToTable()"
@@ -224,7 +226,9 @@
     }}}
   </section>
   <section class="annotations">
-    <app-annotation-table></app-annotation-table>
+    <app-annotation-table
+      (refreshParent)="refreshReport()"
+    ></app-annotation-table>
   </section>
 </main>
 

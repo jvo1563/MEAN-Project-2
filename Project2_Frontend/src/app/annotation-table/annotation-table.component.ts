@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserInfo } from '../models/user-info';
 import { Annotation } from '../models/annotation';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +25,7 @@ export class AnnotationTableComponent {
   annotationCount: number = 0;
   selectedAnnotation: Annotation = new Annotation();
   newAnnotationForm: Annotation = new Annotation();
+  @Output() refreshParent = new EventEmitter<void>();
 
   //note we are embedding this in the report details page and don't need to check auth, since parent will do that
   constructor(
@@ -44,6 +45,7 @@ export class AnnotationTableComponent {
     });
   }
 
+  // Get Annotations from API
   refreshAnnotations() {
     this.httpService
       .getReportById(this.annotationInfo.report_id)
@@ -92,12 +94,6 @@ export class AnnotationTableComponent {
     this.refreshFlowbite();
   }
 
-  addAnnotation() {
-    this.router.navigate([
-      `userLanding/reportTable/reportDetails/addAnnotation/${this.annotationInfo.report_id}`,
-    ]);
-  }
-
   createAnnotation() {
     this.newAnnotationForm.created_by = this.user.userId;
     this.newAnnotationForm.report_id = this.annotationInfo.report_id;
@@ -106,7 +102,9 @@ export class AnnotationTableComponent {
       .subscribe((data) => {
         console.log('Annotation Created Successfully');
         this.refreshAnnotations();
+        this.updateReportLastUpdated();
       });
+    // Reset create form
     this.newAnnotationForm = new Annotation();
   }
 
@@ -125,6 +123,7 @@ export class AnnotationTableComponent {
         // this.getPageOfAnnotations();
         // this.refreshFlowbite();
         this.refreshAnnotations();
+        this.updateReportLastUpdated();
       });
     }
   }
@@ -133,15 +132,18 @@ export class AnnotationTableComponent {
     this.httpService
       .updateAnnotation(this.selectedAnnotation.id, this.selectedAnnotation)
       .subscribe((data) => {
-        // console.log('Annotation Updated Successfully');
-        this, this.refreshAnnotations();
+        console.log('Annotation Updated Successfully');
+        this.refreshAnnotations();
+        this.updateReportLastUpdated();
       });
   }
 
-  details(annotationId: number) {
-    this.router.navigate([
-      `userLanding/reportTable/reportDetails/annotationDetails/${annotationId}`,
-    ]);
+  updateReportLastUpdated() {
+    this.httpService
+      .updateUpdatedAtReport(this.annotationInfo.report_id, new Date())
+      .subscribe((data) => {
+        this.refreshParent.emit();
+      });
   }
 
   openModal(annotation: Annotation) {
@@ -153,6 +155,7 @@ export class AnnotationTableComponent {
       initFlowbite();
     }, 100);
   }
+
   onImageError(event: any) {
     event.target.src =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
