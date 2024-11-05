@@ -9,52 +9,77 @@ import { HttpService } from '../services/http.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserEntity } from '../models/user-entity';
+import { initDropdowns, initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-user-specific-reports',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './user-specific-reports.component.html',
-  styleUrl: './user-specific-reports.component.css'
+  styleUrl: './user-specific-reports.component.css',
 })
 export class UserSpecificReportsComponent {
-  user: UserInfo = new UserInfo(0,'', '', '');
+  user: UserInfo = new UserInfo(0, '', '', '');
   statuses: StatusEntity[] = [];
   categories: CategoryEntity[] = [];
-  reports: Report[] =[]
+  reports: Report[] = [];
   reportsForUser: Report[] = [];
   reportsToDisplay: Report[] = [];
-  selectedReport: Report = new Report(0,0,0,'','','',0,0,new Date(), new Date());
+  selectedReport: Report = new Report(
+    0,
+    0,
+    0,
+    '',
+    '',
+    '',
+    0,
+    0,
+    new Date(),
+    new Date()
+  );
   selectedStatus: number = 0;
   selectedAssignedTo: number = 0;
   selectedCreatedBy: number = 0;
-  user_assigned_ids: number[] =[];
-  user_created_ids: number[] =[];
-  currentPage:number = 0;
-  totalPages:number = 0;
+  user_assigned_ids: number[] = [];
+  user_created_ids: number[] = [];
+  currentPage: number = 0;
+  totalPages: number = 0;
 
-  constructor(private userAuthService: UserAuthService, private router: Router, private httpService: HttpService){
-    this.userAuthService.userAuthObservable.subscribe(data=>{
+  constructor(
+    private userAuthService: UserAuthService,
+    private router: Router,
+    private httpService: HttpService
+  ) {
+    this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;
     });
-    
-    this.httpService.getAllCategories().subscribe(data=>{
-      this.categories = (data.body)?data.body:[];
-    })
 
+<<<<<<< HEAD
     this.httpService.getAllStatus().subscribe(data=>{
       this.statuses = (data.body)?data.body:[];
       console.log("Statuses Populated!");
     })
+=======
+    this.httpService.getAllCategories().subscribe((data) => {
+      this.categories = data.body ? data.body : [];
+      this.refreshFlowbite();
+    });
+
+    this.httpService.getAllStatus().subscribe((data) => {
+      this.statuses = data.body ? data.body : [];
+      this.refreshFlowbite();
+    });
+>>>>>>> 39c635ec3f6ea05d66ed91462820351241ba08b4
 
     // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
-    if(!this.user.userToken){
+    if (!this.user.userToken) {
       this.router.navigate(['']);
     }
-    console.log(this.user)
-    if(this.user.userRole !== 'Admin'){
-      this.httpService.getUserById(this.user.userId).subscribe(data=>{
+    console.log(this.user);
+    if (this.user.userRole !== 'Admin') {
+      this.httpService.getUserById(this.user.userId).subscribe((data) => {
         console.log(data.body);
+<<<<<<< HEAD
         this.reports = (data.body.assigned_reports)?data.body.assigned_reports.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; user_assigned: UserEntity; user_created: UserEntity; })=>{
             return new Report(
               report.id, 
@@ -72,116 +97,189 @@ export class UserSpecificReportsComponent {
             );
           }
         ):[];
+=======
+        this.reports = data.body.assigned_reports
+          ? data.body.assigned_reports.map(
+              (report: {
+                id: number;
+                created_by: number;
+                assigned_to: number;
+                title: string;
+                description: string;
+                location: string;
+                category_id: number;
+                status_id: number;
+                created_at: Date;
+                updated_at: Date;
+                user_assigned: UserEntity;
+                user_created: UserEntity;
+              }) => {
+                console.log('are we here');
+                console.log(data.body);
+                return new Report(
+                  report.id,
+                  report.created_by,
+                  report.assigned_to,
+                  report.title,
+                  report.description,
+                  report.location,
+                  report.category_id,
+                  report.status_id,
+                  report.created_at,
+                  report.updated_at,
+                  new UserEntity(
+                    report?.user_assigned?.id,
+                    report?.user_assigned?.email,
+                    report?.user_assigned?.first_name,
+                    report?.user_assigned?.last_name,
+                    report?.user_assigned?.picture,
+                    report?.user_assigned?.role
+                  ),
+                  new UserEntity(
+                    report?.user_created?.id,
+                    report?.user_created?.email,
+                    report?.user_created?.first_name,
+                    report?.user_created?.last_name,
+                    report?.user_created?.picture,
+                    report?.user_created?.role
+                  )
+                );
+              }
+            )
+          : [];
+>>>>>>> 39c635ec3f6ea05d66ed91462820351241ba08b4
         this.reportsForUser = this.reports;
         this.getPageOfReports();
+        this.refreshFlowbite();
       });
-    }
-    else{
-      this.httpService.getAllReports().subscribe(data=>{
+    } else {
+      this.httpService.getAllReports().subscribe((data) => {
         console.log(data.body);
-        this.reports = (data.body)?data.body.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; user_assigned: UserEntity; user_created:UserEntity;})=>{
-            return new Report(
-              report.id, 
-              report.created_by, 
-              report.assigned_to, 
-              report.title, 
-              report.description, 
-              report.location, 
-              report.category_id, 
-              report.status_id, 
-              report.created_at, 
-              report.updated_at,
-              new UserEntity(report?.user_assigned?.id, report?.user_assigned?.email, report?.user_assigned?.first_name, report?.user_assigned?.last_name, report?.user_assigned?.picture, report?.user_assigned?.role),
-              new UserEntity(report?.user_created?.id, report?.user_created?.email, report?.user_created?.first_name, report?.user_created?.last_name, report?.user_created?.picture, report?.user_created?.role)
-            );
-          }
-        ):[];
+        this.reports = data.body
+          ? data.body.map(
+              (report: {
+                id: number;
+                created_by: number;
+                assigned_to: number;
+                title: string;
+                description: string;
+                location: string;
+                category_id: number;
+                status_id: number;
+                created_at: Date;
+                updated_at: Date;
+                user_assigned: UserEntity;
+                user_created: UserEntity;
+              }) => {
+                return new Report(
+                  report.id,
+                  report.created_by,
+                  report.assigned_to,
+                  report.title,
+                  report.description,
+                  report.location,
+                  report.category_id,
+                  report.status_id,
+                  report.created_at,
+                  report.updated_at,
+                  new UserEntity(
+                    report?.user_assigned?.id,
+                    report?.user_assigned?.email,
+                    report?.user_assigned?.first_name,
+                    report?.user_assigned?.last_name,
+                    report?.user_assigned?.picture,
+                    report?.user_assigned?.role
+                  ),
+                  new UserEntity(
+                    report?.user_created?.id,
+                    report?.user_created?.email,
+                    report?.user_created?.first_name,
+                    report?.user_created?.last_name,
+                    report?.user_created?.picture,
+                    report?.user_created?.role
+                  )
+                );
+              }
+            )
+          : [];
 
         this.reportsForUser = this.reports;
         this.listUserAssignedIds();
         this.listUserCreatedIds();
         this.getPageOfReports();
+        this.refreshFlowbite();
       });
     }
   }
 
-  
-
-  findCategory(cat_id:number){
-    for(let category of this.categories){
-      if(category.id === cat_id){
+  findCategory(cat_id: number) {
+    for (let category of this.categories) {
+      if (category.id === cat_id) {
         return category.category_name;
       }
     }
     return 'NA';
   }
 
-  findStatus(status_id:number){
-    for(let status of this.statuses){
-      if(status.id === status_id){
+  findStatus(status_id: number) {
+    for (let status of this.statuses) {
+      if (status.id === status_id) {
         return status.status_name;
       }
     }
     return 'NA';
   }
 
-
-
-  reportDetails(reportId:number){
+  reportDetails(reportId: number) {
     this.router.navigate([`userLanding/reportTable/reportDetails/${reportId}`]);
   }
 
-  deleteReport(reportId:number){
-    if(this.user.userRole === 'Admin'){
-      this.httpService.deleteReport(reportId).subscribe(data=>{
-        console.log("Report Delete Success!");
-        let tempReports:Report[] = [];
-        for(let report of this.reports){
-          if(report.id !== reportId){
+  deleteReport(reportId: number) {
+    if (this.user.userRole === 'Admin') {
+      this.httpService.deleteReport(reportId).subscribe((data) => {
+        console.log('Report Delete Success!');
+        let tempReports: Report[] = [];
+        for (let report of this.reports) {
+          if (report.id !== reportId) {
             tempReports.push(report);
           }
         }
-        this.reports=tempReports;
+        this.reports = tempReports;
       });
     }
   }
 
-
-
-  filter(){
+  filter() {
     let tempReports: Report[] = this.reports;
     this.reportsForUser = [];
     this.selectedStatus = Number(this.selectedStatus);
     this.selectedAssignedTo = Number(this.selectedAssignedTo);
     this.selectedCreatedBy = Number(this.selectedCreatedBy);
-    if(this.selectedStatus){
-      tempReports = tempReports.filter(report=>{
-        if(report.status_id === this.selectedStatus){
+    if (this.selectedStatus) {
+      tempReports = tempReports.filter((report) => {
+        if (report.status_id === this.selectedStatus) {
           return true;
-        }
-        else{
+        } else {
           return false;
         }
       });
     }
 
-    if(this.selectedAssignedTo){
-      tempReports = tempReports.filter(report=>{
-        if(report.assigned_to === this.selectedAssignedTo){
+    if (this.selectedAssignedTo) {
+      tempReports = tempReports.filter((report) => {
+        if (report.assigned_to === this.selectedAssignedTo) {
           return true;
-        }
-        else{
+        } else {
           return false;
         }
       });
     }
 
-    if(this.selectedCreatedBy){
-      tempReports = tempReports.filter(report=>{
-        if(report.created_by === this.selectedCreatedBy){
+    if (this.selectedCreatedBy) {
+      tempReports = tempReports.filter((report) => {
+        if (report.created_by === this.selectedCreatedBy) {
           return true;
-        }
-        else{
+        } else {
           return false;
         }
       });
@@ -189,31 +287,33 @@ export class UserSpecificReportsComponent {
 
     this.reportsForUser = tempReports;
     this.getPageOfReports();
+    setTimeout(() => {
+      initDropdowns();
+    }, 100);
   }
 
-
-
-  listUserAssignedIds(){
+  listUserAssignedIds() {
     let tempUserIds: number[] = [];
-    for(let report of this.reports){
-      if(report.assigned_to && (tempUserIds.indexOf(report.assigned_to) === -1)){
+    for (let report of this.reports) {
+      if (
+        report.assigned_to &&
+        tempUserIds.indexOf(report.assigned_to) === -1
+      ) {
         tempUserIds.push(report.assigned_to);
       }
     }
     this.user_assigned_ids = tempUserIds;
   }
 
-  listUserCreatedIds(){
+  listUserCreatedIds() {
     let tempUserIds: number[] = [];
-    for(let report of this.reports){
-      if(report.created_by && (tempUserIds.indexOf(report.created_by) === -1)){
+    for (let report of this.reports) {
+      if (report.created_by && tempUserIds.indexOf(report.created_by) === -1) {
         tempUserIds.push(report.created_by);
       }
     }
     this.user_created_ids = tempUserIds;
   }
-
-
 
   getPageOfReports() {
     //here we would use currentPage and report id to get the corrent range of annotations(5 per page)
@@ -227,7 +327,7 @@ export class UserSpecificReportsComponent {
     }
     this.reportsToDisplay = result;
 
-    this.totalPages = Math.ceil(this.reportsForUser.length/5);
+    this.totalPages = Math.ceil(this.reportsForUser.length / 5);
   }
 
   backPage() {
@@ -248,5 +348,11 @@ export class UserSpecificReportsComponent {
   onImageError(event: any) {
     event.target.src =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
+  }
+
+  refreshFlowbite() {
+    setTimeout(() => {
+      initFlowbite();
+    }, 100);
   }
 }
