@@ -44,6 +44,7 @@ export class UserSpecificReportsComponent {
 
     this.httpService.getAllStatus().subscribe(data=>{
       this.statuses = (data.body)?data.body:[];
+      console.log("Statuses Populated!");
     })
 
     // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
@@ -54,7 +55,7 @@ export class UserSpecificReportsComponent {
     if(this.user.userRole !== 'Admin'){
       this.httpService.getUserById(this.user.userId).subscribe(data=>{
         console.log(data.body);
-        this.reports = (data.body.reports)?data.body.reports.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; user_assigned: UserEntity; user_created: UserEntity; })=>{
+        this.reports = (data.body.assigned_reports)?data.body.assigned_reports.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; user_assigned: UserEntity; user_created: UserEntity; })=>{
             return new Report(
               report.id, 
               report.created_by, 
