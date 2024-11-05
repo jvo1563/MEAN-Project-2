@@ -11,8 +11,8 @@ export class Report {
   status_id: number;
   created_at: Date;
   updated_at: Date;
-  user_created: UserEntity;
   user_assigned: UserEntity;
+  user_created: UserEntity;
 
   constructor(
     id: number = 0,
@@ -25,8 +25,8 @@ export class Report {
     status_id: number = 0,
     created_at: Date = new Date(),
     updated_at: Date = new Date(),
-    user_created: UserEntity = new UserEntity(),
-    user_assigned: UserEntity = new UserEntity()
+    user_assigned: UserEntity = new UserEntity(),
+    user_created: UserEntity = new UserEntity()
   ) {
     this.id = id;
     this.created_by = created_by;
@@ -38,7 +38,7 @@ export class Report {
     this.status_id = status_id;
     this.created_at = created_at;
     this.updated_at = updated_at;
-    this.user_created = user_created;
     this.user_assigned = user_assigned;
+    this.user_created = user_created;
   }
 }

@@ -158,7 +158,7 @@ export class ReportDetailsComponent {
           this.report_category = data.body.category;
           if (data.body.user_assigned)
             this.report_assigned_to = data.body.user_assigned;
-          else this.report_assigned_to.first_name = 'No one';
+          else this.report_assigned_to.first_name = 'Unassigned';
           if (data.body.user_created)
             this.report_created_by = data.body.user_created;
           else this.report_created_by.first_name = 'Anonymous';
