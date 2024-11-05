@@ -18,7 +18,7 @@ export class RabbitService {
       transport: Transport.RMQ,
       options: {
         urls: [
-          `amqp://${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`,
+          `amqp://${process.env.RABBITMQ_USER}:${process.env.RABBITMQ_PASSWORD}@${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`,
         ],
         queue: 'user_queue',
       },
@@ -28,7 +28,7 @@ export class RabbitService {
       transport: Transport.RMQ,
       options: {
         urls: [
-          `amqp://${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`,
+          `amqp://${process.env.RABBITMQ_USER}:${process.env.RABBITMQ_PASSWORD}@${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`,
         ],
         queue: 'report_queue',
       },
