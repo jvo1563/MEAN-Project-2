@@ -66,13 +66,13 @@ export class ReportTableComponent {
               status_id: number;
               created_at: Date;
               updated_at: Date;
-              user_created: UserEntity;
               user_assigned: UserEntity;
+              user_created: UserEntity;
             }) => {
               if (!report.user_created)
                 report.user_created = new UserEntity(0, '', 'Anonymous');
               if (!report.user_assigned)
-                report.user_assigned = new UserEntity(0, '', 'No one');
+                report.user_assigned = new UserEntity(0, '', 'Unassigned');
               return new Report(
                 report.id,
                 report.created_by,
@@ -84,8 +84,8 @@ export class ReportTableComponent {
                 report.status_id,
                 report.created_at,
                 report.updated_at,
-                report.user_created,
-                report.user_assigned
+                report.user_assigned,
+                report.user_created
               );
             }
           )
