@@ -41,6 +41,10 @@
     flex-direction: row;
   }
 
+  .dropDowns>div{
+    margin-right: 5px;
+  }
+
   .tableButton{
     background-color: gray;
     color: white;
