@@ -49,7 +49,6 @@ export class AnonymousReportComponent {
       //!!! is sending status/category id to BE sufficient to create relations?
       console.log(data.body);
       if (data.body) {
-        console.log('HERE', data.body[0].id);
         for (let buis of this.buis_entities) {
           buis.report_id = data.body[0].id; //!!! Is this sufficient for creating relation to report?
           this.httpService.createAnonymousBuisness(buis).subscribe((data) => {

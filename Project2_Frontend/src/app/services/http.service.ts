@@ -16,14 +16,16 @@ export class HttpService {
   //probs should but these url strings in .env
   aws_gw_url:string = 'http://localhost:3000';
 
+  aws_gw_true_url: string = 'https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com';
 
-  anonymous_post_report:string = 'https://hrln5voxlgxvqwsdxjez2g7qh40sxrcu.lambda-url.us-east-1.on.aws/';
 
-  anonymous_post_buis:string = 'https://urel7tzil2r6w7g7sjorryfhzi0mfwmk.lambda-url.us-east-1.on.aws/';
+  anonymous_post_report:string = '/report';
 
-  anonymous_get_statuses:string = 'https://opoo4b5nrrl62vvffhpc7bi5oe0sdhpx.lambda-url.us-east-1.on.aws/';
+  anonymous_post_buis:string = '/businessentity';
 
-  anonymous_get_categories:string = 'https://7tug6bwszrj7eh2dsnyqyojwo40ecpru.lambda-url.us-east-1.on.aws/';
+  anonymous_get_statuses:string = '/statuses';
+
+  anonymous_get_categories:string = '/categories';
 
   private_report_endpoint:string = '/report';
 
@@ -39,7 +41,7 @@ export class HttpService {
 
   //could just post user reports this way too...? Want diff function for that with diff endpoint in gateway???
   createAnonymousReport(new_report:Report): Observable<HttpResponse<any>>{
-    return this.httpClient.post<any>(this.anonymous_post_report, 
+    return this.httpClient.post<any>(this.aws_gw_true_url+this.anonymous_post_report, 
       {
         title: new_report.title,
         description: new_report.description,
@@ -132,7 +134,7 @@ export class HttpService {
 
   anonymousGetCategories(): Observable<HttpResponse<{id:number, category_name:string, description:string}[]>>{
     
-    return this.httpClient.get<{id:number, category_name:string, description:string}[]>(this.anonymous_get_categories,
+    return this.httpClient.get<{id:number, category_name:string, description:string}[]>(this.aws_gw_true_url+this.anonymous_get_categories,
       {observe:'response'}
     );
   }
@@ -181,7 +183,7 @@ export class HttpService {
   }
 
   anonymousGetStatus(): Observable<HttpResponse<{id:number, status_name:string}[]>>{
-    return this.httpClient.get<{id:number, status_name:string}[]>(this.anonymous_get_statuses,
+    return this.httpClient.get<{id:number, status_name:string}[]>(this.aws_gw_true_url+this.anonymous_get_statuses,
       {observe:'response'}
     );
   }
@@ -271,7 +273,7 @@ export class HttpService {
 
   createAnonymousBuisness(new_buisness: BuisnessEntity): Observable<HttpResponse<BuisnessEntity>>{
     
-    return this.httpClient.post<BuisnessEntity>(this.anonymous_post_buis, 
+    return this.httpClient.post<BuisnessEntity>(this.aws_gw_true_url+this.anonymous_post_buis, 
       {
         report_id:new_buisness.report_id,
         name:new_buisness.name,
