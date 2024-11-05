@@ -81,7 +81,7 @@
                           <input
                             id="selectedStatus0"
                             type="radio"
-                            value="0"
+                            value="-1"
                             name="selectedStatus"
                             [(ngModel)]="selectedStatus"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -153,7 +153,7 @@
                         d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"
                       />
                     </svg>
-                    Assgined To...
+                    Assigned To...
                     <svg
                       class="w-2.5 h-2.5 ms-2.5"
                       aria-hidden="true"
@@ -195,7 +195,7 @@
                           <input
                             id="selectedAssignedTo0"
                             type="radio"
-                            value="0"
+                            value="-1"
                             name="selectedAssignedTo"
                             [(ngModel)]="selectedAssignedTo"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -208,24 +208,24 @@
                           >
                         </div>
                       </li>
-                      @for(id of user_assigned_ids; track $index){
+                      @for(user of users_assigned; track $index){
                       <li>
                         <div
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            [attr.id]="'selectedAssignedTo' +id"
+                            [attr.id]="'selectedAssignedTo' +user.id"
                             type="radio"
-                            value="{{ id }}"
+                            value="{{user.id}}"
                             name="selectedAssignedTo"
                             [(ngModel)]="selectedAssignedTo"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             (ngModelChange)="filter()"
                           />
                           <label
-                            [attr.for]="'selectedAssignedTo'+id"
+                            [attr.for]="'selectedAssignedTo'+user.id"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                            >{{ id }}</label
+                            >{{ user.first_name }} {{user.last_name}}</label
                           >
                         </div>
                       </li>
@@ -306,7 +306,7 @@
                           <input
                             id="selectedCreatedBy0"
                             type="radio"
-                            value="0"
+                            value="-1"
                             name="selectedCreatedBy"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             [(ngModel)]="selectedCreatedBy"
@@ -319,24 +319,24 @@
                           >
                         </div>
                       </li>
-                      @for(id of user_created_ids; track $index){
+                      @for(user of users_created; track $index){
                       <li>
                         <div
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            [attr.id]="'selectedCreatedBy'+id"
+                            [attr.id]="'selectedCreatedBy'+user.id"
                             type="radio"
-                            value="{{ id }}"
+                            value="{{ user.id }}"
                             name="selectedCreatedBy"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             [(ngModel)]="selectedCreatedBy"
                             (ngModelChange)="filter()"
                           />
                           <label
-                            [attr.for]="'selectedCreatedBy'+id"
+                            [attr.for]="'selectedCreatedBy'+user.id"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                            >{{ id }}</label
+                            >{{ user.first_name }} {{user.last_name}}</label
                           >
                         </div>
                       </li>
@@ -365,7 +365,7 @@
             >
               <tr>
                 <th scope="col" class="px-4 py-4">Title</th>
-                <th scope="col" class="px-4 py-3">Assgined To</th>
+                <th scope="col" class="px-4 py-3">Assigned To</th>
                 <th scope="col" class="px-4 py-3">Description</th>
                 <th scope="col" class="px-4 py-3">Updated At</th>
                 <th scope="col" class="px-4 py-3">
@@ -382,16 +382,21 @@
                 >
                   {{ report_row.title }}
                 </th>
-                <td class="px-4 py-3">
-                  <img
-                    *ngIf="report_row.user_assigned.picture"
-                    class="rounded-full w-6 h-6 inline mr-2"
-                    [src]="report_row.user_assigned.picture"
-                    (error)="onImageError($event)"
-                    alt="pfp"
-                  />{{ report_row.user_assigned.first_name }}
-                  {{ report_row.user_assigned.last_name }}
-                </td>
+                @if(report_row.user_assigned.id){
+                  <td class="px-4 py-3">
+                    <img
+                      *ngIf="report_row.user_assigned.picture"
+                      class="rounded-full w-6 h-6 inline mr-2"
+                      [src]="report_row.user_assigned.picture"
+                      (error)="onImageError($event)"
+                      alt="pfp"
+                    />{{ report_row.user_assigned.first_name }}
+                    {{ report_row.user_assigned.last_name }}
+                  </td>
+                }
+                @else{
+                  <td class="px-4 py-3">Unassigned</td>
+                }
                 <td class="px-4 py-3 max-w-[12rem] truncate">
                   {{ report_row.description }}
                 </td>

@@ -37,11 +37,11 @@ export class UserSpecificReportsComponent {
     new Date(),
     new Date()
   );
-  selectedStatus: number = 0;
-  selectedAssignedTo: number = 0;
-  selectedCreatedBy: number = 0;
-  user_assigned_ids: number[] = [];
-  user_created_ids: number[] = [];
+  selectedStatus: number = -1;
+  selectedAssignedTo: number = -1;
+  selectedCreatedBy: number = -1;
+  users_assigned: UserEntity[] = [];
+  users_created: UserEntity[] = [];
   currentPage: number = 0;
   totalPages: number = 0;
 
@@ -101,22 +101,23 @@ export class UserSpecificReportsComponent {
                   report.status_id,
                   report.created_at,
                   report.updated_at,
+                  (report.user_assigned)?
                   new UserEntity(
-                    report?.user_assigned?.id,
-                    report?.user_assigned?.email,
-                    report?.user_assigned?.first_name,
-                    report?.user_assigned?.last_name,
-                    report?.user_assigned?.picture,
-                    report?.user_assigned?.role
-                  ),
-                  new UserEntity(
-                    report?.user_created?.id,
-                    report?.user_created?.email,
-                    report?.user_created?.first_name,
-                    report?.user_created?.last_name,
-                    report?.user_created?.picture,
-                    report?.user_created?.role
-                  )
+                    report.user_assigned.id,
+                    report.user_assigned.email,
+                    report.user_assigned.first_name,
+                    report.user_assigned.last_name,
+                    report.user_assigned.picture,
+                    report.user_assigned.role
+                  ):new UserEntity(0, '', '', '', '', '', new Date()),
+                  (report.user_created)?new UserEntity(
+                    report.user_created.id,
+                    report.user_created.email,
+                    report.user_created.first_name,
+                    report.user_created.last_name,
+                    report.user_created.picture,
+                    report.user_created.role
+                  ):new UserEntity(0, '', '', '', '', '', new Date())
                 );
               }
             )
@@ -155,27 +156,28 @@ export class UserSpecificReportsComponent {
                   report.status_id,
                   report.created_at,
                   report.updated_at,
+                  (report.user_assigned)?
                   new UserEntity(
-                    report?.user_assigned?.id,
-                    report?.user_assigned?.email,
-                    report?.user_assigned?.first_name,
-                    report?.user_assigned?.last_name,
-                    report?.user_assigned?.picture,
-                    report?.user_assigned?.role
-                  ),
-                  new UserEntity(
-                    report?.user_created?.id,
-                    report?.user_created?.email,
-                    report?.user_created?.first_name,
-                    report?.user_created?.last_name,
-                    report?.user_created?.picture,
-                    report?.user_created?.role
-                  )
+                    report.user_assigned.id,
+                    report.user_assigned.email,
+                    report.user_assigned.first_name,
+                    report.user_assigned.last_name,
+                    report.user_assigned.picture,
+                    report.user_assigned.role
+                  ):new UserEntity(0, '', '', '', '', '', new Date()),
+                  (report.user_created)?new UserEntity(
+                    report.user_created.id,
+                    report.user_created.email,
+                    report.user_created.first_name,
+                    report.user_created.last_name,
+                    report.user_created.picture,
+                    report.user_created.role
+                  ):new UserEntity(0, '', '', '', '', '', new Date())
                 );
               }
             )
           : [];
-
+        console.log(this.reports);
         this.reportsForUser = this.reports;
         this.listUserAssignedIds();
         this.listUserCreatedIds();
@@ -229,7 +231,8 @@ export class UserSpecificReportsComponent {
     this.selectedAssignedTo = Number(this.selectedAssignedTo);
     this.selectedCreatedBy = Number(this.selectedCreatedBy);
     console.log("Filters: ", this.selectedStatus, this.selectedAssignedTo, this.selectedCreatedBy);
-    if (this.selectedStatus) {
+    console.log(this.reports)
+    if (this.selectedStatus !== -1) {
       tempReports = tempReports.filter((report) => {
         if (report.status_id === this.selectedStatus) {
           return true;
@@ -239,9 +242,10 @@ export class UserSpecificReportsComponent {
       });
     }
 
-    if (this.selectedAssignedTo) {
+    if (this.selectedAssignedTo !== -1) {
       tempReports = tempReports.filter((report) => {
-        if (report.assigned_to === this.selectedAssignedTo) {
+        console.log(report.user_assigned.id);
+        if (report.user_assigned.id === this.selectedAssignedTo) {
           return true;
         } else {
           return false;
@@ -249,9 +253,9 @@ export class UserSpecificReportsComponent {
       });
     }
 
-    if (this.selectedCreatedBy) {
+    if (this.selectedCreatedBy !== -1) {
       tempReports = tempReports.filter((report) => {
-        if (report.created_by === this.selectedCreatedBy) {
+        if (report.user_created.id === this.selectedCreatedBy) {
           return true;
         } else {
           return false;
@@ -260,30 +264,32 @@ export class UserSpecificReportsComponent {
     }
 
     this.reportsForUser = tempReports;
+    this.currentPage = 0;
     this.getPageOfReports();
   }
 
   listUserAssignedIds() {
     let tempUserIds: number[] = [];
+    this.users_assigned = [];
     for (let report of this.reports) {
-      if (
-        report.assigned_to &&
-        tempUserIds.indexOf(report.assigned_to) === -1
-      ) {
+      if (report.assigned_to && tempUserIds.indexOf(report.assigned_to) === -1) {
+        this.users_assigned.push(report.user_assigned);
         tempUserIds.push(report.assigned_to);
       }
     }
-    this.user_assigned_ids = tempUserIds;
+    this.users_assigned.push(new UserEntity(0, '', 'Unassigned', '', '', '', new Date()))
   }
 
   listUserCreatedIds() {
     let tempUserIds: number[] = [];
+    this.users_created = [];
     for (let report of this.reports) {
       if (report.created_by && tempUserIds.indexOf(report.created_by) === -1) {
+        this.users_created.push(report.user_created);
         tempUserIds.push(report.created_by);
       }
     }
-    this.user_created_ids = tempUserIds;
+    this.users_created.push(new UserEntity(0, '', 'Anonymous', '', '', '', new Date()))
   }
 
   getPageOfReports() {
