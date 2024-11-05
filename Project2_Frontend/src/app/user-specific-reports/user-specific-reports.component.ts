@@ -54,12 +54,6 @@ export class UserSpecificReportsComponent {
       this.user = data;
     });
 
-<<<<<<< HEAD
-    this.httpService.getAllStatus().subscribe(data=>{
-      this.statuses = (data.body)?data.body:[];
-      console.log("Statuses Populated!");
-    })
-=======
     this.httpService.getAllCategories().subscribe((data) => {
       this.categories = data.body ? data.body : [];
       this.refreshFlowbite();
@@ -69,7 +63,6 @@ export class UserSpecificReportsComponent {
       this.statuses = data.body ? data.body : [];
       this.refreshFlowbite();
     });
->>>>>>> 39c635ec3f6ea05d66ed91462820351241ba08b4
 
     // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
     if (!this.user.userToken) {
@@ -79,25 +72,6 @@ export class UserSpecificReportsComponent {
     if (this.user.userRole !== 'Admin') {
       this.httpService.getUserById(this.user.userId).subscribe((data) => {
         console.log(data.body);
-<<<<<<< HEAD
-        this.reports = (data.body.assigned_reports)?data.body.assigned_reports.map((report: { id: number; created_by: number; assigned_to: number; title: string; description: string; location: string; category_id: number; status_id: number; created_at: Date; updated_at: Date; user_assigned: UserEntity; user_created: UserEntity; })=>{
-            return new Report(
-              report.id, 
-              report.created_by, 
-              report.assigned_to, 
-              report.title, 
-              report.description, 
-              report.location, 
-              report.category_id, 
-              report.status_id, 
-              report.created_at, 
-              report.updated_at,
-              new UserEntity(report?.user_assigned?.id, report?.user_assigned?.email, report?.user_assigned?.first_name, report?.user_assigned?.last_name, report?.user_assigned?.picture, report?.user_assigned?.role),
-              new UserEntity(report?.user_created?.id, report?.user_created?.email, report?.user_created?.first_name, report?.user_created?.last_name, report?.user_created?.picture, report?.user_created?.role)
-            );
-          }
-        ):[];
-=======
         this.reports = data.body.assigned_reports
           ? data.body.assigned_reports.map(
               (report: {
@@ -147,7 +121,6 @@ export class UserSpecificReportsComponent {
               }
             )
           : [];
->>>>>>> 39c635ec3f6ea05d66ed91462820351241ba08b4
         this.reportsForUser = this.reports;
         this.getPageOfReports();
         this.refreshFlowbite();
@@ -255,6 +228,7 @@ export class UserSpecificReportsComponent {
     this.selectedStatus = Number(this.selectedStatus);
     this.selectedAssignedTo = Number(this.selectedAssignedTo);
     this.selectedCreatedBy = Number(this.selectedCreatedBy);
+    console.log("Filters: ", this.selectedStatus, this.selectedAssignedTo, this.selectedCreatedBy);
     if (this.selectedStatus) {
       tempReports = tempReports.filter((report) => {
         if (report.status_id === this.selectedStatus) {
@@ -287,9 +261,6 @@ export class UserSpecificReportsComponent {
 
     this.reportsForUser = tempReports;
     this.getPageOfReports();
-    setTimeout(() => {
-      initDropdowns();
-    }, 100);
   }
 
   listUserAssignedIds() {

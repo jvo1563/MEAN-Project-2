@@ -84,8 +84,8 @@
                             value="0"
                             name="selectedStatus"
                             [(ngModel)]="selectedStatus"
-                            (ngModelChange)="filter()"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            (ngModelChange)="filter()"
                           />
                           <label
                             for="selectedStatus0"
@@ -105,12 +105,13 @@
                             type="radio"
                             value="{{ status.id }}"
                             name="selectedStatus"
+
                             [(ngModel)]="selectedStatus"
-                            (ngModelChange)="filter()"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            (ngModelChange)="filter()"
                           />
                           <label
-                            [attr.for]="'electedStatus' + status.id"
+                            [attr.for]="'selectedStatus' + status.id"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                             >{{ status.status_name }}</label
                           >
@@ -192,16 +193,16 @@
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            id="selectedAssignedTo"
+                            id="selectedAssignedTo0"
                             type="radio"
                             value="0"
                             name="selectedAssignedTo"
                             [(ngModel)]="selectedAssignedTo"
-                            (ngModelChange)="filter()"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            (ngModelChange)="filter()"
                           />
                           <label
-                            for="selectedAssignedTo"
+                            for="selectedAssignedTo0"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                             >All</label
                           >
@@ -213,16 +214,16 @@
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            id="selectedAssignedTo"
+                            [attr.id]="'selectedAssignedTo' +id"
                             type="radio"
                             value="{{ id }}"
                             name="selectedAssignedTo"
                             [(ngModel)]="selectedAssignedTo"
-                            (ngModelChange)="filter()"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            (ngModelChange)="filter()"
                           />
                           <label
-                            for="selectedAssignedTo"
+                            [attr.for]="'selectedAssignedTo'+id"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                             >{{ id }}</label
                           >
@@ -303,16 +304,16 @@
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            id="selectedCreatedBy"
+                            id="selectedCreatedBy0"
                             type="radio"
                             value="0"
                             name="selectedCreatedBy"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             [(ngModel)]="selectedCreatedBy"
                             (ngModelChange)="filter()"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                           />
                           <label
-                            for="selectedCreatedBy"
+                            for="selectedCreatedBy0"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                             >All</label
                           >
@@ -324,16 +325,16 @@
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            id="selectedCreatedBy"
+                            [attr.id]="'selectedCreatedBy'+id"
                             type="radio"
                             value="{{ id }}"
                             name="selectedCreatedBy"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             [(ngModel)]="selectedCreatedBy"
                             (ngModelChange)="filter()"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                           />
                           <label
-                            for="selectedCreatedBy"
+                            [attr.for]="'selectedCreatedBy'+id"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
                             >{{ id }}</label
                           >
