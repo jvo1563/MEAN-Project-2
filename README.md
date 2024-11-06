@@ -16,7 +16,7 @@ A full-stack web application for reporting financial crimes like fraud, money la
 - Alternatively to using the web based reporting and management application, anonymous reports can be made using public API calls:
   - Post Anonymous Report: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/report-public
     - Expected Body Format:
-    {
+    '''{
         title: Title,
         description: Description,
         location: Primary Location of Crime,
@@ -32,7 +32,7 @@ A full-stack web application for reporting financial crimes like fraud, money la
             relation: Relation to Alleged Crime
           },...
         ]
-    }
+    }'''
 
 ## Deployment
 
