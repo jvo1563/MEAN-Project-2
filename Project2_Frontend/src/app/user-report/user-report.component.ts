@@ -84,6 +84,7 @@ export class UserReportComponent {
         if (newReportId === 0) {
           this.router.navigate(['userLanding']);
         } else {
+          console.log(this.buis_entities);
           for (let buis of this.buis_entities) {//post buisness entities
             buis.report_id = newReportId;
             this.httpService.createBuisness(buis).subscribe((data) => {
