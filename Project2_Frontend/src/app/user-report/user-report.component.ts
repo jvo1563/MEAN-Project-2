@@ -44,7 +44,6 @@ export class UserReportComponent {
     this.httpService.getAllCategories().subscribe((data) => {
       if (data.body) {
         this.categories = data.body;
-        console.log(this.categories);
       }
     });
 
@@ -73,22 +72,18 @@ export class UserReportComponent {
       this.buis_entities[this.buis_entities.length - 1] = this.buis_entity;
     }
 
-    console.log(this.report);
     let newReportId: number = 0;
 
     this.httpService.createReport(this.report).subscribe((data) => {
       if (data.body) {
-        console.log(data.body);
         newReportId = data.body.id;
         if (newReportId === 0) {
-          console.log('OH NO REPORT ID IS 00000000');
           this.router.navigate(['userLanding']);
         } else {
-          console.log(`new id: ${newReportId}`);
           for (let buis of this.buis_entities) {
             buis.report_id = newReportId;
             this.httpService.createBuisness(buis).subscribe((data) => {
-              console.log(data.body);
+              console.log("Create Bussiness Success!");
             });
           }
           this.router.navigate(['userLanding']);

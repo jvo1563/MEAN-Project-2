@@ -50,9 +50,8 @@ export class ReportTableComponent {
     if (!this.user.userToken) {
       this.router.navigate(['']);
     }
-    console.log(this.user);
+
     this.httpService.getAllReports().subscribe((data) => {
-      console.log(data.body);
       this.reports = data.body
         ? data.body.map(
             (report: {

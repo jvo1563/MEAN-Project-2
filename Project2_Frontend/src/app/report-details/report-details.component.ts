@@ -70,55 +70,13 @@ export class ReportDetailsComponent {
 
     this.route.params.subscribe((data) => {
       this.report.id = data['report_id'];
-      // console.log('report id is: ' + this.report.id);
       this.refreshReport();
-      // this.httpService.getReportById(this.report.id).subscribe((data) => {
-      //   if (data.body) {
-      //     this.report = new Report(
-      //       data.body.id,
-      //       data.body.created_by,
-      //       data.body.assigned_to,
-      //       data.body.title,
-      //       data.body.description,
-      //       data.body.location,
-      //       data.body.category_id,
-      //       data.body.status_id,
-      //       data.body.created_at,
-      //       data.body.updated_at
-      //     );
-      //     this.update_report_form = new Report(
-      //       data.body.id,
-      //       data.body.created_by,
-      //       data.body.assigned_to,
-      //       data.body.title,
-      //       data.body.description,
-      //       data.body.location,
-      //       data.body.category_id,
-      //       data.body.status_id,
-      //       data.body.created_at,
-      //       data.body.updated_at
-      //     );
-      //     this.buis_entities = data.body.business_entities;
-      //     annotationService.setAnnotation(
-      //       new AnnotationInfo(data.body.id, data.body.annotations)
-      //     );
-      //     this.report_status = data.body.status;
-      //     this.report_category = data.body.category;
-      //     if (data.body.user_assigned)
-      //       this.report_assigned_to = data.body.user_assigned;
-      //     else this.report_assigned_to.first_name = 'No one';
-      //     if (data.body.user_created)
-      //       this.report_created_by = data.body.user_created;
-      //     else this.report_created_by.first_name = 'Anonymous';
-      //   }
-      // });
     });
 
     //This still needs to be done!!!
     if (this.user.userRole === 'Admin') {
       this.httpService.getAllUsers().subscribe((data) => {
         if (data.body) {
-          console.log(data.body);
           this.handlers = [];
           for (let user of data.body) {
             if (user.role === 'Handler') {
@@ -168,37 +126,12 @@ export class ReportDetailsComponent {
     }
   }
 
-  // resetReport() {
-  //   this.httpService.getReportById(this.report.id).subscribe((data) => {
-  //     this.report = data.body
-  //       ? new Report(
-  //           data.body.id,
-  //           data.body.created_by,
-  //           data.body.assigned_to,
-  //           data.body.title,
-  //           data.body.description,
-  //           data.body.location,
-  //           data.body.category_id,
-  //           data.body.status_id,
-  //           data.body.created_at,
-  //           data.body.updated_at
-  //         )
-  //       : new Report(0, 0, 0, '', '', '', 0, 0, new Date(), new Date());
-  //   });
-  // }
   resetReportUpdateForm() {
     this.update_report_form = structuredClone(this.report);
   }
 
   updateReport() {
     this.update_report_form.updated_at = new Date();
-    // this.update_report_form.status_id = Number(
-    //   this.update_report_form.status_id
-    // );
-    // this.update_report_form.category_id = Number(
-    //   this.update_report_form.category_id
-    // );
-    console.log(this.update_report_form);
     this.httpService
       .updateReport(this.report.id, this.update_report_form)
       .subscribe((data) => {

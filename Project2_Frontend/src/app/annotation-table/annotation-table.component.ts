@@ -42,7 +42,6 @@ export class AnnotationTableComponent {
 
     this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;
-      console.log(this.user);
     });
   }
 
@@ -113,16 +112,7 @@ export class AnnotationTableComponent {
     if (this.user.userRole === 'Admin') {
       this.httpService.deleteAnnotation(annotation_id).subscribe((data) => {
         console.log('Annotation Delete Success!');
-        // let tempAnnotations: Annotation[] = [];
-        // for (let annotation of this.annotationInfo.annotations) {
-        //   if (annotation.id !== annotation_id) {
-        //     tempAnnotations.push(annotation);
-        //   }
-        // }
         this.currentPage = 0;
-        // this.annotationInfo.annotations = tempAnnotations;
-        // this.getPageOfAnnotations();
-        // this.refreshFlowbite();
         this.refreshAnnotations();
         this.updateReportLastUpdated();
       });

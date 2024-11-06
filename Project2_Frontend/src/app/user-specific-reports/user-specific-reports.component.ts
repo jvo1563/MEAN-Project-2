@@ -68,10 +68,9 @@ export class UserSpecificReportsComponent {
     if (!this.user.userToken) {
       this.router.navigate(['']);
     }
-    console.log(this.user);
+    
     if (this.user.userRole !== 'Admin') {
       this.httpService.getUserById(this.user.userId).subscribe((data) => {
-        console.log(data.body);
         this.reports = data.body.assigned_reports
           ? data.body.assigned_reports.map(
               (report: {
@@ -88,8 +87,6 @@ export class UserSpecificReportsComponent {
                 user_assigned: UserEntity;
                 user_created: UserEntity;
               }) => {
-                console.log('are we here');
-                console.log(data.body);
                 return new Report(
                   report.id,
                   report.created_by,
@@ -128,7 +125,6 @@ export class UserSpecificReportsComponent {
       });
     } else {
       this.httpService.getAllReports().subscribe((data) => {
-        console.log(data.body);
         this.reports = data.body
           ? data.body.map(
               (report: {
@@ -177,7 +173,6 @@ export class UserSpecificReportsComponent {
               }
             )
           : [];
-        console.log(this.reports);
         this.reportsForUser = this.reports;
         this.listUserAssignedIds();
         this.listUserCreatedIds();
@@ -212,7 +207,6 @@ export class UserSpecificReportsComponent {
   deleteReport(reportId: number) {
     if (this.user.userRole === 'Admin') {
       this.httpService.deleteReport(reportId).subscribe((data) => {
-        console.log('Report Delete Success!');
         let tempReports: Report[] = [];
         for (let report of this.reports) {
           if (report.id !== reportId) {
@@ -230,8 +224,6 @@ export class UserSpecificReportsComponent {
     this.selectedStatus = Number(this.selectedStatus);
     this.selectedAssignedTo = Number(this.selectedAssignedTo);
     this.selectedCreatedBy = Number(this.selectedCreatedBy);
-    console.log("Filters: ", this.selectedStatus, this.selectedAssignedTo, this.selectedCreatedBy);
-    console.log(this.reports)
     if (this.selectedStatus !== -1) {
       tempReports = tempReports.filter((report) => {
         if (report.status_id === this.selectedStatus) {
@@ -244,7 +236,6 @@ export class UserSpecificReportsComponent {
 
     if (this.selectedAssignedTo !== -1) {
       tempReports = tempReports.filter((report) => {
-        console.log(report.user_assigned.id);
         if (report.user_assigned.id === this.selectedAssignedTo) {
           return true;
         } else {

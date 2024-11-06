@@ -446,7 +446,6 @@ export class HttpService {
     annotation_id: number,
     diff_annotation: Annotation
   ): Observable<HttpResponse<Annotation>> {
-    console.log(diff_annotation);
     return this.httpClient.put<Annotation>(
       this.aws_gw_true_url +
         this.private_annotation_endpoint +

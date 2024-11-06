@@ -40,19 +40,16 @@ export class AnonymousReportComponent {
   //When contact BE this should be order of operations:
   //  -save report, then we need the reports id after this, can be a seperate get, or we can design custom post w/ return new id... idk
   //  -then need to loop through buisness entities and add them one at a time, BUT first set the report id using the return from the first step
-  //  **do all this in where the console.log statement is currently located
   submitReport() {
     this.report.status_id = 1;
     this.report.category_id = Number(this.report.category_id);
-    console.log(this.report);
     this.httpService.createAnonymousReport(this.report).subscribe((data) => {
       //!!! is sending status/category id to BE sufficient to create relations?
-      console.log(data.body);
       if (data.body) {
         for (let buis of this.buis_entities) {
           buis.report_id = data.body[0].id; //!!! Is this sufficient for creating relation to report?
           this.httpService.createAnonymousBuisness(buis).subscribe((data) => {
-            console.log(data);
+            console.log("Anonymous Business Creat Success!");
           });
         }
       }
