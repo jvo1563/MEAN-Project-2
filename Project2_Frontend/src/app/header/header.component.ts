@@ -3,6 +3,7 @@ import { UserAuthService } from '../services/user-auth.service';
 import { RouterLink } from '@angular/router';
 import { UserInfo } from '../models/user-info';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -33,7 +34,7 @@ export class HeaderComponent {
   }
 
   login() {
-    window.location.href = 'https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/auth/google';
+    window.location.href = `${environment.apiUrl}/auth/google`;
   }
 
   onImageError(event: any) {
