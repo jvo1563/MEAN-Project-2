@@ -70,22 +70,15 @@ export class UserReportComponent {
 
     this.report.category_id = Number(this.report.category_id);//cast html form variable to number
 
-    //set final buiness that we added in
-    if (this.buis_entities.length) {
-      this.buis_entities[this.buis_entities.length - 1] = this.buis_entity;
-    }
-
     //need varaible to keep what report we just created to then post the buisness entities
     let newReportId: number = 0;
 
     this.httpService.createReport(this.report).subscribe((data) => {
-      console.log(data.body);
       if (data.body) {
         newReportId = data.body.id;
         if (newReportId === 0) {
           this.router.navigate(['userLanding']);
         } else {
-          console.log(this.buis_entities);
           for (let buis of this.buis_entities) {//post buisness entities
             buis.report_id = newReportId;
             this.httpService.createBuisness(buis).subscribe((data) => {
