@@ -13,10 +13,20 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
+  /**
+   * Generates a JSON Web Token (JWT) with the provided payload.
+   * @param payload - An object containing the claims to be encoded in the JWT.
+   * @returns The generated JWT.
+   */
   generateJwt(payload) {
     return this.jwtService.sign(payload);
   }
 
+  /**
+   * Handles user sign-in logic. If the user does not exist, it registers a new user and returns a JWT. If the user already exists, it generates a JWT for the existing user.
+   * @param user - An object containing the user's email.
+   * @returns A JSON Web Token (JWT) containing the user's information.
+   */
   async signIn(user) {
     console.log(`Signing in user with email: ${user.email}`);
     if (!user) throw new BadRequestException('Invalid credentials');
@@ -35,6 +45,11 @@ export class AuthService {
     });
   }
 
+  /**
+   * Registers a new user and generates a JSON Web Token (JWT) for the user.
+   * @param user - An object containing the user's information, such as email, first name, last name, picture, and role.
+   * @returns A JSON Web Token (JWT) containing the user's information.
+   */
   async registerUser(user) {
     try {
       console.log('Creating new User: ', user);
@@ -54,6 +69,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * Finds a user by their email address.
+   * @param email - The email address of the user to find.
+   * @returns The user object if found, or `null` if not found.
+   */
   async findUserByEmail(email: string) {
     const users = await this.userService.getAllUser();
     const user = users.find((user) => user.email === email);
@@ -61,6 +81,11 @@ export class AuthService {
     return user;
   }
 
+  /**
+   * Finds a user by their unique identifier.
+   * @param id - The unique identifier of the user to find.
+   * @returns The user object if found, or `null` if not found.
+   */
   async findUserById(id: number) {
     const user = await this.userService.getUserById(id);
     if (!user) return null;

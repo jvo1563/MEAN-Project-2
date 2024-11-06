@@ -21,7 +21,8 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   async auth() {}
 
-  // Gets information from Google OAuth and logs user in
+  // Handles the callback from the Google OAuth flow. This endpoint is called after the user has authenticated with Google.
+  // It receives the user information from Google, signs the user in, and redirects the user to the frontend with a token in the query parameter.
   @Get('google/callback')
   @UseGuards(GoogleOauthGuard)
   async googleAuthCallback(@Req() req: Request, @Res() res: Response) {

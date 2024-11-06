@@ -5,11 +5,15 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  // Check if the method is public first
   constructor(private reflector: Reflector) {
     super();
   }
 
+  /**
+   * Determines whether the current request is allowed to access the protected resource.
+   * If the method or class is marked as 'isPublic', the request is allowed to proceed.
+   * Otherwise, the default JWT authentication guard is used to verify the request.
+   */
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {

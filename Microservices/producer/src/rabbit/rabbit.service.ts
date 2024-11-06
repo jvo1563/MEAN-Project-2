@@ -14,6 +14,10 @@ export class RabbitService {
   private reportConsumer: ClientProxy;
 
   constructor() {
+    /**
+     * Initializes the RabbitMQ client proxies for the User Consumer and Report Consumer microservices.
+     * The proxies are configured with the RabbitMQ connection details and the respective queue names.
+     */
     this.userConsumer = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
@@ -35,6 +39,14 @@ export class RabbitService {
     });
   }
 
+  /**
+   * Sends a message to the User Consumer microservice.
+   *
+   * @param pattern - The message pattern to send to the User Consumer.
+   * @param data - The data to include in the message.
+   * @returns A promise that resolves when the message has been sent successfully.
+   * @throws {HttpException} If there is an error sending the message to the User Consumer.
+   */
   async sendToUserConsumer(pattern: any, data: any) {
     // console.log(`Sending to User Consumer: Pattern: ${pattern} Data: ${data}`);
     return await firstValueFrom(
@@ -48,6 +60,14 @@ export class RabbitService {
     );
   }
 
+  /**
+   * Sends a message to the Report Consumer microservice.
+   *
+   * @param pattern - The message pattern to send to the Report Consumer.
+   * @param data - The data to include in the message.
+   * @returns A promise that resolves when the message has been sent successfully.
+   * @throws {HttpException} If there is an error sending the message to the Report Consumer.
+   */
   async sendToReportConsumer(pattern: any, data: any) {
     // console.log(`Sending to Report Consumer: Pattern: ${pattern} Data: ${data}`);
     return await firstValueFrom(

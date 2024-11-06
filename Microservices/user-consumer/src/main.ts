@@ -4,6 +4,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 require('dotenv').config();
 
 async function bootstrap() {
+  // Creates a NestJS microservice instance that listens for messages from the RabbitMQ queue named 'user_queue'.
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {

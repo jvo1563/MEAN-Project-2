@@ -1,3 +1,9 @@
+/**
+ * A guard that checks if the current user has the required roles to access a resource.
+ * The required roles are specified using the `@Roles()` decorator on the controller or handler method.
+ * If no roles are specified, the guard will allow access.
+ * The user's role is extracted from the JWT token in the request.
+ */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
