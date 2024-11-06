@@ -94,11 +94,11 @@ A full-stack web application for reporting financial crimes like fraud, money la
 
 - **Database**: AWS Aurora PostgreSQL.
 - **Tables**:
-  - **Reports**: Stores all financial crime report data.
-  - **Business Entities**: Stores organizations or entities involved in reported incidents.
+  - **Reports**: Stores all report data.
+  - **Business Entities**: Stores entities involved in report.
   - **Report Categories**: Defines categories of financial crime reports.
-  - **Report Statuses**: Tracks the status of each report (e.g., pending, reviewed, resolved).
-  - **Annotations**: Stores additional details or notes related to a report.
+  - **Report Statuses**: Tracks the status of each report (e.g., pending, investigating, closed).
+  - **Annotations**: Stores additional details related to a report.
   - **Users**: Stores user information and authentication details.
 
 ### Entity Relational Diagram:
