@@ -24,24 +24,24 @@ A full-stack web application for reporting financial crimes like fraud, money la
   - Post Anonymous Report (Status IDs and Category IDs can be obtained using the first two Get requests):
     - Url: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/report-public
     - Expected Body Format:
-    ```
-    {
-        title: Title,
-        description: Description,
-        location: Primary Location of Crime,
-        status_id: 1,
-        category_id: Crime Category ID,
-        business_entities: [
-          {
-            name: Business Name,
-            industry: Industry,
-            address: Business Address,
-            email: Business Email,
-            phone: Business Phone Number(of type string),
-            relation: Relation to Alleged Crime
-          },...
-        ]
-    }
+      ```
+      {
+          title: Title,
+          description: Description,
+          location: Primary Location of Crime,
+          status_id: 1,
+          category_id: Crime Category ID,
+          business_entities: [
+            {
+              name: Business Name,
+              industry: Industry,
+              address: Business Address,
+              email: Business Email,
+              phone: Business Phone Number(of type string),
+              relation: Relation to Alleged Crime
+            },...
+          ]
+      }
 
   - Get a count of how many reports were submitted today (Just for fun!):
     - URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/dailyreportcount-public
