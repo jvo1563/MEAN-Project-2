@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Enabling CORS with whitelist of allowed origins from environment variables
   app.enableCors({
     origin: process.env.CORS_WHITELIST.split(','),
   });
