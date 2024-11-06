@@ -11,7 +11,7 @@
         >
           <div class="w-full md:w-1/2 dark:text-white">
             <h3 class="text-xl font-bold text-gray-900 dark:text-white mx-2">
-              Table for Report {{ user.username }}
+              Reports for {{ user.userFirstName }}
             </h3>
           </div>
           <div
@@ -29,7 +29,7 @@
                     type="button"
                   >
                     <svg
-                      class="w-3 h-3 text-gray-500 dark:text-gray-400 me-3"
+                      class="w-3 h-3 text-gray-500 dark:text-gray-400 me-2"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -85,7 +85,7 @@
                             name="selectedStatus"
                             [(ngModel)]="selectedStatus"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            (click)="selectedStatus=-1; filter()"
+                            (click)="selectedStatus = -1; filter()"
                           />
                           <label
                             for="selectedStatusNegOne"
@@ -105,7 +105,6 @@
                             type="radio"
                             value="{{ status.id }}"
                             name="selectedStatus"
-
                             [(ngModel)]="selectedStatus"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             (click)="selectedStatus = status.id; filter()"
@@ -143,14 +142,18 @@
                     type="button"
                   >
                     <svg
-                      class="w-3 h-3 text-gray-500 dark:text-gray-400 me-3"
+                      class="w-4 h-4 text-gray-500 dark:text-gray-400 me-2"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
                       fill="currentColor"
-                      viewBox="0 0 20 20"
+                      viewBox="0 0 24 24"
                     >
                       <path
-                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"
+                        fill-rule="evenodd"
+                        d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Z"
+                        clip-rule="evenodd"
                       />
                     </svg>
                     Assigned To...
@@ -214,18 +217,18 @@
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            [attr.id]="'selectedAssignedTo' +user.id"
+                            [attr.id]="'selectedAssignedTo' + user.id"
                             type="radio"
-                            value="{{user.id}}"
+                            value="{{ user.id }}"
                             name="selectedAssignedTo"
                             [(ngModel)]="selectedAssignedTo"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             (click)="selectedAssignedTo = user.id; filter()"
                           />
                           <label
-                            [attr.for]="'selectedAssignedTo'+user.id"
+                            [attr.for]="'selectedAssignedTo' + user.id"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                            >{{ user.first_name }} {{user.last_name}}</label
+                            >{{ user.first_name }} {{ user.last_name }}</label
                           >
                         </div>
                       </li>
@@ -254,16 +257,21 @@
                     type="button"
                   >
                     <svg
-                      class="w-3 h-3 text-gray-500 dark:text-gray-400 me-3"
+                      class="w-5 h-5 text-gray-500 dark:text-gray-400 me-1"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
+                      width="30"
+                      height="30"
                       fill="currentColor"
-                      viewBox="0 0 20 20"
+                      viewBox="0 0 24 24"
                     >
                       <path
-                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"
+                        fill-rule="evenodd"
+                        d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
+                        clip-rule="evenodd"
                       />
                     </svg>
+
                     Created By...
                     <svg
                       class="w-2.5 h-2.5 ms-2.5"
@@ -325,7 +333,7 @@
                           class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <input
-                            [attr.id]="'selectedCreatedBy'+user.id"
+                            [attr.id]="'selectedCreatedBy' + user.id"
                             type="radio"
                             value="{{ user.id }}"
                             name="selectedCreatedBy"
@@ -334,9 +342,9 @@
                             (click)="selectedCreatedBy = user.id; filter()"
                           />
                           <label
-                            [attr.for]="'selectedCreatedBy'+user.id"
+                            [attr.for]="'selectedCreatedBy' + user.id"
                             class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                            >{{ user.first_name }} {{user.last_name}}</label
+                            >{{ user.first_name }} {{ user.last_name }}</label
                           >
                         </div>
                       </li>
@@ -383,19 +391,18 @@
                   {{ report_row.title }}
                 </th>
                 @if(report_row.user_assigned.id){
-                  <td class="px-4 py-3">
-                    <img
-                      *ngIf="report_row.user_assigned.picture"
-                      class="rounded-full w-6 h-6 inline mr-2"
-                      [src]="report_row.user_assigned.picture"
-                      (error)="onImageError($event)"
-                      alt="pfp"
-                    />{{ report_row.user_assigned.first_name }}
-                    {{ report_row.user_assigned.last_name }}
-                  </td>
-                }
-                @else{
-                  <td class="px-4 py-3">Unassigned</td>
+                <td class="px-4 py-3">
+                  <img
+                    *ngIf="report_row.user_assigned.picture"
+                    class="rounded-full w-6 h-6 inline mr-2"
+                    [src]="report_row.user_assigned.picture"
+                    (error)="onImageError($event)"
+                    alt="pfp"
+                  />{{ report_row.user_assigned.first_name }}
+                  {{ report_row.user_assigned.last_name }}
+                </td>
+                } @else{
+                <td class="px-4 py-3">Unassigned</td>
                 }
                 <td class="px-4 py-3 max-w-[12rem] truncate">
                   {{ report_row.description }}
@@ -428,7 +435,9 @@
             }}</span>
             of
             <span class="font-semibold text-gray-900 dark:text-white">
+              @if (totalPages == 0){ 1 } @else{
               {{ totalPages }}
+              }
             </span>
           </span>
           <ul class="inline-flex items-stretch -space-x-px">
