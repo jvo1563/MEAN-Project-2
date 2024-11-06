@@ -4,11 +4,35 @@ A full-stack web application for reporting financial crimes like fraud, money la
 
 ## Table of Contents
 
+- [Public API](#api-public)
 - [Deployment](#deployment)
 - [Features](#features)
 - [Technologies](#technologies)
 - [API Documentation](#api-documentation)
 - [Database](#database)
+
+## Pulic API
+
+- Alternatively to using the web based reporting and management application, anonymous reports can be made using public API calls:
+  - Post Anonymous Report: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/report-public
+    -Expected Body Format:
+    {
+        title: <Title>,
+        description: <Description>,
+        location: <Primary Location of Crime>,
+        status_id: 1,
+        category_id: <Crime Category ID>,
+        business_entities: [
+          {
+            name: <Business Name>,
+            industry: <Industry>,
+            address: <Business Address>,
+            email: <Business Email>,
+            phone: <Business Phone Number(of type string)>,
+            relation: <Relation to Alleged Crime>
+          },...
+        ]
+    }
 
 ## Deployment
 
