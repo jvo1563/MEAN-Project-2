@@ -108,6 +108,7 @@ export class AnnotationTableComponent {
       });
     // Reset create form
     this.newAnnotationForm = new Annotation();
+    this.pressFlag = false; //reset flag to check for invalid submission
   }
 
   //remove the annotation and update report details page to update the last time this report was updated
