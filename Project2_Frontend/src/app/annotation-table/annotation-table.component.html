@@ -226,7 +226,9 @@
             }}</span>
             of
             <span class="font-semibold text-gray-900 dark:text-white">
+              @if (totalPages == 0) { 1 } @else {
               {{ totalPages }}
+              }
             </span>
           </span>
           <ul class="inline-flex items-stretch -space-x-px">
