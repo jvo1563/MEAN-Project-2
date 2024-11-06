@@ -70,11 +70,6 @@ export class UserReportComponent {
 
     this.report.category_id = Number(this.report.category_id);//cast html form variable to number
 
-    //set final buiness that we added in
-    if (this.buis_entities.length) {
-      this.buis_entities[this.buis_entities.length - 1] = this.buis_entity;
-    }
-
     //need varaible to keep what report we just created to then post the buisness entities
     let newReportId: number = 0;
 
