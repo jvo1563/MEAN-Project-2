@@ -36,14 +36,14 @@ A full-stack web application for reporting financial crimes like fraud, money la
         ]
     }
 
-  -Get valid statuses(We request that you please submit report with status_id=1, ie. "Pending"):
-    -URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/statuses-public
+  - Get valid statuses(We request that you please submit report with status_id=1, ie. "Pending"):
+    - URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/statuses-public
 
-  -Get valid categories:
-    -URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/categories-public
+  - Get valid categories:
+    - URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/categories-public
 
-  -Get a count of how many reports were submitted today (Just for fun!):
-    -URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/dailyreportcount-public
+  - Get a count of how many reports were submitted today (Just for fun!):
+    - URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/dailyreportcount-public
     
 
 ## Deployment
