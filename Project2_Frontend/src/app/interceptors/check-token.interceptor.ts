@@ -10,6 +10,7 @@ import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserAuthService } from '../services/user-auth.service';
 
+//used to check token validity and clear token in the userAuthService if no longer valid
 @Injectable()
 export class CheckTokenInterceptor implements HttpInterceptor {
   constructor(

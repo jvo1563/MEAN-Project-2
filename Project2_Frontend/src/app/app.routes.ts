@@ -33,7 +33,7 @@ export const routes: Routes = [
     component: ReportTableComponent,
   },
   {
-    path: 'userLanding/reportTable/reportDetails/:report_id',
+    path: 'userLanding/reportTable/reportDetails/:report_id',//want route parameter to fetch report info when moving between pages
     component: ReportDetailsComponent,
   },
 ];

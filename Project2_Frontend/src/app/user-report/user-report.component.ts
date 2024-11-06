@@ -20,6 +20,7 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './user-report.component.css',
 })
 export class UserReportComponent {
+  //local varaibles/objects for use in enabling funtionality
   user: UserInfo = new UserInfo(0, '', '', '');
   report: Report = new Report();
   buis_entities: BuisnessEntity[] = [];
@@ -27,6 +28,7 @@ export class UserReportComponent {
   categories: CategoryEntity[] = [];
   statuses: StatusEntity[] = [];
 
+  //Want to check to see if user has token and get user data using the userAuthService before making call to BE
   constructor(
     private userAuthService: UserAuthService,
     private router: Router,
@@ -41,13 +43,13 @@ export class UserReportComponent {
       this.router.navigate(['']);
     }
 
-    this.httpService.getAllCategories().subscribe((data) => {
+    this.httpService.getAllCategories().subscribe((data) => {//need categories to choose from
       if (data.body) {
         this.categories = data.body;
       }
     });
 
-    this.httpService.getAllStatus().subscribe((data) => {
+    this.httpService.getAllStatus().subscribe((data) => {//need to know what status is associated with what id 
       if (data.body) {
         this.statuses = data.body;
       }
@@ -66,12 +68,14 @@ export class UserReportComponent {
 
     this.report.created_by = this.user.userId; //set created_by to current user's id
 
-    this.report.category_id = Number(this.report.category_id);
+    this.report.category_id = Number(this.report.category_id);//cast html form variable to number
 
+    //set final buiness that we added in
     if (this.buis_entities.length) {
       this.buis_entities[this.buis_entities.length - 1] = this.buis_entity;
     }
 
+    //need varaible to keep what report we just created to then post the buisness entities
     let newReportId: number = 0;
 
     this.httpService.createReport(this.report).subscribe((data) => {
@@ -80,13 +84,13 @@ export class UserReportComponent {
         if (newReportId === 0) {
           this.router.navigate(['userLanding']);
         } else {
-          for (let buis of this.buis_entities) {
+          for (let buis of this.buis_entities) {//post buisness entities
             buis.report_id = newReportId;
             this.httpService.createBuisness(buis).subscribe((data) => {
               console.log("Create Bussiness Success!");
             });
           }
-          this.router.navigate(['userLanding']);
+          this.router.navigate(['userLanding']);//after done posting return to user landing page
         }
       }
     });
@@ -107,6 +111,7 @@ export class UserReportComponent {
     this.refreshFlowbite();
   }
 
+  //have not actually posted buisness entities yet, so need to just remove one from the array locally
   removeBuisnessEntity(index: number) {
     let temp_entities: BuisnessEntity[] = [];
     for (let i = 0; i < this.buis_entities.length; i++) {
@@ -117,10 +122,12 @@ export class UserReportComponent {
     this.buis_entities = temp_entities;
   }
 
+  //return to user landing page
   returnToLanding() {
     this.router.navigate(['userLanding']);
   }
 
+  //refresh page when data has been populated
   refreshFlowbite() {
     setTimeout(() => {
       initFlowbite();

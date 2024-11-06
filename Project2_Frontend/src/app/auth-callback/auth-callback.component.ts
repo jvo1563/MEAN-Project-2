@@ -5,6 +5,7 @@ import { UserInfo } from '../models/user-info';
 import { jwtDecode } from 'jwt-decode';
 import 'core-js/stable/atob';
 
+//for getting user auth info after returning from BE when logging in
 @Component({
   selector: 'app-auth-callback',
   standalone: true,

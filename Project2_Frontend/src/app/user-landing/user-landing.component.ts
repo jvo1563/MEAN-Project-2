@@ -14,6 +14,7 @@ import { UserSpecificReportsComponent } from '../user-specific-reports/user-spec
 export class UserLandingComponent {
   user: UserInfo = new UserInfo(0,'', '', '');
 
+  //fairly simple, just need user authentication info to know if we should send them back to the home page or if they are authorized to be here
   constructor(private userAuthService: UserAuthService, private router: Router){
     this.userAuthService.userAuthObservable.subscribe(data=>{
       this.user = data;

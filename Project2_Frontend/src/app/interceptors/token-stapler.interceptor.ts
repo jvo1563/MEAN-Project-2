@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { UserAuthService } from '../services/user-auth.service';
 
+//used to attach token to requests, that way BE can authenticate users
 @Injectable()
 export class TokenStaplerInterceptor implements HttpInterceptor {
   userToken: string = '';

@@ -19,6 +19,7 @@ import { initDropdowns, initFlowbite } from 'flowbite';
   styleUrl: './user-specific-reports.component.css',
 })
 export class UserSpecificReportsComponent {
+  //local varaibles/objects for use in enabling funtionality
   user: UserInfo = new UserInfo(0, '', '', '');
   statuses: StatusEntity[] = [];
   categories: CategoryEntity[] = [];
@@ -45,6 +46,7 @@ export class UserSpecificReportsComponent {
   currentPage: number = 0;
   totalPages: number = 0;
 
+  //Want to check to see if user has token and get user data using the userAuthService before making call to BE
   constructor(
     private userAuthService: UserAuthService,
     private router: Router,
@@ -59,16 +61,18 @@ export class UserSpecificReportsComponent {
       this.refreshFlowbite();
     });
 
+    //need list of statuses to know what id "Pending" status has
     this.httpService.getAllStatus().subscribe((data) => {
       this.statuses = data.body ? data.body : [];
       this.refreshFlowbite();
     });
 
-    // check token here, if invalid/blank return to login page... will need to reach out to oauth to check validity?
+    // check token here, if invalid/blank return to home page
     if (!this.user.userToken) {
       this.router.navigate(['']);
     }
     
+    //if not an admin only need a list of reports that you are assigned to
     if (this.user.userRole !== 'Admin') {
       this.httpService.getUserById(this.user.userId).subscribe((data) => {
         this.reports = data.body.assigned_reports
@@ -120,10 +124,12 @@ export class UserSpecificReportsComponent {
             )
           : [];
         this.reportsForUser = this.reports;
-        this.getPageOfReports();
-        this.refreshFlowbite();
+        this.getPageOfReports();//get current page worth of reports to display(page 1 here, aka 0)
+        this.refreshFlowbite();//need to refresh after data is filled out
       });
-    } else {
+    }
+    //if you are an admin need access to all reports and handlers(for filtering by created by and assigned to) 
+    else {
       this.httpService.getAllReports().subscribe((data) => {
         this.reports = data.body
           ? data.body.map(
@@ -174,14 +180,15 @@ export class UserSpecificReportsComponent {
             )
           : [];
         this.reportsForUser = this.reports;
-        this.listUserAssignedIds();
-        this.listUserCreatedIds();
-        this.getPageOfReports();
-        this.refreshFlowbite();
+        this.listUserAssigned();//need a list of users that are currently assigned to report(s)(for filtering)
+        this.listUserCreated();//need a list of users that created report(s)(for filtering)
+        this.getPageOfReports();//get current page worth of reports to display(page 1 here, aka 0)
+        this.refreshFlowbite();//need to refresh after data is filled out
       });
     }
   }
 
+  //need the category name associated with the id
   findCategory(cat_id: number) {
     for (let category of this.categories) {
       if (category.id === cat_id) {
@@ -191,6 +198,7 @@ export class UserSpecificReportsComponent {
     return 'NA';
   }
 
+  //need the status name associated with the id
   findStatus(status_id: number) {
     for (let status of this.statuses) {
       if (status.id === status_id) {
@@ -200,10 +208,12 @@ export class UserSpecificReportsComponent {
     return 'NA';
   }
 
+  //redirect to report details page, making sure to pass the associated report id as a route parameter
   reportDetails(reportId: number) {
     this.router.navigate([`userLanding/reportTable/reportDetails/${reportId}`]);
   }
 
+  //delete report
   deleteReport(reportId: number) {
     if (this.user.userRole === 'Admin') {
       this.httpService.deleteReport(reportId).subscribe((data) => {
@@ -218,6 +228,7 @@ export class UserSpecificReportsComponent {
     }
   }
 
+  //filter by status, and user associated with report(only if admin though)
   filter() {
     let tempReports: Report[] = this.reports;
     this.reportsForUser = [];
@@ -225,7 +236,7 @@ export class UserSpecificReportsComponent {
     this.selectedAssignedTo = Number(this.selectedAssignedTo);
     this.selectedCreatedBy = Number(this.selectedCreatedBy);
     if (this.selectedStatus !== -1) {
-      tempReports = tempReports.filter((report) => {
+      tempReports = tempReports.filter((report) => {//filter by status
         if (report.status_id === this.selectedStatus) {
           return true;
         } else {
@@ -236,7 +247,7 @@ export class UserSpecificReportsComponent {
 
     if (this.selectedAssignedTo !== -1) {
       tempReports = tempReports.filter((report) => {
-        if (report.user_assigned.id === this.selectedAssignedTo) {
+        if (report.user_assigned.id === this.selectedAssignedTo) {//then continue filtering, this time by user assigned
           return true;
         } else {
           return false;
@@ -246,7 +257,7 @@ export class UserSpecificReportsComponent {
 
     if (this.selectedCreatedBy !== -1) {
       tempReports = tempReports.filter((report) => {
-        if (report.user_created.id === this.selectedCreatedBy) {
+        if (report.user_created.id === this.selectedCreatedBy) {//finally filter by who created the report
           return true;
         } else {
           return false;
@@ -255,11 +266,12 @@ export class UserSpecificReportsComponent {
     }
 
     this.reportsForUser = tempReports;
-    this.currentPage = 0;
-    this.getPageOfReports();
+    this.currentPage = 0;//reset page to the first one
+    this.getPageOfReports();//get the first page of the reports to display
   }
 
-  listUserAssignedIds() {
+  //need list of users that are assigned to one or many reports
+  listUserAssigned() {
     let tempUserIds: number[] = [];
     this.users_assigned = [];
     for (let report of this.reports) {
@@ -268,10 +280,11 @@ export class UserSpecificReportsComponent {
         tempUserIds.push(report.assigned_to);
       }
     }
-    this.users_assigned.push(new UserEntity(0, '', 'Unassigned', '', '', '', new Date()))
+    this.users_assigned.push(new UserEntity(0, '', 'Unassigned', '', '', '', new Date()));//want to be able to filter by unassigned reports
   }
 
-  listUserCreatedIds() {
+  //need list of users that are created one or many reports
+  listUserCreated() {
     let tempUserIds: number[] = [];
     this.users_created = [];
     for (let report of this.reports) {
@@ -280,11 +293,11 @@ export class UserSpecificReportsComponent {
         tempUserIds.push(report.created_by);
       }
     }
-    this.users_created.push(new UserEntity(0, '', 'Anonymous', '', '', '', new Date()))
+    this.users_created.push(new UserEntity(0, '', 'Anonymous', '', '', '', new Date()));//want to be able to filter by anonymously created reports
   }
 
   getPageOfReports() {
-    //here we would use currentPage and report id to get the corrent range of annotations(5 per page)
+    //here we would use currentPage and report id to get the current range of annotations(5 per page)
     //but for now since no BE yet we'll use the above as our mock db, comment above and below out when BE
     //active
     let result: Report[] = [];
@@ -298,6 +311,7 @@ export class UserSpecificReportsComponent {
     this.totalPages = Math.ceil(this.reportsForUser.length / 5);
   }
 
+  //subtract one from the current page we are on
   backPage() {
     if (this.currentPage > 0) {
       this.currentPage--;
@@ -305,19 +319,22 @@ export class UserSpecificReportsComponent {
     this.getPageOfReports();
   }
 
-  //divide length and ceil to get number of pages... 5 annotation rows per page
+  //add one to current page we are on
   forwardPage() {
+    //divide length and ceil to get number of pages... 5 annotation rows per page
     if (this.currentPage < Math.ceil(this.reportsForUser.length / 5) - 1) {
       this.currentPage++;
     }
     this.getPageOfReports();
   }
 
+  //handle user profile image errors
   onImageError(event: any) {
     event.target.src =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
   }
 
+  //used to refresh the page after data is populated
   refreshFlowbite() {
     setTimeout(() => {
       initFlowbite();

@@ -13,6 +13,7 @@ import { UserAuthService } from '../services/user-auth.service';
 export class HomeComponent {
   user: UserInfo = new UserInfo();
 
+  //justn need to get user data for filling out header(if user exists)
   constructor(private userAuthService: UserAuthService) {
     this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;
