@@ -81,6 +81,7 @@ export class UserReportComponent {
     this.httpService.createReport(this.report).subscribe((data) => {
       if (data.body) {
         newReportId = data.body.id;
+        console.log(data.body);
         if (newReportId === 0) {
           this.router.navigate(['userLanding']);
         } else {
