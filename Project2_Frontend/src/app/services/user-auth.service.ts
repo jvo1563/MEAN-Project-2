@@ -22,6 +22,7 @@ export class UserAuthService {
 
   userAuthObservable = this.userAuthSubject.asObservable();
 
+  //update user info in this serivce and emit that change to observables
   updateUserInfo(diffUserInfo: UserInfo) {
     this.userAuthSubject.next(diffUserInfo);
   }
@@ -30,6 +31,7 @@ export class UserAuthService {
     this.userAuthSubject.next(this.getUserFromStorage());
   }
 
+  //get when the token should expire
   getTokenExp() {
     const token = localStorage.getItem('auth_token');
     if (token) {
@@ -39,11 +41,13 @@ export class UserAuthService {
     return null;
   }
 
+  //for clearing out token data in user auth serivce
   clearToken() {
     localStorage.removeItem('auth_token');
     this.refreshUserInfo();
   }
 
+  //get the user info from BE(which reaches out to google oauth)
   private getUserFromStorage(): UserInfo {
     const token = localStorage.getItem('auth_token');
 

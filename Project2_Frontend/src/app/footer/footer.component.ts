@@ -13,6 +13,7 @@ import { UserInfo } from '../models/user-info';
 export class FooterComponent {
   user: UserInfo = new UserInfo();
 
+  //not a whole lot to say here, just need user info for determining where they should be redirected to
   constructor(private userAuthService: UserAuthService) {
     this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;

@@ -13,9 +13,7 @@ import { environment } from '../../environments/environment';
 export class HttpService {
   constructor(private httpClient: HttpClient) {}
 
-  //probs should but these url strings in .env
-  // aws_gw_url: string = 'http://localhost:3000';
-
+  //url and endpoints to use when contacting BE(aws api gw to be more specific)
   aws_gw_true_url: string = environment.apiUrl;
 
   anonymous_post_report: string = '/report-public';
@@ -38,7 +36,7 @@ export class HttpService {
 
   private_annotation_endpoint: string = '/annotation';
 
-  //could just post user reports this way too...? Want diff function for that with diff endpoint in gateway???
+  //anonymous post function, uses lambda functions which don't require auth, unlike the true BE
   createAnonymousReport(new_report: Report): Observable<HttpResponse<any>> {
     return this.httpClient.post<any>(
       this.aws_gw_true_url + this.anonymous_post_report,
@@ -56,6 +54,7 @@ export class HttpService {
     );
   }
 
+  //actually contact BE unlike above
   createReport(new_report: Report): Observable<HttpResponse<any>> {
     let response = this.httpClient.post<any>(
       this.aws_gw_true_url + this.private_report_endpoint,
@@ -75,8 +74,6 @@ export class HttpService {
   }
 
   getAllReports(): Observable<HttpResponse<any>> {
-    // let newHeaders = new HttpHeaders();
-    // newHeaders = newHeaders.set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<any>(
       this.aws_gw_true_url + this.private_report_endpoint,
       { observe: 'response' }
@@ -158,6 +155,7 @@ export class HttpService {
     );
   }
 
+  //need a way to anonymously obtain list of categories to choose from for creating reports anonymously
   anonymousGetCategories(): Observable<
     HttpResponse<{ id: number; category_name: string; description: string }[]>
   > {
@@ -168,6 +166,7 @@ export class HttpService {
     });
   }
 
+  //actually go to BE instead of using lambdas
   getAllCategories(): Observable<
     HttpResponse<{ id: number; category_name: string; description: string }[]>
   > {
@@ -219,6 +218,7 @@ export class HttpService {
     );
   }
 
+
   createStatus(new_status: {
     status_name: string;
   }): Observable<HttpResponse<{ id: number; status_name: string }>> {
@@ -231,6 +231,7 @@ export class HttpService {
     );
   }
 
+  //need anonymous way to get statuses so that we know what id "pending" is associated with
   anonymousGetStatus(): Observable<
     HttpResponse<{ id: number; status_name: string }[]>
   > {
@@ -240,6 +241,7 @@ export class HttpService {
     );
   }
 
+  //authenticated way of getting statuses, goes to BE instead of lambda
   getAllStatus(): Observable<
     HttpResponse<{ id: number; status_name: string }[]>
   > {
@@ -332,6 +334,8 @@ export class HttpService {
     );
   }
 
+
+  //need to be able to create businesses anonymously, so go to lambda instead of authenticated BE
   createAnonymousBuisness(
     new_buisness: BuisnessEntity
   ): Observable<HttpResponse<BuisnessEntity>> {
@@ -350,6 +354,7 @@ export class HttpService {
     );
   }
 
+  //go through auth BE instead of posting using lambda
   createBuisness(new_buisness: BuisnessEntity): Observable<HttpResponse<any>> {
     return this.httpClient.post<any>(
       this.aws_gw_true_url + this.private_buisness_endpoint,
@@ -408,6 +413,7 @@ export class HttpService {
     );
   }
 
+  
   createAnnotation(
     new_annotation: Annotation
   ): Observable<HttpResponse<Annotation>> {

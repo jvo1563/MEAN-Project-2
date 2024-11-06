@@ -31,6 +31,7 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './report-details.component.css',
 })
 export class ReportDetailsComponent {
+  //local variables/objects to keep data we need to enable functionality
   user: UserInfo = new UserInfo();
   report: Report = new Report();
   update_report_form: Report = new Report();
@@ -44,6 +45,7 @@ export class ReportDetailsComponent {
   report_created_by: UserEntity = new UserEntity();
   report_assigned_to: UserEntity = new UserEntity();
 
+  //using same services as other components, but also need access to route parameters and annotations info service
   constructor(
     private userAuthService: UserAuthService,
     private router: Router,
@@ -68,12 +70,13 @@ export class ReportDetailsComponent {
       this.categories = data.body ? data.body : [];
     });
 
+    //get report id from route parameters
     this.route.params.subscribe((data) => {
       this.report.id = data['report_id'];
       this.refreshReport();
     });
 
-    //This still needs to be done!!!
+    //get list of handlers to select from to assign them to this report, only if admin
     if (this.user.userRole === 'Admin') {
       this.httpService.getAllUsers().subscribe((data) => {
         if (data.body) {
@@ -88,6 +91,7 @@ export class ReportDetailsComponent {
     }
   }
 
+  //get report/refresh report upon updates
   refreshReport() {
     if (this.report.id) {
       console.log('refreshing report');
@@ -120,16 +124,18 @@ export class ReportDetailsComponent {
           if (data.body.user_created)
             this.report_created_by = data.body.user_created;
           else this.report_created_by.first_name = 'Anonymous';
-          this.refreshFlowbite();
+          this.refreshFlowbite();//refresh page when data is populated
         }
       });
     }
   }
 
+  //reset report update form to actual data
   resetReportUpdateForm() {
     this.update_report_form = structuredClone(this.report);
   }
 
+  //update the report in the BE using the updated local copy
   updateReport() {
     this.update_report_form.updated_at = new Date();
     this.httpService
@@ -144,14 +150,18 @@ export class ReportDetailsComponent {
       });
   }
 
+  //delete report and return to user landing, only accessible to admins in the html, also protected in the BE
   deleteReport() {
     this.httpService.deleteReport(this.report.id).subscribe(() => {
       this.router.navigate(['/userLanding']);
     });
   }
 
-  //Should we call update report here? Want to update the last updated at time stamp....!!!
+
+
   //enable editing, adding, or removing businesses associated with this report
+
+  //update business entity associated with report, then update the date that this report was last updated at
   updateBuisnessEntity(index: number, entity: BuisnessEntity) {
     this.buis_entities[index] = entity;
     this.httpService.updateBuisness(entity.id, entity).subscribe((data) => {
@@ -172,6 +182,7 @@ export class ReportDetailsComponent {
     });
   }
 
+  //delete and then set the updated at time for the report
   deleteBuisnessEntity(index: number) {
     let temp_entities: BuisnessEntity[] = [];
     for (let i = 0; i < this.buis_entities.length; i++) {
@@ -197,6 +208,7 @@ export class ReportDetailsComponent {
       });
   }
 
+  //add business entity and then update the time the report was last updated at
   addBuisnessEntity() {
     this.buis_entity.report_id = this.report.id;
     this.httpService.createBuisness(this.buis_entity).subscribe((data) => {
@@ -217,19 +229,22 @@ export class ReportDetailsComponent {
         console.log('!!! Business Create Error !!!');
       }
     });
-    this.buis_entity = new BuisnessEntity(0, 0, '', '', '', '', '', '');
+    this.buis_entity = new BuisnessEntity(0, 0, '', '', '', '', '', '');//reset local business entity we are building as we fill out the add business entity form
   }
 
+  //return to reports table
   returnToTable() {
     this.router.navigate(['userLanding/reportTable']);
   }
 
+  //refresh page once all data is populated
   refreshFlowbite() {
     setTimeout(() => {
       initFlowbite();
     }, 100);
   }
 
+  //handle error if user image dne
   onImageError(event: any) {
     event.target.src =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';

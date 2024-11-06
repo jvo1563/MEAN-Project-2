@@ -18,12 +18,14 @@ export class HeaderComponent {
   // defaultImage =
   //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
 
+  //use user data to create user icon and dropdown menu
   constructor(private userAuthService: UserAuthService) {
     this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;
     });
   }
 
+  //log user out, removing token and cleaning out the user auth info in the userAuthService
   logout() {
     // Remove token from local storage
     localStorage.removeItem('auth_token');
@@ -33,10 +35,12 @@ export class HeaderComponent {
     // this.route.navigate(['/']);
   }
 
+  //if not loged in, redirect to gw to go to BE to go to google oauth and return with user auth info
   login() {
     window.location.href = `${environment.apiUrl}/auth/google`;
   }
 
+  //if user image dne, handle error
   onImageError(event: any) {
     event.target.src =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';

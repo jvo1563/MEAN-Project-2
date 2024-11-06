@@ -18,6 +18,7 @@ import { UserEntity } from '../models/user-entity';
   styleUrl: './report-table.component.css',
 })
 export class ReportTableComponent {
+  //local variables to store data necessary for functionality
   user: UserInfo = new UserInfo(0, '', '', '');
   statuses: StatusEntity[] = [];
   categories: CategoryEntity[] = [];
@@ -29,6 +30,7 @@ export class ReportTableComponent {
   user_assigned_ids: number[] = [];
   user_created_ids: number[] = [];
 
+  //check user has token, redirect if not, then get information we need from BE
   constructor(
     private userAuthService: UserAuthService,
     private router: Router,
@@ -95,6 +97,7 @@ export class ReportTableComponent {
     });
   }
 
+  //need to find what category is associated with what ID
   findCategory(cat_id: number) {
     for (let category of this.categories) {
       if (category.id === cat_id) {
@@ -104,6 +107,7 @@ export class ReportTableComponent {
     return 'NA';
   }
 
+  //need to find what status is associated with what ID
   findStatus(status_id: number) {
     for (let status of this.statuses) {
       if (status.id === status_id) {
@@ -113,10 +117,12 @@ export class ReportTableComponent {
     return 'NA';
   }
 
+  //redirect to report details passing report id as route param so we can get the proper data in that new page
   reportDetails(reportId: number) {
     this.router.navigate([`userLanding/reportTable/reportDetails/${reportId}`]);
   }
 
+  //delete report, first making sure that user is admin
   deleteReport(reportId: number) {
     if (this.user.userRole === 'Admin') {
       this.httpService.deleteReport(reportId).subscribe((data) => {
@@ -133,10 +139,12 @@ export class ReportTableComponent {
     }
   }
 
+  //redirect back to user landing page
   returnToLanding() {
     this.router.navigate([`userLanding`]);
   }
 
+  //handle if user image throws error
   onImageError(event: any) {
     event.target.src =
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
