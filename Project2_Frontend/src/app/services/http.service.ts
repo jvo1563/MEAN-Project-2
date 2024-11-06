@@ -18,8 +18,6 @@ export class HttpService {
 
   anonymous_post_report: string = '/report-public';
 
-  anonymous_post_buis: string = '/businessentity-public';
-
   anonymous_get_statuses: string = '/statuses-public';
 
   anonymous_get_categories: string = '/categories-public';
@@ -37,7 +35,7 @@ export class HttpService {
   private_annotation_endpoint: string = '/annotation';
 
   //anonymous post function, uses lambda functions which don't require auth, unlike the true BE
-  createAnonymousReport(new_report: Report): Observable<HttpResponse<any>> {
+  createAnonymousReport(new_report: Report, busi_entities: BuisnessEntity[]): Observable<HttpResponse<any>> {
     return this.httpClient.post<any>(
       this.aws_gw_true_url + this.anonymous_post_report,
       {
@@ -49,6 +47,7 @@ export class HttpService {
         category_id: new_report.category_id,
         created_at: new_report.created_at,
         updated_at: new_report.updated_at,
+        business_entities: busi_entities
       },
       { observe: 'response' }
     );
@@ -331,26 +330,6 @@ export class HttpService {
   deleteUser(user_id: number): Observable<void> {
     return this.httpClient.delete<void>(
       this.aws_gw_true_url + this.private_user_endpoint + `/${user_id}`
-    );
-  }
-
-
-  //need to be able to create businesses anonymously, so go to lambda instead of authenticated BE
-  createAnonymousBuisness(
-    new_buisness: BuisnessEntity
-  ): Observable<HttpResponse<BuisnessEntity>> {
-    return this.httpClient.post<BuisnessEntity>(
-      this.aws_gw_true_url + this.anonymous_post_buis,
-      {
-        report_id: new_buisness.report_id,
-        name: new_buisness.name,
-        industry: new_buisness.industry,
-        address: new_buisness.address,
-        email: new_buisness.email,
-        phone: new_buisness.phone,
-        relation: new_buisness.relation,
-      },
-      { observe: 'response' }
     );
   }
 
