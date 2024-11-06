@@ -33,7 +33,7 @@ export class HeaderComponent {
   }
 
   login() {
-    window.location.href = 'http://localhost:3000/auth/google';
+    window.location.href = 'https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/auth/google';
   }
 
   onImageError(event: any) {
