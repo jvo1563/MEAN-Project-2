@@ -19,13 +19,13 @@ export class HttpService {
   aws_gw_true_url: string = 'https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com';
 
 
-  anonymous_post_report:string = '/report-public';
+  anonymous_post_report:string = '/reportpublic';
 
-  anonymous_post_buis:string = '/businessentity-public';
+  anonymous_post_buis:string = '/businessentitypublic';
 
-  anonymous_get_statuses:string = '/statuses-public';
+  anonymous_get_statuses:string = '/statusespublic';
 
-  anonymous_get_categories:string = '/categories-public';
+  anonymous_get_categories:string = '/categoriespublic';
 
   private_report_endpoint:string = '/report';
 
