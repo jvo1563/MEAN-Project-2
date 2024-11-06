@@ -321,7 +321,11 @@
           </button>
         </div>
         <!-- Modal body -->
-        <form (ngSubmit)="createAnnotation()" action="#" #actorForm="ngForm">
+        <form
+          (ngSubmit)="createAnnotation(); actorForm.resetForm()"
+          action="#"
+          #actorForm="ngForm"
+        >
           <div class="grid gap-4 mb-4 sm:grid-cols-2">
             <div class="sm:col-span-2">
               <label
