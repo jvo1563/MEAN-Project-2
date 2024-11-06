@@ -1,0 +1,18 @@
+  .exitReportButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .exitReportButton > button {
+    margin-top: 20px;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: lightgray;
+    width: 15%;
+  }
+  
+  .exitReportButton > button:hover {
+    background-color: rgb(117, 114, 114);
+  }
