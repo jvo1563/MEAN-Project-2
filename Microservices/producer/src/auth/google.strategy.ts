@@ -14,6 +14,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
+  /**
+   * Validates the Google OAuth2 profile and returns a user object.
+   * @returns A Promise that resolves to the validated user object.
+   */
   async validate(
     _accessToken: string,
     _refreshToken: string,
@@ -31,7 +35,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       last_name: name.familyName,
       picture: photos[0].value,
     };
-
     done(null, user);
   }
 }

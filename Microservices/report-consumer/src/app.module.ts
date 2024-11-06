@@ -15,6 +15,7 @@ require('dotenv').config();
 
 @Module({
   imports: [
+    // Connecting to the PostgreSQL database using TypeORM
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
