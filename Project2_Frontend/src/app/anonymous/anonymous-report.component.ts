@@ -45,7 +45,7 @@ export class AnonymousReportComponent {
     this.report.category_id = Number(this.report.category_id);
     this.httpService.createAnonymousReport(this.report, this.buis_entities).subscribe((data) => {
       if (data.body) {
-        console.log("Anonymous Business Creat Success!");
+        console.log("Anonymous Business Create Success!");
       }
     });
     this.router.navigate(['']);
