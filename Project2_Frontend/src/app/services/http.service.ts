@@ -36,8 +36,6 @@ export class HttpService {
 
   //anonymous post function, uses lambda functions which don't require auth, unlike the true BE
   createAnonymousReport(new_report: Report, busi_entities: BuisnessEntity[]): Observable<HttpResponse<any>> {
-    console.log(new_report);
-    console.log(busi_entities);
     return this.httpClient.post<any>(
       this.aws_gw_true_url + this.anonymous_post_report,
       {
