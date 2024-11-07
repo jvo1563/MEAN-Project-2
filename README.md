@@ -4,14 +4,14 @@ A full-stack web application for reporting financial crimes like fraud, money la
 
 ## Table of Contents
 
-- [Public API](#api-public)
+- [Public API](#public-api)
 - [Deployment](#deployment)
 - [Features](#features)
 - [Technologies](#technologies)
 - [API Documentation](#api-documentation)
 - [Database](#database)
 
-## Pulic API
+## Public API
 
 - Alternatively to using the web based reporting and management application, anonymous reports can be made using public API calls:
   
@@ -45,7 +45,6 @@ A full-stack web application for reporting financial crimes like fraud, money la
 
   - Get a count of how many reports were submitted today (Just for fun!):
     - URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/dailyreportcount-public
-    
 
 ## Deployment
 
