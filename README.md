@@ -4,12 +4,35 @@ A full-stack web application for reporting financial crimes like fraud, money la
 
 ## Table of Contents
 
-- [Public API](#public-api)
 - [Deployment](#deployment)
 - [Features](#features)
 - [Technologies](#technologies)
+- [Public API](#public-api)
 - [API Documentation](#api-documentation)
 - [Database](#database)
+
+## Deployment
+
+- The app is deployed on **AWS**:
+  - Frontend: http://fraud-fighters-fe.s3-website-us-east-1.amazonaws.com
+  - Backend: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com
+
+## Features
+
+- Anonymous Reporting: Allows anyone to report financial crimes without creating an account.
+- Role-Based Access:
+  - Handler: Can view and update reports.
+  - Admin: Full access to manage reports and assign handlers to reports
+- OAuth Integration: User authenication via Google OAuth.
+- Microservice Architecture: Backend with RabbitMQ for communication between microservices.
+- CI/CD Pipeline: Automatic deployment of frontend updates via GitHub Actions.
+
+## Technologies
+
+- **Frontend**: Angular, Tailwind CSS, Flowbite
+- **Backend**: NestJS with microservices, RabbitMQ, TypeORM
+- **Database**: AWS Aurora PostgresSQL
+- **Deployment**: AWS S3, AWS EKS, AWS Lambda, AWS API Gateway
 
 ## Public API
 
@@ -45,29 +68,6 @@ A full-stack web application for reporting financial crimes like fraud, money la
 
   - Get a count of how many reports were submitted today (Just for fun!):
     - URL: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com/dailyreportcount-public
-
-## Deployment
-
-- The app is deployed on **AWS**:
-  - Frontend: http://fraud-fighters-fe.s3-website-us-east-1.amazonaws.com
-  - Backend: https://zj6lfhgilj.execute-api.us-east-1.amazonaws.com
-
-## Features
-
-- Anonymous Reporting: Allows anyone to report financial crimes without creating an account.
-- Role-Based Access:
-  - Handler: Can view and update reports.
-  - Admin: Full access to manage reports and assign handlers to reports
-- OAuth Integration: User authenication via Google OAuth.
-- Microservice Architecture: Backend with RabbitMQ for communication between microservices.
-- CI/CD Pipeline: Automatic deployment of frontend updates via GitHub Actions.
-
-## Technologies
-
-- **Frontend**: Angular, Tailwind CSS, Flowbite
-- **Backend**: NestJS with microservices, RabbitMQ, TypeORM
-- **Database**: AWS Aurora PostgresSQL
-- **Deployment**: AWS S3, AWS EKS, AWS Lambda, AWS API Gateway
 
 ## API Documentation
 
