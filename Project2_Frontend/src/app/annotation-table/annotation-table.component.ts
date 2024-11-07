@@ -113,14 +113,12 @@ export class AnnotationTableComponent {
 
   //remove the annotation and update report details page to update the last time this report was updated
   deleteAnnotation(annotation_id: number) {
-    if (this.user.userRole === 'Admin') {
-      this.httpService.deleteAnnotation(annotation_id).subscribe((data) => {
-        console.log('Annotation Delete Success!');
-        this.currentPage = 0;
-        this.refreshAnnotations();
-        this.updateReportLastUpdated();
-      });
-    }
+    this.httpService.deleteAnnotation(annotation_id).subscribe((data) => {
+      console.log('Annotation Delete Success!');
+      this.currentPage = 0;
+      this.refreshAnnotations();
+      this.updateReportLastUpdated();
+    });
   }
 
   //update report then tell parent(report) that is should update the last time this report was updated
