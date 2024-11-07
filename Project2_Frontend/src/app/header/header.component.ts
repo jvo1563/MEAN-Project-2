@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserAuthService } from '../services/user-auth.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserInfo } from '../models/user-info';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
@@ -19,10 +19,17 @@ export class HeaderComponent {
   //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s';
 
   //use user data to create user icon and dropdown menu
-  constructor(private userAuthService: UserAuthService) {
+  constructor(
+    private userAuthService: UserAuthService,
+    private router: Router
+  ) {
     this.userAuthService.userAuthObservable.subscribe((data) => {
       this.user = data;
     });
+  }
+
+  isRoute(route: string): boolean {
+    return this.router.url.endsWith(route);
   }
 
   //log user out, removing token and cleaning out the user auth info in the userAuthService
